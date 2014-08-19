@@ -9,13 +9,13 @@ class NetworkLoader {
 
     // Creates a number of signals that can be subscribed to
     let onData = Signal<(data:NSData, error:NSError)>()
-    let onProgress = Signal<(progress:Float)>()
+    let onProgress = Signal<Float>()
     
     ...
     
     func receivedData(receivedData:NSData, receivedError:NSError) {
         // Whenever appropriate, fire off any of the signals
-        self.onProgress.fire(progress:1.0)
+        self.onProgress.fire(1.0)
         self.onData.fire(data:receivedData, error:receivedError)
     }
 }
@@ -27,7 +27,7 @@ Subscribe to these signals from elswhere in your application
 
 let networkLoader = NetworkLoader("http://artman.fi")
 
-networkLoader.onProgress.listen(self) { (progress:Float) in
+networkLoader.onProgress.listen(self) { (progress) in
     println("Loading progress: \(progress*100)%")
 }
 

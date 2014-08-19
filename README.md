@@ -16,7 +16,7 @@ class NetworkLoader {
     func receivedData(receivedData:NSData, receivedError:NSError) {
         // Whenever appropriate, fire off any of the signals
         self.onProgress.fire(progress:1.0)
-        self.onData.fire(data:receivedData, error:error)
+        self.onData.fire(data:receivedData, error:receivedError)
     }
 }
 ```

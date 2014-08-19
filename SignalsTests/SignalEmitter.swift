@@ -10,8 +10,8 @@ import Foundation
 
 class SignalEmitter {
 
-    let onInt = Signal<(Int)>()
-    let onString = Signal<(String)>()
-    let onIntAndString = Signal<(Int, String)>()
+    let onInt = Signal<Int>()
+    let onString = Signal<String>()
+    let onIntAndString = Signal<(intArgument:Int, stringArgument:String)>()
     
 }

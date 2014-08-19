@@ -49,14 +49,13 @@ class SignalsTests: XCTestCase {
             stringSignalResult = argument2
         })
         
-        emitter.onIntAndString.fire(1, "test")
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
         
         XCTAssertEqual(intSignalResult, 1, "argument1 catched")
         XCTAssertEqual(stringSignalResult, "test", "argument2 catched")
     }
     
     func testMultiFiring() {
-        // This is an example of a functional test case.
         var dispatchCount = 0
         var lastArgument = 0
         
@@ -68,7 +67,6 @@ class SignalsTests: XCTestCase {
         emitter.onInt.fire(1)
         emitter.onInt.fire(2)
 
-        
         XCTAssertEqual(dispatchCount, 2, "Dispatched two times")
         XCTAssertEqual(lastArgument, 2, "Last argument catched with value 2")
     }

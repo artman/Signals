@@ -5,21 +5,19 @@ Signals is a micro-framework for creating and observing events.
 
 Make events on a class observable by creating one or more signals:
 ```
-import Signals
-
 class NetworkLoader {
 
-// Creates a number of signals that can be subscribed to
-let onData = Signal<(data:NSData, error:NSError)>()
-let onProgress = Signal<(progress:Float)>()
-
-...
-
-func receivedData(receivedData:NSData, receivedError:NSError) {
-// Whenever appropriate, fire off any of the signals
-self.onProgress.fire(progress:1.0)
-self.onData.fire(data:receivedData, error:error)
-}
+    // Creates a number of signals that can be subscribed to
+    let onData = Signal<(data:NSData, error:NSError)>()
+    let onProgress = Signal<(progress:Float)>()
+    
+    ...
+    
+    func receivedData(receivedData:NSData, receivedError:NSError) {
+        // Whenever appropriate, fire off any of the signals
+        self.onProgress.fire(progress:1.0)
+        self.onData.fire(data:receivedData, error:error)
+    }
 }
 ```
 
@@ -30,11 +28,11 @@ Subscribe to these signals from elswhere in your application
 let networkLoader = NetworkLoader("http://artman.fi")
 
 networkLoader.onProgress.listen(self) { (progress:Float) in
-println("Loading progress: \(progress*100)%")
+    println("Loading progress: \(progress*100)%")
 }
 
 networkLoader.onData.listen(self) { (data, error) in
-// Do somethign with the data
+    // Do somethign with the data
 }
 ```
 
@@ -45,13 +43,14 @@ Singals aren't restricted to one listener, so multiple objects can listen on the
 
 Installation
 ------------
-1) Copy the Signal.swift file over to your project. Done.
-
-
-Where delegates and notifications are too cumbersome and contain too much boilerplate, Signals is simple, modern and powerful.
+1) Copy the Signal.swift file over to your project. 
+2) Done.
 
 Become more productive
 ----------------------
+
+Where delegates and notifications are too cumbersome and contain too much boilerplate, Signals is simple and modern.
+
 Would you rather do this to implement a delegate:
 - Create a protocol that defines what is delegated
 - Create a delegate property on the class that wants to provide delegation

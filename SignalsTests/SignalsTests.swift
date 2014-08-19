@@ -33,8 +33,8 @@ class SignalsTests: XCTestCase {
             stringSignalResult = argument;
         })
         
-        emitter.onInt.fire(argument:1);
-        emitter.onString.fire(argument:"test");
+        emitter.onInt.fire(1);
+        emitter.onString.fire("test");
         
         XCTAssertEqual(intSignalResult, 1, "IntSignal catched")
         XCTAssertEqual(stringSignalResult, "test", "StringSignal catched")
@@ -49,7 +49,7 @@ class SignalsTests: XCTestCase {
             stringSignalResult = argument2
         })
         
-        emitter.onIntAndString.fire(argument1:1, argument2:"test")
+        emitter.onIntAndString.fire(1, "test")
         
         XCTAssertEqual(intSignalResult, 1, "argument1 catched")
         XCTAssertEqual(stringSignalResult, "test", "argument2 catched")
@@ -65,8 +65,8 @@ class SignalsTests: XCTestCase {
             lastArgument = argument
         })
         
-        emitter.onInt.fire(argument:1)
-        emitter.onInt.fire(argument:2)
+        emitter.onInt.fire(1)
+        emitter.onInt.fire(2)
 
         
         XCTAssertEqual(dispatchCount, 2, "Dispatched two times")
@@ -86,14 +86,34 @@ class SignalsTests: XCTestCase {
             lastArgument = argument + 1
         })
         
-        emitter.onInt.fire(argument:1)
+        emitter.onInt.fire(1)
 
         XCTAssertEqual(dispatchCount, 2, "Dispatched two times")
         XCTAssertEqual(lastArgument, 2, "Last argument catched with value 2")
     }
     
+    func testMultiListenersManyObjects() {
+        var testListeners = [
+            TestListener(),
+            TestListener(),
+            TestListener()
+        ]
+        
+        for listener in testListeners {
+            listener.listenTo(emitter)
+        }
+        
+        emitter.onInt.fire(1)
+        emitter.onInt.fire(2)
+        
+        for listener in testListeners {
+            XCTAssertEqual(listener.dispatchCount, 2, "Dispatched two times")
+            XCTAssertEqual(listener.lastArgument, 2, "Last argument catched with value 2")
+        }
+    }
+    
     func testRemovingListeners() {
-        var dispatchCount:Int = 0
+        var dispatchCount: Int = 0
         
         emitter.onInt.listen(self, callback: { (argument) in
             dispatchCount += 1
@@ -103,13 +123,13 @@ class SignalsTests: XCTestCase {
         })
         
         emitter.onInt.removeListener(self)
-        emitter.onInt.fire(argument:1)
+        emitter.onInt.fire(1)
         
         XCTAssertEqual(dispatchCount, 0, "Shouldn't have catched signal fire")
     }
     
     func testRemovingAllListeners() {
-        var dispatchCount:Int = 0
+        var dispatchCount: Int = 0
         
         emitter.onInt.listen(self, callback: { (argument) in
             dispatchCount += 1
@@ -118,21 +138,20 @@ class SignalsTests: XCTestCase {
             dispatchCount += 1
         })
         
-        emitter.onInt.removeAllListener()
-        emitter.onInt.fire(argument:1)
+        emitter.onInt.removeAllListeners()
+        emitter.onInt.fire(1)
         
         XCTAssertEqual(dispatchCount, 0, "Shouldn't have catched signal fire")
     }
-
     
     func testAutoRemoveWeakListeners() {
-        var dispatchCount:Int = 0
+        var dispatchCount: Int = 0
 
-        var listener:TestListener? = TestListener()
+        var listener: TestListener? = TestListener()
         listener!.listenTo(emitter)
         listener = nil
         
-        emitter.onInt.fire(argument:1)
+        emitter.onInt.fire(1)
 
         XCTAssertEqual(emitter.onInt.listeners.count, 0, "Weak listener should have been collected")
     }

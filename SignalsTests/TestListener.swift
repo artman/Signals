@@ -10,8 +10,8 @@ import Foundation
 
 class TestListener {
 
-    var dispatchCount:Int = 0;
-    var lastArgument:Int = 0;
+    var dispatchCount: Int = 0;
+    var lastArgument: Int = 0;
     
     func listenTo(emitter:SignalEmitter) {
         emitter.onInt.listen(self, callback: {

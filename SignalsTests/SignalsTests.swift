@@ -11,26 +11,129 @@ import XCTest
 
 class SignalsTests: XCTestCase {
     
+    var emitter:SignalEmitter = SignalEmitter();
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        emitter = SignalEmitter()
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
+
+    func testBasicFiring() {
+        var intSignalResult = 0
+        var stringSignalResult = ""
+        
+        emitter.onInt.listen(self, callback: { (argument) in
+            intSignalResult = argument;
+        })
+        emitter.onString.listen(self, callback: { (argument) in
+            stringSignalResult = argument;
+        })
+        
+        emitter.onInt.fire(argument:1);
+        emitter.onString.fire(argument:"test");
+        
+        XCTAssertEqual(intSignalResult, 1, "IntSignal catched")
+        XCTAssertEqual(stringSignalResult, "test", "StringSignal catched")
+    }
+
+    func testMultiArgumentFiring() {
+        var intSignalResult = 0
+        var stringSignalResult = ""
+        
+        emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
+            intSignalResult = argument1
+            stringSignalResult = argument2
+        })
+        
+        emitter.onIntAndString.fire(argument1:1, argument2:"test")
+        
+        XCTAssertEqual(intSignalResult, 1, "argument1 catched")
+        XCTAssertEqual(stringSignalResult, "test", "argument2 catched")
+    }
     
-    func testExample() {
+    func testMultiFiring() {
         // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+        var dispatchCount = 0
+        var lastArgument = 0
+        
+        emitter.onInt.listen(self, callback: { (argument) in
+            dispatchCount++
+            lastArgument = argument
+        })
+        
+        emitter.onInt.fire(argument:1)
+        emitter.onInt.fire(argument:2)
+
+        
+        XCTAssertEqual(dispatchCount, 2, "Dispatched two times")
+        XCTAssertEqual(lastArgument, 2, "Last argument catched with value 2")
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
-        }
+    func testMultiListenersOneObject() {
+        var dispatchCount = 0
+        var lastArgument = 0
+        
+        emitter.onInt.listen(self, callback: { (argument) in
+            dispatchCount++
+            lastArgument = argument
+        })
+        emitter.onInt.listen(self, callback: { (argument) in
+            dispatchCount++
+            lastArgument = argument + 1
+        })
+        
+        emitter.onInt.fire(argument:1)
+
+        XCTAssertEqual(dispatchCount, 2, "Dispatched two times")
+        XCTAssertEqual(lastArgument, 2, "Last argument catched with value 2")
     }
     
+    func testRemovingListeners() {
+        var dispatchCount:Int = 0
+        
+        emitter.onInt.listen(self, callback: { (argument) in
+            dispatchCount += 1
+        })
+        emitter.onInt.listen(self, callback: { (argument) in
+            dispatchCount += 1
+        })
+        
+        emitter.onInt.removeListener(self)
+        emitter.onInt.fire(argument:1)
+        
+        XCTAssertEqual(dispatchCount, 0, "Shouldn't have catched signal fire")
+    }
+    
+    func testRemovingAllListeners() {
+        var dispatchCount:Int = 0
+        
+        emitter.onInt.listen(self, callback: { (argument) in
+            dispatchCount += 1
+        })
+        emitter.onInt.listen(self, callback: { (argument) in
+            dispatchCount += 1
+        })
+        
+        emitter.onInt.removeAllListener()
+        emitter.onInt.fire(argument:1)
+        
+        XCTAssertEqual(dispatchCount, 0, "Shouldn't have catched signal fire")
+    }
+
+    
+    func testAutoRemoveWeakListeners() {
+        var dispatchCount:Int = 0
+
+        var listener:TestListener? = TestListener()
+        listener!.listenTo(emitter)
+        listener = nil
+        
+        emitter.onInt.fire(argument:1)
+
+        XCTAssertEqual(emitter.onInt.listeners.count, 0, "Weak listener should have been collected")
+    }
 }

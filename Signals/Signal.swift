@@ -38,6 +38,16 @@ public class Signal<T> {
         signalListeners.append(signalListener)
     }
     
+    /// Attach a listener to the signal that is removed after the signal has fired once
+    ///
+    /// :param: listener The listener object. Sould the listener be deallocated, its associated callback is automatically removed.
+    /// :param: callback The closure to invoke when the signal fires for the first time.
+    public func listenOnce(listener: AnyObject, callback: (T) -> Void) {
+        var signalListener = SignalListener<T>(listener: listener, callback: callback);
+        signalListener.once = true
+        signalListeners.append(signalListener)
+    }
+    
     /// Fires the singal.
     ///
     /// :param: params The parameters to fire the signal with.
@@ -49,8 +59,13 @@ public class Signal<T> {
             return false
         }
 
+        var index = 0
         for listener in signalListeners {
+            if listener.once {
+                signalListeners.removeAtIndex(index--)
+            }
             listener.callback(params)
+            index++
         }
     }
     
@@ -78,6 +93,7 @@ private class SignalListener<T> {
     
     weak var listener: AnyObject?
     var callback: (T) -> Void
+    var once = false
     
     init (listener: AnyObject, callback: (T) -> Void) {
         self.listener = listener

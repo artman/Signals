@@ -20,4 +20,12 @@ class TestListener {
             self.lastArgument = argument;
         })
     }
+    
+    func listenOnceTo(emitter:SignalEmitter) {
+        emitter.onInt.listenOnce(self, callback: {
+            [unowned self] (argument) in
+            self.dispatchCount++
+            self.lastArgument = argument;
+        })
+    }
 }

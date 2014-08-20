@@ -110,6 +110,24 @@ class SignalsTests: XCTestCase {
         }
     }
     
+    func testListeningOnce() {
+        let listener1 = TestListener()
+        let listener2 = TestListener()
+        let listener3 = TestListener()
+        
+        listener1.listenTo(emitter)
+        listener2.listenOnceTo(emitter)
+        listener3.listenTo(emitter)
+        
+        emitter.onInt.fire(1)
+        emitter.onInt.fire(2)
+        
+        XCTAssertEqual(listener1.dispatchCount, 2, "Dispatched two times")
+        XCTAssertEqual(listener2.dispatchCount, 1, "Dispatched one time")
+        XCTAssertEqual(listener3.dispatchCount, 2, "Dispatched two times")
+    }
+    
+    
     func testRemovingListeners() {
         var dispatchCount: Int = 0
         

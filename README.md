@@ -43,8 +43,8 @@ Singals aren't restricted to one listener, so multiple objects can listen on the
 
 Installation
 ------------
-1) Copy the Signal.swift file over to your project. 
-2) Done.
+1. Copy the Signal.swift file over to your project. 
+2. Done.
 
 Become more productive
 ----------------------

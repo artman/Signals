@@ -1,4 +1,4 @@
-Singals
+Signals
 =======
 
 Signals is a micro-framework for creating and observing events.

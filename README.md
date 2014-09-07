@@ -63,3 +63,10 @@ Or do the same thing with Signals:
 - Create a signal for the class that wants to provide an event
 - Subscribe to the signal as a listener from any instance you want
 
+Contribute
+----------
+To contribute, just fork, branch & send a pull request. To get in touch, hit me up on Twitter [@artman](http://twitter.com/artman)
+
+License
+-------
+Signals is released under an MIT license. See the LICENSE file for more information

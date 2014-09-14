@@ -41,18 +41,12 @@ Singals aren't restricted to one listener, so multiple objects can listen on the
 
 You can also subsribe to events after they have occured:
 ```
-
 networkLoader.onProgress.listenPast(self) { (progress) in
     // This will immediately fire with last progress that was reported
     // by the onProgress signal
     println("Loading progress: \(progress*100)%")
 }
 ```
-
-Installation
-------------
-1. Copy the Signal.swift file over to your project. 
-2. Done.
 
 Become more productive
 ----------------------
@@ -71,7 +65,14 @@ Or do the same thing with Signals:
 - Create a signal for the class that wants to provide an event
 - Subscribe to the signal as a listener from any instance you want
 
-To replace NSNotificationCenter with Singals, just create a Singleton with a number of public signals that anybody can subscribe to or fire.
+#### Replace NSNotificationCenter
+
+To replace global notifications via the NSNotificationCenter with Singals, just create a Singleton with a number of public signals that anybody can subscribe to or fire.
+
+Installation
+------------
+1. Copy the Signal.swift file over to your project. 
+2. Done.
 
 Contribute
 ----------

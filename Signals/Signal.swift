@@ -12,6 +12,12 @@ import Foundation
 /// be observed by listeners.
 public class Signal<T> {
     
+    /// The number of times the signal has fired.
+    public var fireCount = 0
+    
+    /// The last data that the signal was fired with.
+    public var lastDataFired: T? = nil
+    
     /// All the listeners listening to the Signal.
     public var listeners:[AnyObject] {
         get {
@@ -29,7 +35,7 @@ public class Signal<T> {
     
     private var signalListeners = [SignalListener<T>]()
     
-    /// Attach a listener to the signal
+    /// Attaches a listener to the signal
     ///
     /// :param: listener The listener object. Sould the listener be deallocated, its associated callback is automatically removed.
     /// :param: callback The closure to invoke whenever the signal fires.
@@ -38,7 +44,7 @@ public class Signal<T> {
         signalListeners.append(signalListener)
     }
     
-    /// Attach a listener to the signal that is removed after the signal has fired once
+    /// Attaches a listener to the signal that is removed after the signal has fired once
     ///
     /// :param: listener The listener object. Sould the listener be deallocated, its associated callback is automatically removed.
     /// :param: callback The closure to invoke when the signal fires for the first time.
@@ -48,10 +54,26 @@ public class Signal<T> {
         signalListeners.append(signalListener)
     }
     
+    /// Attaches a listener to the signal and invokes the callback immediately with the last data fired by the signal
+    /// if it has fired at least once.
+    ///
+    /// :param: listener The listener object. Sould the listener be deallocated, its associated callback is automatically removed.
+    /// :param: callback The closure to invoke whenever the signal fires.
+    public func listenPast(listener: AnyObject, callback: (T) -> Void) {
+        var signalListener = SignalListener<T>(listener: listener, callback: callback);
+        signalListener.once = true
+        signalListeners.append(signalListener)
+        if fireCount > 0 {
+            signalListener.callback(lastDataFired!)
+        }
+    }
+        
     /// Fires the singal.
     ///
-    /// :param: params The parameters to fire the signal with.
-    public func fire(params: T) {
+    /// :param: data The data to fire the signal with.
+    public func fire(data: T) {
+        fireCount++
+        lastDataFired = data
         signalListeners = signalListeners.filter {
             if let definiteListener: AnyObject = $0.listener {
                 return true
@@ -64,7 +86,7 @@ public class Signal<T> {
             if listener.once {
                 signalListeners.removeAtIndex(index--)
             }
-            listener.callback(params)
+            listener.callback(data)
             index++
         }
     }

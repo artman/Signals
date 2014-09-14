@@ -9,11 +9,10 @@
 import Foundation
 
 class TestListener {
-
     var dispatchCount: Int = 0;
     var lastArgument: Int = 0;
     
-    func listenTo(emitter:SignalEmitter) {
+    func listenTo(emitter: SignalEmitter) {
         emitter.onInt.listen(self, callback: {
             [unowned self] (argument) in
             self.dispatchCount++
@@ -21,7 +20,7 @@ class TestListener {
         })
     }
     
-    func listenOnceTo(emitter:SignalEmitter) {
+    func listenOnceTo(emitter: SignalEmitter) {
         emitter.onInt.listenOnce(self, callback: {
             [unowned self] (argument) in
             self.dispatchCount++

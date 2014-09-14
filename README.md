@@ -1,7 +1,7 @@
 Signals
 =======
 
-Signals is a micro-framework for creating and observing events.
+Signals is a micro-framework for creating and observing events. It replaces delegates and NSNotificationCenter with something much more beautiful.
 
 Make events on a class observable by creating one or more signals:
 ```
@@ -24,7 +24,6 @@ class NetworkLoader {
 Subscribe to these signals from elswhere in your application
 
 ```
-
 let networkLoader = NetworkLoader("http://artman.fi")
 
 networkLoader.onProgress.listen(self) { (progress) in
@@ -40,6 +39,15 @@ Adding listeners to signals is a fire-and-forget operation. If your listener is 
 
 Singals aren't restricted to one listener, so multiple objects can listen on the same Signal.
 
+You can also subsribe to events after they have occured:
+```
+
+networkLoader.onProgress.listenPast(self) { (progress) in
+    // This will immediately fire with last progress that was reported
+    // by the onProgress signal
+    println("Loading progress: \(progress*100)%")
+}
+```
 
 Installation
 ------------
@@ -62,6 +70,8 @@ Would you rather do this to implement a delegate:
 Or do the same thing with Signals:
 - Create a signal for the class that wants to provide an event
 - Subscribe to the signal as a listener from any instance you want
+
+To replace NSNotificationCenter with Singals, just create a Singleton with a number of public signals that anybody can subscribe to or fire.
 
 Contribute
 ----------

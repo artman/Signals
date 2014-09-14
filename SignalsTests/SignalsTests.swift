@@ -39,6 +39,18 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(intSignalResult, 1, "IntSignal catched")
         XCTAssertEqual(stringSignalResult, "test", "StringSignal catched")
     }
+    
+    func testNoArgumentFiring() {
+        var signalCount = 0
+        
+        emitter.onNoParams.listen(self, callback: { () -> Void in
+            signalCount += 1;
+        })
+        
+        emitter.onNoParams.fire();
+        
+        XCTAssertEqual(signalCount, 1, "Signal catched")
+    }
 
     func testMultiArgumentFiring() {
         var intSignalResult = 0
@@ -171,4 +183,38 @@ class SignalsTests: XCTestCase {
 
         XCTAssertEqual(emitter.onInt.listeners.count, 0, "Weak listener should have been collected")
     }
+    
+    func testPostListening() {
+        var intSignalResult = 0
+        var stringSignalResult = ""
+        var dispatchCount = 0
+        
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        
+        emitter.onIntAndString.listenPast(self, callback: { (argument1, argument2) -> Void in
+            intSignalResult = argument1
+            stringSignalResult = argument2
+            dispatchCount += 1
+        })
+
+        XCTAssertEqual(intSignalResult, 1, "argument1 catched")
+        XCTAssertEqual(stringSignalResult, "test", "argument2 catched")
+        
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        
+        XCTAssertEqual(dispatchCount, 2, "Second fire catched")
+    }
+    
+    func testPostListeningNoData() {
+        var dispatchCount = 0
+        
+        emitter.onNoParams.fire()
+        
+        emitter.onNoParams.listenPast(self, callback: { () -> Void in
+            dispatchCount += 1
+        })
+        
+        XCTAssertEqual(dispatchCount, 1, "Catched signal fire")
+    }
+    
 }

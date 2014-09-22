@@ -27,4 +27,12 @@ class TestListener {
             self.lastArgument = argument;
         })
     }
+    
+    func listenPastTo(emitter: SignalEmitter) {
+        emitter.onInt.listenPast(self, callback: {
+            [unowned self] (argument) in
+            self.dispatchCount++
+            self.lastArgument = argument;
+        })
+    }
 }

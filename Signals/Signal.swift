@@ -39,19 +39,20 @@ public class Signal<T> {
     ///
     /// :param: listener The listener object. Sould the listener be deallocated, its associated callback is automatically removed.
     /// :param: callback The closure to invoke whenever the signal fires.
-    public func listen(listener: AnyObject, callback: (T) -> Void) {
+    public func listen(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         var signalListener = SignalListener<T>(listener: listener, callback: callback);
         signalListeners.append(signalListener)
+        return signalListener
     }
     
     /// Attaches a listener to the signal that is removed after the signal has fired once
     ///
     /// :param: listener The listener object. Sould the listener be deallocated, its associated callback is automatically removed.
     /// :param: callback The closure to invoke when the signal fires for the first time.
-    public func listenOnce(listener: AnyObject, callback: (T) -> Void) {
-        var signalListener = SignalListener<T>(listener: listener, callback: callback);
+    public func listenOnce(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+        var signalListener = self.listen(listener, callback: callback)
         signalListener.once = true
-        signalListeners.append(signalListener)
+        return signalListener
     }
     
     /// Attaches a listener to the signal and invokes the callback immediately with the last data fired by the signal
@@ -59,13 +60,12 @@ public class Signal<T> {
     ///
     /// :param: listener The listener object. Sould the listener be deallocated, its associated callback is automatically removed.
     /// :param: callback The closure to invoke whenever the signal fires.
-    public func listenPast(listener: AnyObject, callback: (T) -> Void) {
-        var signalListener = SignalListener<T>(listener: listener, callback: callback);
-        signalListener.once = true
-        signalListeners.append(signalListener)
+    public func listenPast(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+        var signalListener = self.listen(listener, callback: callback)
         if fireCount > 0 {
             signalListener.callback(lastDataFired!)
         }
+        return signalListener
     }
         
     /// Fires the singal.
@@ -82,7 +82,8 @@ public class Signal<T> {
         }
 
         var index = 0
-        for listener in signalListeners {
+        
+        for listener in (signalListeners.filter {return $0.filter(data)}) {
             if listener.once {
                 signalListeners.removeAtIndex(index--)
             }
@@ -109,16 +110,29 @@ public class Signal<T> {
     }
 }
 
-/// MARK: - Private
-
-private class SignalListener<T> {
+/// A SignalLister represenents an instance and its association with a Signal.
+public class SignalListener<T> {
     
-    weak var listener: AnyObject?
-    var callback: (T) -> Void
-    var once = false
+    weak public var listener: AnyObject?
+    private var callback: (T) -> Void
     
-    init (listener: AnyObject, callback: (T) -> Void) {
+    /// Whether the listener should be removed once it observes the Signal firing once
+    public var once = false
+    
+    /// A closure that can decide whether the a Singal fireing should actually be dispatched to its listener.
+    /// If the closeure returns true, the listener is informed of the fire. The default implementation always
+    /// returns true.
+    ///
+    /// This is useful to implement conditional listeners that are interested in hearing about certain types of data
+    /// being fired by the Singal.
+    private var filter: (T) -> Bool = {T in return true}
+    
+    private init (listener: AnyObject, callback: (T) -> Void) {
         self.listener = listener
         self.callback = callback
+    }
+    
+    public func setFilter(filter: (T) -> Bool) {
+        self.filter = filter
     }
 }

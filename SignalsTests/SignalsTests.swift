@@ -129,7 +129,7 @@ class SignalsTests: XCTestCase {
         
         listener1.listenTo(emitter)
         listener2.listenOnceTo(emitter)
-        listener3.listenTo(emitter)
+        listener3.listenPastTo(emitter)
         
         emitter.onInt.fire(1)
         emitter.onInt.fire(2)
@@ -205,6 +205,56 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 2, "Second fire catched")
     }
     
+    func testConditionalListening() {
+        var intSignalResult = 0
+        var stringSignalResult = ""
+        var dispatchCount = 0
+        
+        let listener = emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
+            intSignalResult = argument1
+            stringSignalResult = argument2
+            dispatchCount += 1
+        })
+        
+        listener.setFilter { (intArgument, stringArgument) -> Bool in
+            return intArgument == 2 && stringArgument == "test2"
+        }
+        
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test2")
+        emitter.onIntAndString.fire(intArgument:2, stringArgument:"test2")
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test3")
+        
+        XCTAssertEqual(dispatchCount, 1, "Filtered fires")
+        XCTAssertEqual(intSignalResult, 2, "argument1 catched")
+        XCTAssertEqual(stringSignalResult, "test2", "argument2 catched")
+    }
+    
+    func testConditionalListeningOnce() {
+        var intSignalResult = 0
+        var stringSignalResult = ""
+        var dispatchCount = 0
+        
+        let listener = emitter.onIntAndString.listenOnce(self, callback: { (argument1, argument2) -> Void in
+            intSignalResult = argument1
+            stringSignalResult = argument2
+            dispatchCount += 1
+        })
+        
+        listener.setFilter { (intArgument, stringArgument) -> Bool in
+            return intArgument == 2 && stringArgument == "test2"
+        }
+        
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        emitter.onIntAndString.fire(intArgument:2, stringArgument:"test2")
+        emitter.onIntAndString.fire(intArgument:2, stringArgument:"test2")
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test3")
+        
+        XCTAssertEqual(dispatchCount, 1, "Filtered fires")
+        XCTAssertEqual(intSignalResult, 2, "argument1 catched")
+        XCTAssertEqual(stringSignalResult, "test2", "argument2 catched")
+    }
+    
     func testPostListeningNoData() {
         var dispatchCount = 0
         
@@ -216,5 +266,4 @@ class SignalsTests: XCTestCase {
         
         XCTAssertEqual(dispatchCount, 1, "Catched signal fire")
     }
-    
 }

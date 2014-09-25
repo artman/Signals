@@ -255,6 +255,20 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(stringSignalResult, "test2", "argument2 catched")
     }
     
+    func testCancellingListeners() {
+        var dispatchCount = 0
+        
+        let listener = emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
+            dispatchCount += 1
+        })
+     
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        listener.cancel()
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+
+        XCTAssertEqual(dispatchCount, 1, "Filtered fires")
+    }
+    
     func testPostListeningNoData() {
         var dispatchCount = 0
         

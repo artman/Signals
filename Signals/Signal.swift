@@ -2,7 +2,7 @@
 //  Signal.swift
 //  Signals
 //
-//  Created by Tuomas Artman on 16.8.2014.
+//  Created by Tuomas Artman on 8/16/2014.
 //  Copyright (c) 2014 Tuomas Artman. All rights reserved.
 //
 
@@ -26,20 +26,30 @@ public class Signal<T> {
                     return true
                 }
                 return false
-            }.map {
-                (signal: SignalListener) -> AnyObject in
-                return signal.listener!
+                }.map {
+                    (signal: SignalListener) -> AnyObject in
+                    return signal.listener!
             }
         }
     }
     
     private var signalListeners = [SignalListener<T>]()
     
+    private func dumpCancelledListeners() {
+        signalListeners = signalListeners.filter {
+            if let definiteListener: AnyObject = $0.listener {
+                return true
+            }
+            return false
+        }
+    }
+    
     /// Attaches a listener to the signal
     ///
     /// :param: listener The listener object. Sould the listener be deallocated, its associated callback is automatically removed.
     /// :param: callback The closure to invoke whenever the signal fires.
     public func listen(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+        dumpCancelledListeners()
         var signalListener = SignalListener<T>(listener: listener, callback: callback);
         signalListeners.append(signalListener)
         return signalListener
@@ -67,20 +77,15 @@ public class Signal<T> {
         }
         return signalListener
     }
-        
+    
     /// Fires the singal.
     ///
     /// :param: data The data to fire the signal with.
     public func fire(data: T) {
         fireCount++
         lastDataFired = data
-        signalListeners = signalListeners.filter {
-            if let definiteListener: AnyObject = $0.listener {
-                return true
-            }
-            return false
-        }
-
+        dumpCancelledListeners()
+        
         var index = 0
         
         for listener in (signalListeners.filter {return $0.filter(data)}) {
@@ -119,12 +124,6 @@ public class SignalListener<T> {
     /// Whether the listener should be removed once it observes the Signal firing once
     public var once = false
     
-    /// A closure that can decide whether the a Singal fireing should actually be dispatched to its listener.
-    /// If the closeure returns true, the listener is informed of the fire. The default implementation always
-    /// returns true.
-    ///
-    /// This is useful to implement conditional listeners that are interested in hearing about certain types of data
-    /// being fired by the Singal.
     private var filter: (T) -> Bool = {T in return true}
     
     private init (listener: AnyObject, callback: (T) -> Void) {
@@ -132,7 +131,20 @@ public class SignalListener<T> {
         self.callback = callback
     }
     
+    /// Assigns a filter to the SignalListener. This lets you define conditions under which a listener should actually
+    /// receive the firing of a Singal. The closure that is passed an argument can decide whether the firing of a Signal
+    /// should actually be dispatched to its listener depending on the data fired.
+    ///
+    /// If the closeure returns true, the listener is informed of the fire. The default implementation always
+    /// returns true.
+    ///
+    /// :param: filter A closure that can decide whether the Signal fire should be dispatched to its listener.
     public func setFilter(filter: (T) -> Bool) {
         self.filter = filter
+    }
+    
+    /// Cancels the listener. This will detach the listening object from the Signal.
+    public func cancel() {
+        self.listener = nil
     }
 }

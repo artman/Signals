@@ -13,7 +13,7 @@ import Foundation
 public class Signal<T> {
     
     /// The number of times the signal has fired.
-    public var fireCount = 0
+    public var fireCount: Int
     
     /// The last data that the signal was fired with.
     public var lastDataFired: T? = nil
@@ -31,6 +31,10 @@ public class Signal<T> {
                     return signal.listener!
             }
         }
+    }
+    
+    public init() {
+        fireCount = 0
     }
     
     private var signalListeners = [SignalListener<T>]()

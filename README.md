@@ -48,6 +48,20 @@ networkLoader.onProgress.listenPast(self) { (progress) in
 }
 ```
 
+Signal listeners can apply filters:
+```
+networkLoader.onProgress.listen(self) { (progress) in
+    // This fires when progress is done
+}.filter { $0 == 1.0 }
+```
+
+You can queue up listener dispatches for a set amount of time and fire them only once:
+```
+networkLoader.onProgress.listen(self) { (progress) in
+    // Executed once per second while progress changes
+}.queueAndDelayBy(1.0)
+```
+
 Become more productive
 ----------------------
 
@@ -67,7 +81,7 @@ Or do the same thing with Signals:
 
 #### Replace NSNotificationCenter
 
-To replace global notifications via the NSNotificationCenter with Singals, just create a Singleton with a number of public signals that anybody can subscribe to or fire.
+To replace global notifications via the NSNotificationCenter with Signals, just create a Singleton with a number of public signals that anybody can subscribe to or fire.
 
 Installation
 ------------

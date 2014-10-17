@@ -214,9 +214,7 @@ class SignalsTests: XCTestCase {
             intSignalResult = argument1
             stringSignalResult = argument2
             dispatchCount += 1
-        })
-        
-        listener.setFilter { (intArgument, stringArgument) -> Bool in
+        }).filter { (intArgument, stringArgument) -> Bool in
             return intArgument == 2 && stringArgument == "test2"
         }
         
@@ -239,11 +237,7 @@ class SignalsTests: XCTestCase {
             intSignalResult = argument1
             stringSignalResult = argument2
             dispatchCount += 1
-        })
-        
-        listener.setFilter { (intArgument, stringArgument) -> Bool in
-            return intArgument == 2 && stringArgument == "test2"
-        }
+        }).filter { $0 == 2 && $1 == "test2" }
         
         emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
         emitter.onIntAndString.fire(intArgument:2, stringArgument:"test2")

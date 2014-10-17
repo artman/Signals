@@ -178,7 +178,7 @@ public class SignalListener<T> {
     ///
     /// :param: filter A closure that can decide whether the Signal fire should be dispatched to its listener.
     /// :return: Returns self so you can chain calls.
-    public func setFilter(filter: (T) -> Bool) -> SignalListener {
+    public func filter(filter: (T) -> Bool) -> SignalListener {
         self.filter = filter
         return self
     }

@@ -73,9 +73,7 @@ class SignalQueueTests: XCTestCase {
             XCTAssertEqual(argument2, "test2", "argument2 catched")
             expectation.fulfill()
             
-        }).queueAndDelayBy(0.01).setFilter { (intArgument, stringArgument) -> Bool in
-            return intArgument == 2 && stringArgument == "test2"
-        }
+        }).queueAndDelayBy(0.01).filter { $0 == 2 && $1 == "test2" }
         
         emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
         emitter.onIntAndString.fire(intArgument:1, stringArgument:"test2")

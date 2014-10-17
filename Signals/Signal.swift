@@ -93,10 +93,9 @@ public class Signal<T> {
         var index = 0
         
         for listener in (signalListeners.filter {return $0.filter(data)}) {
-            if listener.once {
+            if !listener.dispatch(data) {
                 signalListeners.removeAtIndex(index--)
             }
-            listener.callback(data)
             index++
         }
     }
@@ -122,17 +121,52 @@ public class Signal<T> {
 /// A SignalLister represenents an instance and its association with a Signal.
 public class SignalListener<T> {
     
+    // The listener
     weak public var listener: AnyObject?
-    private var callback: (T) -> Void
     
     /// Whether the listener should be removed once it observes the Signal firing once
     public var once = false
     
+    private var delay: NSTimeInterval?
+    private var queuedData: T?
     private var filter: (T) -> Bool = {T in return true}
+    private var callback: (T) -> Void
     
     private init (listener: AnyObject, callback: (T) -> Void) {
         self.listener = listener
         self.callback = callback
+    }
+    
+    private func dispatch(data: T) -> Bool {
+        if (listener != nil) {
+            if (once) {
+                listener = nil
+            }
+            
+            if delay != nil {
+                if (queuedData != nil) {
+                    // Already queueing
+                    queuedData = data
+                } else {
+                    // Set up queue
+                    queuedData = data
+                    dispatch_after( dispatch_time(DISPATCH_TIME_NOW, Int64(delay! * Double(NSEC_PER_SEC))),
+                        dispatch_get_main_queue()) { [weak self] () -> Void in
+                            if let definiteSelf = self {
+                                let data = definiteSelf.queuedData!
+                                definiteSelf.queuedData = nil
+                                if (definiteSelf.listener != nil) {
+                                    definiteSelf.callback(data)
+                                }
+                            }
+                    }
+                    
+                }
+            } else {
+                callback(data)
+            }
+        }
+        return listener != nil
     }
     
     /// Assigns a filter to the SignalListener. This lets you define conditions under which a listener should actually
@@ -143,8 +177,19 @@ public class SignalListener<T> {
     /// returns true.
     ///
     /// :param: filter A closure that can decide whether the Signal fire should be dispatched to its listener.
-    public func setFilter(filter: (T) -> Bool) {
+    /// :return: Returns self so you can chain calls.
+    public func setFilter(filter: (T) -> Bool) -> SignalListener {
         self.filter = filter
+        return self
+    }
+    
+    /// Tells the listener to queue up all signal fires until the elapsed time has passed and only once dispatch the last received
+    /// data. A delay of 0 will wait until the next runloop to dispatch the signal fire to the listener.
+    /// :param: delay The number of seconds to delay dispatch
+    /// :return: Returns self so you can chain calls.
+    public func queueAndDelayBy(delay: NSTimeInterval) -> SignalListener {
+        self.delay = delay
+        return self
     }
     
     /// Cancels the listener. This will detach the listening object from the Signal.

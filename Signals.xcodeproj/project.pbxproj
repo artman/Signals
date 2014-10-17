@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		728C6D6319F1A56400FA4301 /* SingalQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C6D6219F1A56400FA4301 /* SingalQueueTests.swift */; };
 		729A2F2A199FE332005D7617 /* Signals.h in Headers */ = {isa = PBXBuildFile; fileRef = 729A2F29199FE332005D7617 /* Signals.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		729A2F34199FE332005D7617 /* SignalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729A2F33199FE332005D7617 /* SignalsTests.swift */; };
 		729A2F3E199FE371005D7617 /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729A2F3D199FE371005D7617 /* Signal.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		728C6D6219F1A56400FA4301 /* SingalQueueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingalQueueTests.swift; sourceTree = "<group>"; };
 		729A2F24199FE332005D7617 /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		729A2F28199FE332005D7617 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		729A2F29199FE332005D7617 /* Signals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Signals.h; sourceTree = "<group>"; };
@@ -45,6 +47,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		728C6D6419F1A57100FA4301 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				729A2F3F199FE406005D7617 /* SignalEmitter.swift */,
+				729A2F42199FED73005D7617 /* TestListener.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
 		729A2F1A199FE332005D7617 = {
 			isa = PBXGroup;
 			children = (
@@ -85,9 +96,9 @@
 			isa = PBXGroup;
 			children = (
 				729A2F33199FE332005D7617 /* SignalsTests.swift */,
+				728C6D6219F1A56400FA4301 /* SingalQueueTests.swift */,
+				728C6D6419F1A57100FA4301 /* Helpers */,
 				729A2F31199FE332005D7617 /* Supporting Files */,
-				729A2F3F199FE406005D7617 /* SignalEmitter.swift */,
-				729A2F42199FED73005D7617 /* TestListener.swift */,
 			);
 			path = SignalsTests;
 			sourceTree = "<group>";
@@ -215,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				729A2F40199FE406005D7617 /* SignalEmitter.swift in Sources */,
+				728C6D6319F1A56400FA4301 /* SingalQueueTests.swift in Sources */,
 				729A2F41199FE433005D7617 /* Signal.swift in Sources */,
 				729A2F34199FE332005D7617 /* SignalsTests.swift in Sources */,
 				729A2F43199FED73005D7617 /* TestListener.swift in Sources */,

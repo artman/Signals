@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Signals
 
 class TestListener {
     var dispatchCount: Int = 0;

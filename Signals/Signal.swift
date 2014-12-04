@@ -138,13 +138,13 @@ public class SignalListener<T> {
     }
     
     private func dispatch(data: T) -> Bool {
-        if (listener != nil) {
-            if (once) {
+        if listener != nil {
+            if once {
                 listener = nil
             }
             
             if delay != nil {
-                if (queuedData != nil) {
+                if queuedData != nil {
                     // Already queueing
                     queuedData = data
                 } else {
@@ -155,7 +155,7 @@ public class SignalListener<T> {
                             if let definiteSelf = self {
                                 let data = definiteSelf.queuedData!
                                 definiteSelf.queuedData = nil
-                                if (definiteSelf.listener != nil) {
+                                if definiteSelf.listener != nil {
                                     definiteSelf.callback(data)
                                 }
                             }

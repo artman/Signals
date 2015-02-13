@@ -274,4 +274,18 @@ class SignalsTests: XCTestCase {
         
         XCTAssertEqual(dispatchCount, 1, "Catched signal fire")
     }
+    
+    func testPerformanceFiring() {
+        self.measureBlock() {
+            var dispatchCount = 0
+            for i in 0..<100 {
+                self.emitter.onIntAndString.listen(self) { (argument1, argument2) -> Void in
+                    dispatchCount += 1
+                }
+            }
+            for i in 0..<10 {
+                self.emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+            }
+        }
+    }
 }

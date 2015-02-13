@@ -40,11 +40,19 @@ public class Signal<T> {
     private var signalListeners = [SignalListener<T>]()
     
     private func dumpCancelledListeners() {
-        signalListeners = signalListeners.filter {
-            if let definiteListener: AnyObject = $0.listener {
-                return true
+        var removeListeners = false
+        for signalListener in signalListeners {
+            if signalListener.listener == nil {
+                removeListeners = true
             }
-            return false
+        }
+        if removeListeners {
+            signalListeners = signalListeners.filter {
+                if let definiteListener: AnyObject = $0.listener {
+                    return true
+                }
+                return false
+            }
         }
     }
     
@@ -92,11 +100,14 @@ public class Signal<T> {
         
         var index = 0
         
-        for listener in (signalListeners.filter {return $0.filter(data)}) {
-            if !listener.dispatch(data) {
-                signalListeners.removeAtIndex(index--)
+        for signalListener in signalListeners {
+            
+            if signalListener.filter == nil || signalListener.filter!(data) == true {
+                if !signalListener.dispatch(data) {
+                    signalListeners.removeAtIndex(index--)
+                }
+                index++
             }
-            index++
         }
     }
     
@@ -129,7 +140,7 @@ public class SignalListener<T> {
     
     private var delay: NSTimeInterval?
     private var queuedData: T?
-    private var filter: (T) -> Bool = {T in return true}
+    private var filter: ((T) -> Bool)?
     private var callback: (T) -> Void
     
     private init (listener: AnyObject, callback: (T) -> Void) {

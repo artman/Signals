@@ -101,7 +101,6 @@ public class Signal<T> {
         var index = 0
         
         for signalListener in signalListeners {
-            
             if signalListener.filter == nil || signalListener.filter!(data) == true {
                 if !signalListener.dispatch(data) {
                     signalListeners.removeAtIndex(index--)

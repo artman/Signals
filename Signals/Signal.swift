@@ -26,9 +26,9 @@ public class Signal<T> {
                     return true
                 }
                 return false
-                }.map {
-                    (signal: SignalListener) -> AnyObject in
-                    return signal.listener!
+            }.map {
+                (signal) -> AnyObject in
+                return signal.listener!
             }
         }
     }

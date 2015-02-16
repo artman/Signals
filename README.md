@@ -1,7 +1,26 @@
-Signals
-=======
+# Signals
 
 Signals is a micro-framework for creating and observing events. It replaces delegates and NSNotificationCenter with something much more beautiful.
+
+### Features
+
+- [x] Fire-and-forget observation
+- [x] Type-safety
+- [x] Filtered observation
+- [x] Delayed and queued observation
+- [x] Comprehensive Unit Test Coverage
+
+### Requirements
+
+- iOS 7.0+ / Mac OS X 10.9+
+- Xcode 6.1+ (compatible with Swift 1.1 and 1.2)
+
+### Installation
+
+1. Copy the Signal.swift file over to your project. 
+2. Done.
+
+### Quick start
 
 Make events on a class observable by creating one or more signals:
 ```
@@ -21,7 +40,7 @@ class NetworkLoader {
 }
 ```
 
-Subscribe to these signals from elswhere in your application
+Subscribe to these signals from elsewhere in your application
 
 ```
 let networkLoader = NetworkLoader("http://artman.fi")
@@ -31,7 +50,7 @@ networkLoader.onProgress.listen(self) { (progress) in
 }
 
 networkLoader.onData.listen(self) { (data, error) in
-    // Do somethign with the data
+    // Do something with the data
 }
 ```
 
@@ -39,7 +58,7 @@ Adding listeners to signals is a fire-and-forget operation. If your listener is 
 
 Singals aren't restricted to one listener, so multiple objects can listen on the same Signal.
 
-You can also subsribe to events after they have occured:
+You can also subscribe to events after they have occurred:
 ```
 networkLoader.onProgress.listenPast(self) { (progress) in
     // This will immediately fire with last progress that was reported
@@ -62,8 +81,7 @@ networkLoader.onProgress.listen(self) { (progress) in
 }.queueAndDelayBy(1.0)
 ```
 
-Become more productive
-----------------------
+### Become more productive
 
 Where delegates and notifications are too cumbersome and contain too much boilerplate, Signals is simple and modern.
 
@@ -83,15 +101,12 @@ Or do the same thing with Signals:
 
 To replace global notifications via the NSNotificationCenter with Signals, just create a Singleton with a number of public signals that anybody can subscribe to or fire.
 
-Installation
-------------
-1. Copy the Signal.swift file over to your project. 
-2. Done.
+### Communication
 
-Contribute
-----------
-To contribute, just fork, branch & send a pull request. To get in touch, hit me up on Twitter [@artman](http://twitter.com/artman)
+- If you **found a bug**, open an issue or submit a fix via a pull request.
+- If you **have a feature request**, open an issue or submit a implementation via a pull request or hit me up on Twitter [@artman](http://twitter.com/artman)
+- If you **want to contribute**, submit a pull request.
 
-License
--------
+### License
+
 Signals is released under an MIT license. See the LICENSE file for more information

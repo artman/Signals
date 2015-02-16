@@ -278,12 +278,12 @@ class SignalsTests: XCTestCase {
     func testPerformanceFiring() {
         self.measureBlock() {
             var dispatchCount = 0
-            for i in 0..<100 {
+            for i in 0..<10 {
                 self.emitter.onIntAndString.listen(self) { (argument1, argument2) -> Void in
                     dispatchCount += 1
                 }
             }
-            for i in 0..<10 {
+            for i in 0..<110 {
                 self.emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
             }
         }

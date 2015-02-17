@@ -98,15 +98,19 @@ public class Signal<T> {
         lastDataFired = data
         dumpCancelledListeners()
         
-        var index = 0
-        
+        var removeListeners = [Int: Bool]()
         for signalListener in signalListeners {
             if signalListener.filter == nil || signalListener.filter!(data) == true {
                 if !signalListener.dispatch(data) {
-                    signalListeners.removeAtIndex(index--)
+                    var hash = (signalListener as AnyObject).hash
+                    removeListeners[hash] = true
                 }
-                index++
             }
+        }
+        
+        signalListeners = signalListeners.filter { signalListener in
+            var hash = (signalListener as AnyObject).hash
+            return removeListeners.indexForKey(hash) == nil
         }
     }
     

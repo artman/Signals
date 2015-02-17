@@ -37,7 +37,7 @@ public class Signal<T> {
         fireCount = 0
     }
     
-    private var signalListeners = [SignalListener<T>]() // FIXME: Replace with Set once Swif 1.2 is out
+    private var signalListeners = [SignalListener<T>]() // FIXME: Replace with Set once Swift 1.2 is out
     
     private func dumpCancelledListeners() {
         var removeListeners = false

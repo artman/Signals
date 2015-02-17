@@ -37,7 +37,7 @@ public class Signal<T> {
         fireCount = 0
     }
     
-    private var signalListeners = [SignalListener<T>]()
+    private var signalListeners = [SignalListener<T>]() // FIXME: Replace with Set once Swif 1.2 is out
     
     private func dumpCancelledListeners() {
         var removeListeners = false
@@ -107,10 +107,11 @@ public class Signal<T> {
                 }
             }
         }
-        
-        signalListeners = signalListeners.filter { signalListener in
-            var hash = (signalListener as AnyObject).hash
-            return removeListeners.indexForKey(hash) == nil
+        if (removeListeners.count > 0) {
+            signalListeners = signalListeners.filter { signalListener in
+                var hash = (signalListener as AnyObject).hash
+                return removeListeners.indexForKey(hash) == nil
+            }
         }
     }
     
@@ -120,7 +121,7 @@ public class Signal<T> {
     public func removeListener(listener: AnyObject) {
         signalListeners = signalListeners.filter {
             if let definiteListener:AnyObject = $0.listener {
-                return definiteListener.hash != listener.hash
+                return definiteListener !== listener
             }
             return false
         }
@@ -174,7 +175,6 @@ public class SignalListener<T> {
                                 }
                             }
                     }
-                    
                 }
             } else {
                 callback(data)

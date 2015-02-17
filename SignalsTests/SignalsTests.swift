@@ -275,6 +275,94 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 1, "Catched signal fire")
     }
     
+    func testRemoveOwnListenerWhileFiring() {
+        var dispatchCount = 0
+ 
+        emitter.onIntAndString.listenOnce(self) { (intArgument, stringArgument) -> Void in
+            self.emitter.onIntAndString.removeListener(self)
+            dispatchCount += 1
+        }
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        
+        XCTAssertEqual(dispatchCount, 1, "Should have dispatched correct number of times")
+    }
+    
+    func testRemovePreviousListenersWhileFiring() {
+        var dispatchCount = 0
+        
+        var listener1 = NSObject()
+        var listener2 = NSObject()
+        var listener3 = NSObject()
+        
+        emitter.onIntAndString.listen(listener1) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+        }
+        emitter.onIntAndString.listen(listener2) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+            self.emitter.onIntAndString.removeListener(listener1)
+        }
+        emitter.onIntAndString.listen(listener3) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+            self.emitter.onIntAndString.removeListener(listener2)
+        }
+        self.emitter.onIntAndString.removeListener(listener2)
+        
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+
+        XCTAssertEqual(dispatchCount, 3+1, "Should have dispatched correct number of times")
+    }
+    
+    func testRemoveUpcomingListenersWhileFiring() {
+        var dispatchCount = 0
+        
+        var listener1 = NSObject()
+        var listener2 = NSObject()
+        var listener3 = NSObject()
+        
+        emitter.onIntAndString.listen(listener1) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+            self.emitter.onIntAndString.removeListener(listener2)
+        }
+        emitter.onIntAndString.listen(listener2) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+        }
+        emitter.onIntAndString.listen(listener3) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+        }
+        self.emitter.onIntAndString.removeListener(listener2)
+        
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        
+        XCTAssertEqual(dispatchCount, 2+2, "Should have dispatched correct number of times")
+    }
+    
+    func testRemoveAllListenersWhileFiring() {
+        var dispatchCount = 0
+        
+        var listener1 = NSObject()
+        var listener2 = NSObject()
+        var listener3 = NSObject()
+        
+        emitter.onIntAndString.listen(listener1) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+            self.emitter.onIntAndString.removeAllListeners()
+        }
+        emitter.onIntAndString.listen(listener2) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+        }
+        emitter.onIntAndString.listen(listener3) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+        }
+        self.emitter.onIntAndString.removeListener(listener2)
+        
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        
+        XCTAssertEqual(dispatchCount, 1+1, "Should have dispatched correct number of times")
+    }
+    
     func testPerformanceFiring() {
         self.measureBlock() {
             var dispatchCount = 0

@@ -23,7 +23,7 @@ Signals is a micro-framework for creating and observing events. It replaces dele
 ### Quick start
 
 Make events on a class observable by creating one or more signals:
-```
+```swift
 class NetworkLoader {
 
     // Creates a number of signals that can be subscribed to
@@ -42,7 +42,7 @@ class NetworkLoader {
 
 Subscribe to these signals from elsewhere in your application
 
-```
+```swift
 let networkLoader = NetworkLoader("http://artman.fi")
 
 networkLoader.onProgress.listen(self) { (progress) in
@@ -59,7 +59,7 @@ Adding listeners to signals is a fire-and-forget operation. If your listener is 
 Singals aren't restricted to one listener, so multiple objects can listen on the same Signal.
 
 You can also subscribe to events after they have occurred:
-```
+```swift
 networkLoader.onProgress.listenPast(self) { (progress) in
     // This will immediately fire with last progress that was reported
     // by the onProgress signal
@@ -68,14 +68,14 @@ networkLoader.onProgress.listenPast(self) { (progress) in
 ```
 
 Signal listeners can apply filters:
-```
+```swift
 networkLoader.onProgress.listen(self) { (progress) in
     // This fires when progress is done
 }.filter { $0 == 1.0 }
 ```
 
 You can queue up listener dispatches for a set amount of time and fire them only once:
-```
+```swift
 networkLoader.onProgress.listen(self) { (progress) in
     // Executed once per second while progress changes
 }.queueAndDelayBy(1.0)

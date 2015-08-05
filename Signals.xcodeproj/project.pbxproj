@@ -14,6 +14,7 @@
 		720D11921A085370003C4361 /* SingalQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D118F1A085370003C4361 /* SingalQueueTests.swift */; };
 		720D11931A085370003C4361 /* TestListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11901A085370003C4361 /* TestListener.swift */; };
 		720D11951A08537E003C4361 /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11941A08537E003C4361 /* Signal.swift */; };
+		725D2B631B71C916007B83AB /* Signals.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 725D2B621B71C916007B83AB /* Signals.podspec */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,7 @@
 		720D118F1A085370003C4361 /* SingalQueueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingalQueueTests.swift; sourceTree = "<group>"; };
 		720D11901A085370003C4361 /* TestListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestListener.swift; sourceTree = "<group>"; };
 		720D11941A08537E003C4361 /* Signal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Signal.swift; sourceTree = "<group>"; };
+		725D2B621B71C916007B83AB /* Signals.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Signals.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 		720D11681A085314003C4361 = {
 			isa = PBXGroup;
 			children = (
+				725D2B621B71C916007B83AB /* Signals.podspec */,
 				720D11741A085314003C4361 /* Signals */,
 				720D11811A085315003C4361 /* SignalsTests */,
 				720D11731A085314003C4361 /* Products */,
@@ -212,6 +215,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				725D2B631B71C916007B83AB /* Signals.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -34,7 +34,7 @@ pod 'Signals', '~> 1.0'
 
 ### Carthage
 
-To integrate Signals into your project add the following to your `Cartfile`:
+To integrate Signals into your project using Carthage add the following to your `Cartfile`:
 
 ```ruby
 github "artman/Signals" ~> 1.0

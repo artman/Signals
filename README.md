@@ -2,7 +2,7 @@
 
 Signals is a micro-framework for creating and observing events. It replaces delegates and NSNotificationCenter with something much more powerful and beautiful.
 
-### Features
+## Features
 
 - [x] Attach-and-forget observation
 - [x] Type-safety
@@ -10,12 +10,12 @@ Signals is a micro-framework for creating and observing events. It replaces dele
 - [x] Delayed and queued observation
 - [x] Comprehensive Unit Test Coverage
 
-### Requirements
+## Requirements
 
 - iOS 7.0+ / Mac OS X 10.9+
 - Xcode 6.1+ (compatible with Swift 1.1 and 1.2)
 
-### Installation
+## Installation
 
 > **CocoaPods uses embedded frameworks that require a minimum deployment target of iOS 8 or OS X Mavericks.**
 >
@@ -40,7 +40,7 @@ To integrate Signals into your project using Carthage add the following to your 
 github "artman/Signals" ~> 1.0
 ```
 
-### Quick start
+## Quick start
 
 Make events on a class observable by creating one or more signals:
 ```swift
@@ -123,12 +123,12 @@ Signals can have multiple listeners and they therefore don't provide a way for t
 
 To replace global notifications via the NSNotificationCenter with Signals, just create a Singleton with a number of public signals that anybody can subscribe to or fire. You'll gain type safety, refactorability and attach-and-forget observation.
 
-### Communication
+## Communication
 
 - If you **found a bug**, open an issue or submit a fix via a pull request.
 - If you **have a feature request**, open an issue or submit a implementation via a pull request or hit me up on Twitter [@artman](http://twitter.com/artman)
 - If you **want to contribute**, submit a pull request.
 
-### License
+## License
 
 Signals is released under an MIT license. See the LICENSE file for more information

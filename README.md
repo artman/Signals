@@ -32,6 +32,14 @@ use_frameworks!
 pod 'Signals', '~> 1.0'
 ```
 
+### Carthage
+
+To integrate Signals into your project add the following to your `Cartfile`:
+
+```ruby
+github "artman/Signals" ~> 1.0
+```
+
 ### Quick start
 
 Make events on a class observable by creating one or more signals:
@@ -41,9 +49,9 @@ class NetworkLoader {
     // Creates a number of signals that can be subscribed to
     let onData = Signal<(data:NSData, error:NSError)>()
     let onProgress = Signal<Float>()
-    
+
     ...
-    
+
     func receivedData(receivedData:NSData, receivedError:NSError) {
         // Whenever appropriate, fire off any of the signals
         self.onProgress.fire(1.0)

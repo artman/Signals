@@ -1,4 +1,5 @@
 # Signals
+[![Build Status](https://travis-ci.org/artman/Signals.svg?branch=master)](https://travis-ci.org/artman/Signals)
 
 Signals is a micro-framework for creating and observing events. It replaces delegates and NSNotificationCenter with something much more powerful and beautiful.
 

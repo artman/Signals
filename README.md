@@ -1,5 +1,12 @@
 # Signals
 [![Build Status](https://travis-ci.org/artman/Signals.svg?branch=master)](https://travis-ci.org/artman/Signals)
+[![Cocoapods Compatible](https://img.shields.io/cocoapods/v/Signals.svg)](https://cocoapods.org/pods/Signals)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+![License](https://img.shields.io/cocoapods/l/Signals.svg?style=flat&color=gray)
+![Platform](https://img.shields.io/cocoapods/p/Signals.svg?style=flat)
+[![Twitter](https://img.shields.io/badge/twitter-@artman-blue.svg?style=flat)](http://twitter.com/artman)
+
+
 
 Signals is a micro-framework for creating and observing events. It replaces delegates and NSNotificationCenter with something much more powerful and beautiful.
 

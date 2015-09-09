@@ -68,17 +68,17 @@ class SignalQueueTests: XCTestCase {
     func testConditionalListening() {
         let expectation = expectationWithDescription("queuedDispatch")
         
-        let listener = emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
             XCTAssertEqual(argument1, 2, "argument1 catched")
             XCTAssertEqual(argument2, "test2", "argument2 catched")
             expectation.fulfill()
             
         }).queueAndDelayBy(0.01).filter { $0 == 2 && $1 == "test2" }
         
-        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
-        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test2")
-        emitter.onIntAndString.fire(intArgument:2, stringArgument:"test2")
-        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test3")
+        emitter.onIntAndString.fire((intArgument:1, stringArgument:"test"))
+        emitter.onIntAndString.fire((intArgument:1, stringArgument:"test2"))
+        emitter.onIntAndString.fire((intArgument:2, stringArgument:"test2"))
+        emitter.onIntAndString.fire((intArgument:1, stringArgument:"test3"))
         
         waitForExpectationsWithTimeout(0.02, handler: nil)
     }
@@ -90,8 +90,8 @@ class SignalQueueTests: XCTestCase {
             XCTFail("Listener should have been canceled")
         }).queueAndDelayBy(0.01)
         
-        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
-        emitter.onIntAndString.fire(intArgument:1, stringArgument:"test")
+        emitter.onIntAndString.fire((intArgument:1, stringArgument:"test"))
+        emitter.onIntAndString.fire((intArgument:1, stringArgument:"test"))
         listener.cancel()
         
         dispatch_after( dispatch_time(DISPATCH_TIME_NOW, Int64(0.05 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {

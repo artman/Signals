@@ -211,3 +211,10 @@ public class SignalListener<T> {
         self.listener = nil
     }
 }
+
+infix operator => { associativity left precedence 0 }
+
+public func =><T> (signal: Signal<T>, data: T) -> Void {
+    signal.fire(data)
+}
+

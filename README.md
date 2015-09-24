@@ -21,7 +21,7 @@ Signals is a micro-framework for creating and observing events. It replaces dele
 ## Requirements
 
 - iOS 7.0+ / Mac OS X 10.9+
-- Xcode 6.1+ (compatible with Swift 1.1 and 1.2)
+- Xcode 7.0+ (compatible with Swift 2.0)
 
 ## Installation
 
@@ -35,7 +35,7 @@ CocoaPods 0.36 adds supports for Swift and embedded frameworks. To integrate Sig
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'Signals', '~> 1.0'
+pod 'Signals', '~> 2.0'
 ```
 
 #### Carthage
@@ -43,12 +43,13 @@ pod 'Signals', '~> 1.0'
 To integrate Signals into your project using Carthage add the following to your `Cartfile`:
 
 ```ruby
-github "artman/Signals" ~> 1.0
+github "artman/Signals" ~> 2.0
 ```
 
 ## Quick start
 
 Make events on a class observable by creating one or more signals:
+
 ```swift
 class NetworkLoader {
 
@@ -61,7 +62,7 @@ class NetworkLoader {
     func receivedData(receivedData:NSData, receivedError:NSError) {
         // Whenever appropriate, fire off any of the signals
         self.onProgress.fire(1.0)
-        self.onData.fire(data:receivedData, error:receivedError)
+        self.onData.fire((data:receivedData, error:receivedError))
     }
 }
 ```
@@ -85,6 +86,7 @@ Adding listeners to signals is a attach-and-forget operation. If your listener i
 Singals aren't restricted to one listener, so multiple objects can listen on the same Signal.
 
 You can also subscribe to events after they have occurred:
+
 ```swift
 networkLoader.onProgress.listenPast(self) { (progress) in
     // This will immediately fire with last progress that was reported
@@ -93,7 +95,10 @@ networkLoader.onProgress.listenPast(self) { (progress) in
 }
 ```
 
+### Advanced topics
+
 Signal listeners can apply filters:
+
 ```swift
 networkLoader.onProgress.listen(self) { (progress) in
     // This fires when progress is done
@@ -101,13 +106,28 @@ networkLoader.onProgress.listen(self) { (progress) in
 ```
 
 You can queue up listener dispatches for a set amount of time and fire them only once:
+
 ```swift
 networkLoader.onProgress.listen(self) { (progress) in
     // Executed once per second while progress changes
 }.queueAndDelayBy(1.0)
 ```
 
-### Replacing delegates
+If you don't like the double quotes that you have to use since Swift 2.0 when you fire singlas that take tuples, you can use a special operator to fire the data:
+
+```swift
+// If you don't like the double quotes when firing signals that have tuples
+self.onData.fire((data:receivedData, error:receivedError))
+
+// You can use the => operator to fire the signal
+self.onData => (data:receivedData, error:receivedError)
+  
+// Also works for signals without tuples
+self.onProgress => 1.0
+```
+
+
+## Replacing delegates
 
 Signals is simple and modern and greatly reduce the amount of boilerplate that is required to set up event delegation.
 
@@ -125,7 +145,7 @@ Or do the same thing with Signals:
 
 Signals can have multiple listeners and they therefore don't provide a way for the observer to return data to the signal invoker. The delegate pattern should still be used for data requests (e.g. UITableViewDataSource).
 
-#### Replace NSNotificationCenter
+## Replace NSNotificationCenter
 
 To replace global notifications via the NSNotificationCenter with Signals, just create a Singleton with a number of public signals that anybody can subscribe to or fire. You'll gain type safety, refactorability and attach-and-forget observation.
 

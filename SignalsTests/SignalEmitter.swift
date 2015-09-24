@@ -11,7 +11,7 @@ import Signals
 
 class SignalEmitter {
     let onNoParams = Signal<()>()
-    let onInt = Signal<(Int)>()
-    let onString = Signal<(String)>()
+    let onInt = Signal<Int>()
+    let onString = Signal<String>()
     let onIntAndString = Signal<(intArgument: Int, stringArgument: String)>()
 }

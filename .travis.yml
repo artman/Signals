@@ -13,7 +13,7 @@ env:
 script:
   - set -o pipefail
   - xcodebuild -version
-  - xcodebuild -project ignals.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION"
+  - xcodebuild -project Signals.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION"
     -configuration Debug ONLY_ACTIVE_ARCH=NO test | xcpretty -c
 notifications:
   email: false

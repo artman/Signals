@@ -20,8 +20,8 @@ Signals is a micro-framework for creating and observing events. It replaces dele
 
 ## Requirements
 
-- iOS 7.0+ / Mac OS X 10.9+
-- Xcode 7.0+ (compatible with Swift 2.0)
+- iOS 7.0 / watchOS 2.0 / Mac OS X 10.9
+- Xcode 7.0 (compatible with Swift 2.0)
 
 ## Installation
 

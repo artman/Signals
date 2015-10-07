@@ -89,7 +89,25 @@ public class Signal<T> {
         }
         return signalListener
     }
-    
+
+    /// Attaches a listener to the signal and invokes the callback immediately with the last data fired by the signal
+    /// if it has fired at least once. If it has not been fired yet, it will continue listening until it fires for the
+    /// first time
+    ///
+    /// - parameter listener: The listener object. Sould the listener be deallocated, its associated callback is automatically removed.
+    /// - parameter callback: The closure to invoke whenever the signal fires.
+    public func listenPastOnce(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+        let signalListener = self.listen(listener, callback: callback)
+        if fireCount > 0 {
+            signalListener.callback(lastDataFired!)
+            signalListener.cancel()
+        } else {
+            signalListener.once = true
+        }
+
+        return signalListener
+    }
+
     /// Fires the singal.
     ///
     /// - parameter data: The data to fire the signal with.

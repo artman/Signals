@@ -140,7 +140,7 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(listener3.dispatchCount, 2, "Dispatched two times")
     }
     
-    func testListeningPastOnce() {
+    func testListeningPastOnceAlreadyFired() {
         let listener = TestListener()
 
         emitter.onInt.fire(1)
@@ -151,6 +151,17 @@ class SignalsTests: XCTestCase {
 
         XCTAssertEqual(listener.dispatchCount, 1, "Dispatched once")
         XCTAssertEqual(listener.lastArgument, 2, "Remembered the most recent data")
+    }
+
+    func testListeningPastOnceNotFiredYet() {
+        let listener = TestListener()
+
+        listener.listenPastOnceTo(emitter)
+        emitter.onInt.fire(1)
+        emitter.onInt.fire(2)
+
+        XCTAssertEqual(listener.dispatchCount, 1, "Dispatched once")
+        XCTAssertEqual(listener.lastArgument, 1, "Remembered only the relevant data")
     }
 
     func testRemovingListeners() {

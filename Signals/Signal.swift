@@ -13,7 +13,7 @@ import Foundation
 public class Signal<T> {
     
     /// The number of times the signal has fired.
-    public var fireCount: Int
+    public var fireCount: Int = 0
     
     /// The last data that the signal was fired with.
     public var lastDataFired: T? = nil
@@ -22,10 +22,7 @@ public class Signal<T> {
     public var listeners:[AnyObject] {
         get {
             return signalListeners.filter {
-                if let _ = $0.listener {
-                    return true
-                }
-                return false
+                return $0.listener != nil
             }.map {
                 (signal) -> AnyObject in
                 return signal.listener!
@@ -37,7 +34,7 @@ public class Signal<T> {
         fireCount = 0
     }
     
-    private var signalListeners = [SignalListener<T>]() // FIXME: Replace with Set once Swift 1.2 is out
+    private var signalListeners = [SignalListener<T>]()
     
     private func dumpCancelledListeners() {
         var removeListeners = false
@@ -48,10 +45,7 @@ public class Signal<T> {
         }
         if removeListeners {
             signalListeners = signalListeners.filter {
-                if let _ = $0.listener {
-                    return true
-                }
-                return false
+                return $0.listener != nil
             }
         }
     }
@@ -104,7 +98,6 @@ public class Signal<T> {
         } else {
             signalListener.once = true
         }
-
         return signalListener
     }
 
@@ -116,19 +109,9 @@ public class Signal<T> {
         lastDataFired = data
         dumpCancelledListeners()
         
-        var removeListeners = [Int: Bool]()
         for signalListener in signalListeners {
             if signalListener.filter == nil || signalListener.filter!(data) == true {
-                if !signalListener.dispatch(data) {
-                    let hash = (signalListener as AnyObject).hash
-                    removeListeners[hash] = true
-                }
-            }
-        }
-        if (removeListeners.count > 0) {
-            signalListeners = signalListeners.filter { signalListener in
-                let hash = (signalListener as AnyObject).hash
-                return removeListeners.indexForKey(hash) == nil
+                signalListener.dispatch(data)
             }
         }
     }
@@ -171,33 +154,36 @@ public class SignalListener<T> {
     }
     
     private func dispatch(data: T) -> Bool {
-        if listener != nil {
-            if once {
-                listener = nil
-            }
-            
-            if delay != nil {
-                if queuedData != nil {
-                    // Already queueing
-                    queuedData = data
-                } else {
-                    // Set up queue
-                    queuedData = data
-                    dispatch_after( dispatch_time(DISPATCH_TIME_NOW, Int64(delay! * Double(NSEC_PER_SEC))),
-                        dispatch_get_main_queue()) { [weak self] () -> Void in
-                            if let definiteSelf = self {
-                                let data = definiteSelf.queuedData!
-                                definiteSelf.queuedData = nil
-                                if definiteSelf.listener != nil {
-                                    definiteSelf.callback(data)
-                                }
-                            }
-                    }
-                }
-            } else {
-                callback(data)
-            }
+        guard listener != nil else {
+            return false
         }
+        
+        if once {
+            listener = nil
+        }
+        
+        if delay != nil {
+            if queuedData != nil {
+                // Already queueing
+                queuedData = data
+            } else {
+                // Set up queue
+                queuedData = data
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay! * Double(NSEC_PER_SEC))),
+                    dispatch_get_main_queue()) { [weak self] () -> Void in
+                        if let definiteSelf = self {
+                            let data = definiteSelf.queuedData!
+                            definiteSelf.queuedData = nil
+                            if definiteSelf.listener != nil {
+                                definiteSelf.callback(data)
+                            }
+                        }
+                }
+            }
+        } else {
+            callback(data)
+        }
+        
         return listener != nil
     }
     

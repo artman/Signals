@@ -393,7 +393,7 @@ class SignalsTests: XCTestCase {
                     dispatchCount += 1
                 }
             }
-            for _ in 0..<110 {
+            for _ in 0..<950 {
                 self.emitter.onIntAndString => (intArgument:1, stringArgument:"test")
             }
         }

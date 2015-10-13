@@ -117,4 +117,20 @@ class SignalQueueTests: XCTestCase {
         
         waitForExpectationsWithTimeout(0.05, handler: nil)
     }
+    
+    func testListenerProperty() {
+        var listener1: NSObject? = NSObject()
+        var listener2: NSObject? = NSObject()
+        
+        emitter.onInt.listen(listener1!) { $0 }
+        emitter.onInt.listen(listener2!) { $0 }
+        
+        XCTAssertEqual(emitter.onInt.listeners.count, 2, "Should have two listener")
+        
+        listener1 = nil
+        XCTAssertEqual(emitter.onInt.listeners.count, 1, "Should have one listener")
+        
+        listener2 = nil
+        XCTAssertEqual(emitter.onInt.listeners.count, 0, "Should have zero listener")
+    }
 }

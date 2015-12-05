@@ -113,6 +113,14 @@ networkLoader.onProgress.listen(self) { (progress) in
 }.queueAndDelayBy(1.0)
 ```
 
+A signal dispatches listener calls synchronously on the posting thread by default. To specify the thread explicitly, you should use the `dispatchOnQueue` method:
+
+```swift
+networkLoader.onProgress.listen(self) { (progress) in
+    // This fires on the main queue
+}.dispatchOnQueue(dispatch_get_main_queue())
+```
+
 If you don't like the double quotes that you have to use since Swift 2.0 when you fire singlas that take tuples, you can use a special operator to fire the data:
 
 ```swift

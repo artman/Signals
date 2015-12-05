@@ -147,6 +147,7 @@ public class SignalListener<T> {
     private var queuedData: T?
     private var filter: ((T) -> Bool)?
     private var callback: (T) -> Void
+    private var dispatchQueue: dispatch_queue_t?
     
     private init (listener: AnyObject, callback: (T) -> Void) {
         self.listener = listener
@@ -169,8 +170,9 @@ public class SignalListener<T> {
             } else {
                 // Set up queue
                 queuedData = data
+                let dispatchQueue = self.dispatchQueue == nil ? dispatch_get_main_queue() : self.dispatchQueue
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay! * Double(NSEC_PER_SEC))),
-                    dispatch_get_main_queue()) { [weak self] () -> Void in
+                    dispatchQueue) { [weak self] () -> Void in
                         if let definiteSelf = self {
                             let data = definiteSelf.queuedData!
                             definiteSelf.queuedData = nil
@@ -181,7 +183,13 @@ public class SignalListener<T> {
                 }
             }
         } else {
-            callback(data)
+            if let queue = self.dispatchQueue {
+                dispatch_async(queue) {
+                    self.callback(data)
+                }
+            } else {
+                callback(data)
+            }
         }
         
         return listener != nil
@@ -195,7 +203,7 @@ public class SignalListener<T> {
     /// returns true.
     ///
     /// - parameter filter: A closure that can decide whether the Signal fire should be dispatched to its listener.
-    /// :return: Returns self so you can chain calls.
+    /// - returns: Returns self so you can chain calls.
     public func filter(filter: (T) -> Bool) -> SignalListener {
         self.filter = filter
         return self
@@ -204,9 +212,19 @@ public class SignalListener<T> {
     /// Tells the listener to queue up all signal fires until the elapsed time has passed and only once dispatch the last received
     /// data. A delay of 0 will wait until the next runloop to dispatch the signal fire to the listener.
     /// - parameter delay: The number of seconds to delay dispatch
-    /// :return: Returns self so you can chain calls.
+    /// - returns: Returns self so you can chain calls.
     public func queueAndDelayBy(delay: NSTimeInterval) -> SignalListener {
         self.delay = delay
+        return self
+    }
+
+    /// Assigns a dispatch queue to the SignalListener. The queue is used to dispatch the signal fire to the listener. 
+    /// If you pass nil, the block is run synchronously on the posting thread.
+    ///
+    /// - parameter queue: A queue for performing the listener's calls.
+    /// - returns: Returns self so you can chain calls.
+    public func dispatchOnQueue(queue: dispatch_queue_t) -> SignalListener {
+        self.dispatchQueue = queue
         return self
     }
     

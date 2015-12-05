@@ -133,4 +133,56 @@ class SignalQueueTests: XCTestCase {
         listener2 = nil
         XCTAssertEqual(emitter.onInt.listeners.count, 0, "Should have zero listener")
     }
+
+    func testListeningOnDispatchQueue() {
+        let firstQueueLabel = "com.signals.queue.first";
+        let firstQueue = dispatch_queue_create(firstQueueLabel, DISPATCH_QUEUE_SERIAL)
+        let secondQueueLabel = "com.signals.queue.second";
+        let secondQueue = dispatch_queue_create(secondQueueLabel, DISPATCH_QUEUE_CONCURRENT)
+
+        var dispatchCount = 0
+        let firstListener = NSObject()
+        let secondListener = NSObject()
+
+        let firstExpectation = expectationWithDescription("firstDispatchOnQueue")
+        emitter.onInt.listen(firstListener, callback: { (argument) in
+            let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
+            XCTAssertTrue(firstQueueLabel == currentQueueLabel)
+            dispatchCount++
+            firstExpectation.fulfill()
+        }).dispatchOnQueue(firstQueue)
+        let secondExpectation = expectationWithDescription("secondDispatchOnQueue")
+        emitter.onInt.listen(secondListener, callback: { (argument) in
+            let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
+            XCTAssertTrue(secondQueueLabel == currentQueueLabel)
+            dispatchCount++
+            secondExpectation.fulfill()
+        }).dispatchOnQueue(secondQueue)
+
+        emitter.onInt.fire(10)
+
+        waitForExpectationsWithTimeout(0.05, handler: nil)
+        XCTAssertEqual(dispatchCount, 2, "Should be dispatched twice!")
+    }
+
+    func testUsesCurrentQueueByDefault() {
+        let queueLabel = "com.signals.queue";
+        let queue = dispatch_queue_create(queueLabel, DISPATCH_QUEUE_CONCURRENT)
+
+        let listener = NSObject()
+        let expectation = expectationWithDescription("receivedCallbackOnQueue")
+
+        emitter.onInt.listen(listener, callback: { (argument) in
+            let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
+            XCTAssertTrue(queueLabel == currentQueueLabel)
+            expectation.fulfill()
+        })
+
+        dispatch_async(queue) {
+            self.emitter.onInt.fire(10)
+        }
+
+        waitForExpectationsWithTimeout(0.05, handler: nil)
+    }
+
 }

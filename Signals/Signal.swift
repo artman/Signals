@@ -218,8 +218,9 @@ public class SignalListener<T> {
         return self
     }
 
-    /// Assigns a dispatch queue to the SignalListener. The queue is used to dispatch the signal fire to the listener. 
-    /// If you pass nil, the block is run synchronously on the posting thread.
+    /// Assigns a dispatch queue to the SignalListener. The queue is used for scheduling the listener calls. If not nil,
+    /// the callback is fired asynchronously on the specified queue. Otherwise, the block is run synchronously on the
+    /// posting thread (default behaviour).
     ///
     /// - parameter queue: A queue for performing the listener's calls.
     /// - returns: Returns self so you can chain calls.

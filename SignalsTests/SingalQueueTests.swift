@@ -140,7 +140,6 @@ class SignalQueueTests: XCTestCase {
         let secondQueueLabel = "com.signals.queue.second";
         let secondQueue = dispatch_queue_create(secondQueueLabel, DISPATCH_QUEUE_CONCURRENT)
 
-        var dispatchCount = 0
         let firstListener = NSObject()
         let secondListener = NSObject()
 
@@ -148,21 +147,18 @@ class SignalQueueTests: XCTestCase {
         emitter.onInt.listen(firstListener, callback: { (argument) in
             let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
             XCTAssertTrue(firstQueueLabel == currentQueueLabel)
-            dispatchCount++
             firstExpectation.fulfill()
         }).dispatchOnQueue(firstQueue)
         let secondExpectation = expectationWithDescription("secondDispatchOnQueue")
         emitter.onInt.listen(secondListener, callback: { (argument) in
             let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
             XCTAssertTrue(secondQueueLabel == currentQueueLabel)
-            dispatchCount++
             secondExpectation.fulfill()
         }).dispatchOnQueue(secondQueue)
 
         emitter.onInt.fire(10)
 
         waitForExpectationsWithTimeout(0.05, handler: nil)
-        XCTAssertEqual(dispatchCount, 2, "Should be dispatched twice!")
     }
 
     func testUsesCurrentQueueByDefault() {

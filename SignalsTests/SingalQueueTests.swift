@@ -158,7 +158,7 @@ class SignalQueueTests: XCTestCase {
 
         emitter.onInt.fire(10)
 
-        waitForExpectationsWithTimeout(0.05, handler: nil)
+        waitForExpectationsWithTimeout(0.2, handler: nil)
     }
 
     func testUsesCurrentQueueByDefault() {
@@ -178,7 +178,7 @@ class SignalQueueTests: XCTestCase {
             self.emitter.onInt.fire(10)
         }
 
-        waitForExpectationsWithTimeout(0.05, handler: nil)
+        waitForExpectationsWithTimeout(0.2, handler: nil)
     }
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0720"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "720D11711A085314003C4361"
+               BlueprintIdentifier = "721E129A1C1E8E0D00CD0CBA"
                BuildableName = "Signals.framework"
-               BlueprintName = "Signals"
-               ReferencedContainer = "container:Signals.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "720D117C1A085315003C4361"
-               BuildableName = "SignalsTests.xctest"
-               BlueprintName = "SignalsTests"
+               BlueprintName = "Signals tvOS"
                ReferencedContainer = "container:Signals.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,9 +33,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "720D117C1A085315003C4361"
-               BuildableName = "SignalsTests.xctest"
-               BlueprintName = "SignalsTests"
+               BlueprintIdentifier = "721E12B41C1E8E2500CD0CBA"
+               BuildableName = "SignalsTests tvOS.xctest"
+               BlueprintName = "SignalsTests tvOS"
                ReferencedContainer = "container:Signals.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -57,9 +43,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "720D11711A085314003C4361"
+            BlueprintIdentifier = "721E129A1C1E8E0D00CD0CBA"
             BuildableName = "Signals.framework"
-            BlueprintName = "Signals"
+            BlueprintName = "Signals tvOS"
             ReferencedContainer = "container:Signals.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -79,9 +65,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "720D11711A085314003C4361"
+            BlueprintIdentifier = "721E129A1C1E8E0D00CD0CBA"
             BuildableName = "Signals.framework"
-            BlueprintName = "Signals"
+            BlueprintName = "Signals tvOS"
             ReferencedContainer = "container:Signals.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -97,9 +83,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "720D11711A085314003C4361"
+            BlueprintIdentifier = "721E129A1C1E8E0D00CD0CBA"
             BuildableName = "Signals.framework"
-            BlueprintName = "Signals"
+            BlueprintName = "Signals tvOS"
             ReferencedContainer = "container:Signals.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

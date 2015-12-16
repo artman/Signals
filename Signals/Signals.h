@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Tuomas Artman. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for Signals.
 FOUNDATION_EXPORT double SignalsVersionNumber;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Tuomas Artman. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import XCTest
 
 class SignalQueueTests: XCTestCase {

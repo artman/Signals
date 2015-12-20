@@ -46,7 +46,8 @@ script:
       pod lib lint --quick;
     fi
 
-after_success: slather
+after_success: 
+   - ./coveralls.rb -x swift -e "SignalsTests iOS"
 
 notifications:
   email: false

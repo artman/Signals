@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "721E129A1C1E8E0D00CD0CBA"
+               BlueprintIdentifier = "725B76B51C26558F001D04CC"
                BuildableName = "Signals.framework"
                BlueprintName = "Signals tvOS"
                ReferencedContainer = "container:Signals.xcodeproj">
@@ -33,7 +33,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "721E12B41C1E8E2500CD0CBA"
+               BlueprintIdentifier = "725B76BE1C26558F001D04CC"
                BuildableName = "SignalsTests tvOS.xctest"
                BlueprintName = "SignalsTests tvOS"
                ReferencedContainer = "container:Signals.xcodeproj">
@@ -43,7 +43,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "721E129A1C1E8E0D00CD0CBA"
+            BlueprintIdentifier = "725B76B51C26558F001D04CC"
             BuildableName = "Signals.framework"
             BlueprintName = "Signals tvOS"
             ReferencedContainer = "container:Signals.xcodeproj">
@@ -65,7 +65,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "721E129A1C1E8E0D00CD0CBA"
+            BlueprintIdentifier = "725B76B51C26558F001D04CC"
             BuildableName = "Signals.framework"
             BlueprintName = "Signals tvOS"
             ReferencedContainer = "container:Signals.xcodeproj">
@@ -83,7 +83,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "721E129A1C1E8E0D00CD0CBA"
+            BlueprintIdentifier = "725B76B51C26558F001D04CC"
             BuildableName = "Signals.framework"
             BlueprintName = "Signals tvOS"
             ReferencedContainer = "container:Signals.xcodeproj">

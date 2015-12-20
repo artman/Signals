@@ -32,7 +32,7 @@ class SignalQueueTests: XCTestCase {
 
         emitter.onInt.fire(1);
 
-        waitForExpectationsWithTimeout(0.15, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testDispatchQueueing() {
@@ -47,7 +47,7 @@ class SignalQueueTests: XCTestCase {
         emitter.onInt.fire(2);
         emitter.onInt.fire(3);
         
-        waitForExpectationsWithTimeout(0.15, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testNoQueueTimeFiring() {
@@ -62,7 +62,7 @@ class SignalQueueTests: XCTestCase {
         emitter.onInt.fire(2);
         emitter.onInt.fire(3);
         
-        waitForExpectationsWithTimeout(0.05, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testConditionalListening() {
@@ -80,7 +80,7 @@ class SignalQueueTests: XCTestCase {
         emitter.onIntAndString.fire((intArgument:2, stringArgument:"test2"))
         emitter.onIntAndString.fire((intArgument:1, stringArgument:"test3"))
         
-        waitForExpectationsWithTimeout(0.02, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testCancellingListeners() {
@@ -98,7 +98,7 @@ class SignalQueueTests: XCTestCase {
             // Cancelled listener didn't dispatch
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(0.1, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testListeningNoData() {
@@ -115,7 +115,7 @@ class SignalQueueTests: XCTestCase {
         emitter.onNoParams.fire()
         emitter.onNoParams.fire()
         
-        waitForExpectationsWithTimeout(0.05, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testListenerProperty() {
@@ -158,7 +158,7 @@ class SignalQueueTests: XCTestCase {
 
         emitter.onInt.fire(10)
 
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 
     func testUsesCurrentQueueByDefault() {
@@ -178,7 +178,7 @@ class SignalQueueTests: XCTestCase {
             self.emitter.onInt.fire(10)
         }
 
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 
 }

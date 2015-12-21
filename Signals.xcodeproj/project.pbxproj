@@ -14,7 +14,23 @@
 		720D11921A085370003C4361 /* SingalQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D118F1A085370003C4361 /* SingalQueueTests.swift */; };
 		720D11931A085370003C4361 /* TestListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11901A085370003C4361 /* TestListener.swift */; };
 		720D11951A08537E003C4361 /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11941A08537E003C4361 /* Signal.swift */; };
+		721E12A91C1E8E1D00CD0CBA /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11941A08537E003C4361 /* Signal.swift */; };
+		721E12AC1C1E8E1D00CD0CBA /* Signals.h in Headers */ = {isa = PBXBuildFile; fileRef = 720D11771A085315003C4361 /* Signals.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		721E12AE1C1E8E1D00CD0CBA /* Signals.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 725D2B621B71C916007B83AB /* Signals.podspec */; };
+		725B76C01C26558F001D04CC /* Signals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725B76B61C26558F001D04CC /* Signals.framework */; };
+		725B76CD1C26572E001D04CC /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11941A08537E003C4361 /* Signal.swift */; };
+		725B76CE1C265738001D04CC /* TestListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11901A085370003C4361 /* TestListener.swift */; };
+		725B76CF1C265738001D04CC /* SignalEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D118E1A085370003C4361 /* SignalEmitter.swift */; };
+		725B76D01C265738001D04CC /* SignalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11841A085315003C4361 /* SignalsTests.swift */; };
+		725B76D11C265738001D04CC /* SingalQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D118F1A085370003C4361 /* SingalQueueTests.swift */; };
 		725D2B631B71C916007B83AB /* Signals.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 725D2B621B71C916007B83AB /* Signals.podspec */; };
+		72665B401C212BDB0067DF26 /* Signals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72665B361C212BDB0067DF26 /* Signals.framework */; };
+		72665B4D1C212BEC0067DF26 /* Signals.h in Headers */ = {isa = PBXBuildFile; fileRef = 720D11771A085315003C4361 /* Signals.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		72665B4E1C212BEC0067DF26 /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11941A08537E003C4361 /* Signal.swift */; };
+		72665B4F1C212BF60067DF26 /* TestListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11901A085370003C4361 /* TestListener.swift */; };
+		72665B501C212BF60067DF26 /* SignalEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D118E1A085370003C4361 /* SignalEmitter.swift */; };
+		72665B511C212BF60067DF26 /* SignalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11841A085315003C4361 /* SignalsTests.swift */; };
+		72665B521C212BF60067DF26 /* SingalQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D118F1A085370003C4361 /* SingalQueueTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,20 +41,39 @@
 			remoteGlobalIDString = 720D11711A085314003C4361;
 			remoteInfo = Signals;
 		};
+		725B76C11C26558F001D04CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 720D11691A085314003C4361 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 725B76B51C26558F001D04CC;
+			remoteInfo = tvos;
+		};
+		72665B411C212BDB0067DF26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 720D11691A085314003C4361 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 72665B351C212BDB0067DF26;
+			remoteInfo = "Signals OSSX";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		720D11721A085314003C4361 /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		720D11761A085315003C4361 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		720D11771A085315003C4361 /* Signals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Signals.h; sourceTree = "<group>"; };
-		720D117D1A085315003C4361 /* SignalsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SignalsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		720D117D1A085315003C4361 /* SignalsTests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SignalsTests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		720D11831A085315003C4361 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		720D11841A085315003C4361 /* SignalsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalsTests.swift; sourceTree = "<group>"; };
 		720D118E1A085370003C4361 /* SignalEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalEmitter.swift; sourceTree = "<group>"; };
 		720D118F1A085370003C4361 /* SingalQueueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingalQueueTests.swift; sourceTree = "<group>"; };
 		720D11901A085370003C4361 /* TestListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestListener.swift; sourceTree = "<group>"; };
 		720D11941A08537E003C4361 /* Signal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Signal.swift; sourceTree = "<group>"; };
+		721E12B21C1E8E1D00CD0CBA /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		725B76B61C26558F001D04CC /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		725B76BF1C26558F001D04CC /* SignalsTests tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SignalsTests tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		725D2B621B71C916007B83AB /* Signals.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Signals.podspec; sourceTree = "<group>"; };
+		72665B361C212BDB0067DF26 /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		72665B3F1C212BDB0067DF26 /* SignalsTests OSX.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SignalsTests OSX.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +89,43 @@
 			buildActionMask = 2147483647;
 			files = (
 				720D117E1A085315003C4361 /* Signals.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		721E12AA1C1E8E1D00CD0CBA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		725B76B21C26558F001D04CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		725B76BC1C26558F001D04CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				725B76C01C26558F001D04CC /* Signals.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72665B321C212BDB0067DF26 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72665B3C1C212BDB0067DF26 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72665B401C212BDB0067DF26 /* Signals.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +146,12 @@
 			isa = PBXGroup;
 			children = (
 				720D11721A085314003C4361 /* Signals.framework */,
-				720D117D1A085315003C4361 /* SignalsTests.xctest */,
+				720D117D1A085315003C4361 /* SignalsTests iOS.xctest */,
+				721E12B21C1E8E1D00CD0CBA /* Signals.framework */,
+				72665B361C212BDB0067DF26 /* Signals.framework */,
+				72665B3F1C212BDB0067DF26 /* SignalsTests OSX.xctest */,
+				725B76B61C26558F001D04CC /* Signals.framework */,
+				725B76BF1C26558F001D04CC /* SignalsTests tvOS.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -136,12 +213,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		721E12AB1C1E8E1D00CD0CBA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				721E12AC1C1E8E1D00CD0CBA /* Signals.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		725B76B31C26558F001D04CC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72665B331C212BDB0067DF26 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72665B4D1C212BEC0067DF26 /* Signals.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		720D11711A085314003C4361 /* Signals */ = {
+		720D11711A085314003C4361 /* Signals iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 720D11881A085315003C4361 /* Build configuration list for PBXNativeTarget "Signals" */;
+			buildConfigurationList = 720D11881A085315003C4361 /* Build configuration list for PBXNativeTarget "Signals iOS" */;
 			buildPhases = (
 				720D116D1A085314003C4361 /* Sources */,
 				720D116E1A085314003C4361 /* Frameworks */,
@@ -152,14 +252,14 @@
 			);
 			dependencies = (
 			);
-			name = Signals;
+			name = "Signals iOS";
 			productName = Signals;
 			productReference = 720D11721A085314003C4361 /* Signals.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		720D117C1A085315003C4361 /* SignalsTests */ = {
+		720D117C1A085315003C4361 /* SignalsTests iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 720D118B1A085315003C4361 /* Build configuration list for PBXNativeTarget "SignalsTests" */;
+			buildConfigurationList = 720D118B1A085315003C4361 /* Build configuration list for PBXNativeTarget "SignalsTests iOS" */;
 			buildPhases = (
 				720D11791A085315003C4361 /* Sources */,
 				720D117A1A085315003C4361 /* Frameworks */,
@@ -170,9 +270,99 @@
 			dependencies = (
 				720D11801A085315003C4361 /* PBXTargetDependency */,
 			);
-			name = SignalsTests;
+			name = "SignalsTests iOS";
 			productName = SignalsTests;
-			productReference = 720D117D1A085315003C4361 /* SignalsTests.xctest */;
+			productReference = 720D117D1A085315003C4361 /* SignalsTests iOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		721E12A71C1E8E1D00CD0CBA /* Signals watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 721E12AF1C1E8E1D00CD0CBA /* Build configuration list for PBXNativeTarget "Signals watchOS" */;
+			buildPhases = (
+				721E12A81C1E8E1D00CD0CBA /* Sources */,
+				721E12AA1C1E8E1D00CD0CBA /* Frameworks */,
+				721E12AB1C1E8E1D00CD0CBA /* Headers */,
+				721E12AD1C1E8E1D00CD0CBA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Signals watchOS";
+			productName = Signals;
+			productReference = 721E12B21C1E8E1D00CD0CBA /* Signals.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		725B76B51C26558F001D04CC /* Signals tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 725B76C71C26558F001D04CC /* Build configuration list for PBXNativeTarget "Signals tvOS" */;
+			buildPhases = (
+				725B76B11C26558F001D04CC /* Sources */,
+				725B76B21C26558F001D04CC /* Frameworks */,
+				725B76B31C26558F001D04CC /* Headers */,
+				725B76B41C26558F001D04CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Signals tvOS";
+			productName = tvos;
+			productReference = 725B76B61C26558F001D04CC /* Signals.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		725B76BE1C26558F001D04CC /* SignalsTests tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 725B76CA1C26558F001D04CC /* Build configuration list for PBXNativeTarget "SignalsTests tvOS" */;
+			buildPhases = (
+				725B76BB1C26558F001D04CC /* Sources */,
+				725B76BC1C26558F001D04CC /* Frameworks */,
+				725B76BD1C26558F001D04CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				725B76C21C26558F001D04CC /* PBXTargetDependency */,
+			);
+			name = "SignalsTests tvOS";
+			productName = tvosTests;
+			productReference = 725B76BF1C26558F001D04CC /* SignalsTests tvOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		72665B351C212BDB0067DF26 /* Signals OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 72665B471C212BDB0067DF26 /* Build configuration list for PBXNativeTarget "Signals OSX" */;
+			buildPhases = (
+				72665B311C212BDB0067DF26 /* Sources */,
+				72665B321C212BDB0067DF26 /* Frameworks */,
+				72665B331C212BDB0067DF26 /* Headers */,
+				72665B341C212BDB0067DF26 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Signals OSX";
+			productName = "Signals OSSX";
+			productReference = 72665B361C212BDB0067DF26 /* Signals.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		72665B3E1C212BDB0067DF26 /* SignalsTests OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 72665B4A1C212BDB0067DF26 /* Build configuration list for PBXNativeTarget "SignalsTests OSX" */;
+			buildPhases = (
+				72665B3B1C212BDB0067DF26 /* Sources */,
+				72665B3C1C212BDB0067DF26 /* Frameworks */,
+				72665B3D1C212BDB0067DF26 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				72665B421C212BDB0067DF26 /* PBXTargetDependency */,
+			);
+			name = "SignalsTests OSX";
+			productName = "Signals OSSXTests";
+			productReference = 72665B3F1C212BDB0067DF26 /* SignalsTests OSX.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -192,6 +382,18 @@
 					720D117C1A085315003C4361 = {
 						CreatedOnToolsVersion = 6.1;
 					};
+					725B76B51C26558F001D04CC = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					725B76BE1C26558F001D04CC = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					72665B351C212BDB0067DF26 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					72665B3E1C212BDB0067DF26 = {
+						CreatedOnToolsVersion = 7.2;
+					};
 				};
 			};
 			buildConfigurationList = 720D116C1A085314003C4361 /* Build configuration list for PBXProject "Signals" */;
@@ -206,8 +408,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				720D11711A085314003C4361 /* Signals */,
-				720D117C1A085315003C4361 /* SignalsTests */,
+				720D11711A085314003C4361 /* Signals iOS */,
+				72665B351C212BDB0067DF26 /* Signals OSX */,
+				725B76B51C26558F001D04CC /* Signals tvOS */,
+				721E12A71C1E8E1D00CD0CBA /* Signals watchOS */,
+				720D117C1A085315003C4361 /* SignalsTests iOS */,
+				72665B3E1C212BDB0067DF26 /* SignalsTests OSX */,
+				725B76BE1C26558F001D04CC /* SignalsTests tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -222,6 +429,42 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		720D117B1A085315003C4361 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		721E12AD1C1E8E1D00CD0CBA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				721E12AE1C1E8E1D00CD0CBA /* Signals.podspec in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		725B76B41C26558F001D04CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		725B76BD1C26558F001D04CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72665B341C212BDB0067DF26 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72665B3D1C212BDB0067DF26 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -250,13 +493,69 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		721E12A81C1E8E1D00CD0CBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				721E12A91C1E8E1D00CD0CBA /* Signal.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		725B76B11C26558F001D04CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				725B76CD1C26572E001D04CC /* Signal.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		725B76BB1C26558F001D04CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				725B76D01C265738001D04CC /* SignalsTests.swift in Sources */,
+				725B76CF1C265738001D04CC /* SignalEmitter.swift in Sources */,
+				725B76CE1C265738001D04CC /* TestListener.swift in Sources */,
+				725B76D11C265738001D04CC /* SingalQueueTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72665B311C212BDB0067DF26 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72665B4E1C212BEC0067DF26 /* Signal.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72665B3B1C212BDB0067DF26 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72665B521C212BF60067DF26 /* SingalQueueTests.swift in Sources */,
+				72665B511C212BF60067DF26 /* SignalsTests.swift in Sources */,
+				72665B4F1C212BF60067DF26 /* TestListener.swift in Sources */,
+				72665B501C212BF60067DF26 /* SignalEmitter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		720D11801A085315003C4361 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 720D11711A085314003C4361 /* Signals */;
+			target = 720D11711A085314003C4361 /* Signals iOS */;
 			targetProxy = 720D117F1A085315003C4361 /* PBXContainerItemProxy */;
+		};
+		725B76C21C26558F001D04CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 725B76B51C26558F001D04CC /* Signals tvOS */;
+			targetProxy = 725B76C11C26558F001D04CC /* PBXContainerItemProxy */;
+		};
+		72665B421C212BDB0067DF26 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 72665B351C212BDB0067DF26 /* Signals OSX */;
+			targetProxy = 72665B411C212BDB0067DF26 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -298,6 +597,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -339,6 +639,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -351,6 +652,7 @@
 		720D11891A085315003C4361 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -364,7 +666,7 @@
 					"-w",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "artman.fi.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Signals;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -372,6 +674,7 @@
 		720D118A1A085315003C4361 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -385,7 +688,7 @@
 					"-w",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "artman.fi.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Signals;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -414,6 +717,202 @@
 			};
 			name = Release;
 		};
+		721E12B01C1E8E1D00CD0CBA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Signals/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-w",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "artman.fi.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = Signals;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		721E12B11C1E8E1D00CD0CBA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Signals/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-w",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "artman.fi.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = Signals;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		725B76C81C26558F001D04CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Signals/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = artman.fi.Signals;
+				PRODUCT_NAME = Signals;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		725B76C91C26558F001D04CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Signals/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = artman.fi.Signals;
+				PRODUCT_NAME = Signals;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		725B76CB1C26558F001D04CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SignalsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "artman.fi.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Debug;
+		};
+		725B76CC1C26558F001D04CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SignalsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "artman.fi.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Release;
+		};
+		72665B481C212BDB0067DF26 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Signals/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = artman.fi.Signals;
+				PRODUCT_NAME = Signals;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		72665B491C212BDB0067DF26 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Signals/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = artman.fi.Signals;
+				PRODUCT_NAME = Signals;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		72665B4B1C212BDB0067DF26 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SignalsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "artman.fi.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		72665B4C1C212BDB0067DF26 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SignalsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "artman.fi.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -426,7 +925,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		720D11881A085315003C4361 /* Build configuration list for PBXNativeTarget "Signals" */ = {
+		720D11881A085315003C4361 /* Build configuration list for PBXNativeTarget "Signals iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				720D11891A085315003C4361 /* Debug */,
@@ -435,11 +934,54 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		720D118B1A085315003C4361 /* Build configuration list for PBXNativeTarget "SignalsTests" */ = {
+		720D118B1A085315003C4361 /* Build configuration list for PBXNativeTarget "SignalsTests iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				720D118C1A085315003C4361 /* Debug */,
 				720D118D1A085315003C4361 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		721E12AF1C1E8E1D00CD0CBA /* Build configuration list for PBXNativeTarget "Signals watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				721E12B01C1E8E1D00CD0CBA /* Debug */,
+				721E12B11C1E8E1D00CD0CBA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		725B76C71C26558F001D04CC /* Build configuration list for PBXNativeTarget "Signals tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				725B76C81C26558F001D04CC /* Debug */,
+				725B76C91C26558F001D04CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		725B76CA1C26558F001D04CC /* Build configuration list for PBXNativeTarget "SignalsTests tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				725B76CB1C26558F001D04CC /* Debug */,
+				725B76CC1C26558F001D04CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		72665B471C212BDB0067DF26 /* Build configuration list for PBXNativeTarget "Signals OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72665B481C212BDB0067DF26 /* Debug */,
+				72665B491C212BDB0067DF26 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		72665B4A1C212BDB0067DF26 /* Build configuration list for PBXNativeTarget "SignalsTests OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72665B4B1C212BDB0067DF26 /* Debug */,
+				72665B4C1C212BDB0067DF26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

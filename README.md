@@ -161,7 +161,7 @@ To replace global notifications via the NSNotificationCenter with Signals, just 
 
 - If you **found a bug**, open an issue or submit a fix via a pull request.
 - If you **have a feature request**, open an issue or submit a implementation via a pull request or hit me up on Twitter [@artman](http://twitter.com/artman)
-- If you **want to contribute**, submit a pull request.
+- If you **want to contribute**, submit a pull request onto the development branch.
 
 ## License
 

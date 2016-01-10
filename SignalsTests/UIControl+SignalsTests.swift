@@ -1,0 +1,99 @@
+//
+//  UIControl+SignalsTests.swift
+//  Signals
+//
+//  Created by Tuomas Artman on 1.1.2016.
+//  Copyright © 2016 Tuomas Artman. All rights reserved.
+//
+
+import XCTest
+import Signals
+
+class UIControl_SignalsTests: XCTestCase {
+    func testActionObservation() {
+        let button = UIButton()
+
+        var onTouchDownCount = 0
+        var onTouchDownRepeatCount = 0
+        var onTouchDragInsideCount = 0
+        var onTouchDragOutsideCount = 0
+        var onTouchDragEnterCount = 0
+        var onTouchDragExitCount = 0
+        var onTouchUpInsideCount = 0
+        var onTouchUpOutsideCount = 0
+        var onTouchCancelCount = 0
+        var onValueChangedCount = 0
+        var onEditingDidBeginCount = 0
+        var onEditingChangedCount = 0
+        var onEditingDidEndCount = 0
+        var onEditingDidEndOnExitCount = 0
+
+        button.onTouchDown.listen(self) { () -> Void in
+            onTouchDownCount += 1
+        }
+        button.onTouchDownRepeat.listen(self) { () -> Void in
+            onTouchDownRepeatCount += 1
+        }
+        button.onTouchDragInside.listen(self) { () -> Void in
+            onTouchDragInsideCount += 1
+        }
+        button.onTouchDragOutside.listen(self) { () -> Void in
+            onTouchDragOutsideCount += 1
+        }
+        button.onTouchDragEnter.listen(self) { () -> Void in
+            onTouchDragEnterCount += 1
+        }
+        button.onTouchDragExit.listen(self) { () -> Void in
+            onTouchDragExitCount += 1
+        }
+        button.onTouchUpInside.listen(self) { () -> Void in
+            onTouchUpInsideCount += 1
+        }
+        button.onTouchUpOutside.listen(self) { () -> Void in
+            onTouchUpOutsideCount += 1
+        }
+        button.onTouchCancel.listen(self) { () -> Void in
+            onTouchCancelCount += 1
+        }
+        button.onValueChanged.listen(self) { () -> Void in
+            onValueChangedCount += 1
+        }
+        button.onEditingDidBegin.listen(self) { () -> Void in
+            onEditingDidBeginCount += 1
+        }
+        button.onEditingChanged.listen(self) { () -> Void in
+            onEditingChangedCount += 1
+        }
+        button.onEditingDidEnd.listen(self) { () -> Void in
+            onEditingDidEndCount += 1
+        }
+        button.onEditingDidEndOnExit.listen(self) { () -> Void in
+            onEditingDidEndOnExitCount += 1
+        }
+        let events: [UIControlEvents] = [.TouchDown, .TouchDownRepeat, .TouchDragInside, .TouchDragOutside, .TouchDragEnter,
+            .TouchDragExit, .TouchUpInside, .TouchUpOutside, .TouchCancel, .ValueChanged, .EditingDidBegin, .EditingChanged,
+            .EditingDidEnd, .EditingDidEndOnExit];
+        
+        for event in events {
+            let actions = button.actionsForTarget(button, forControlEvent: event);
+            for action in actions! {
+                button.performSelector(Selector(action))
+            }
+        }
+        
+        XCTAssertEqual(onTouchDownCount, 1, "Should have triggered once")
+        XCTAssertEqual(onTouchDownRepeatCount, 1, "Should have triggered once")
+        XCTAssertEqual(onTouchDragInsideCount, 1, "Should have triggered once")
+        XCTAssertEqual(onTouchDragOutsideCount, 1, "Should have triggered once")
+        XCTAssertEqual(onTouchDragEnterCount, 1, "Should have triggered once")
+        XCTAssertEqual(onTouchDragExitCount, 1, "Should have triggered once")
+        XCTAssertEqual(onTouchUpInsideCount, 1, "Should have triggered once")
+        XCTAssertEqual(onTouchUpOutsideCount, 1, "Should have triggered once")
+        XCTAssertEqual(onTouchCancelCount, 1, "Should have triggered once")
+        XCTAssertEqual(onValueChangedCount, 1, "Should have triggered once")
+        XCTAssertEqual(onEditingDidBeginCount, 1, "Should have triggered once")
+        XCTAssertEqual(onEditingChangedCount, 1, "Should have triggered once")
+        XCTAssertEqual(onEditingDidEndCount, 1, "Should have triggered once")
+        XCTAssertEqual(onEditingDidEndOnExitCount, 1, "Should have triggered once")
+    }
+}

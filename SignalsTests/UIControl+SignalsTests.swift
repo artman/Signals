@@ -28,46 +28,46 @@ class UIControl_SignalsTests: XCTestCase {
         var onEditingDidEndCount = 0
         var onEditingDidEndOnExitCount = 0
 
-        button.onTouchDown.listen(self) { () -> Void in
+        button.onTouchDown.listen(self) {
             onTouchDownCount += 1
         }
-        button.onTouchDownRepeat.listen(self) { () -> Void in
+        button.onTouchDownRepeat.listen(self) {
             onTouchDownRepeatCount += 1
         }
-        button.onTouchDragInside.listen(self) { () -> Void in
+        button.onTouchDragInside.listen(self) {
             onTouchDragInsideCount += 1
         }
-        button.onTouchDragOutside.listen(self) { () -> Void in
+        button.onTouchDragOutside.listen(self) {
             onTouchDragOutsideCount += 1
         }
-        button.onTouchDragEnter.listen(self) { () -> Void in
+        button.onTouchDragEnter.listen(self) {
             onTouchDragEnterCount += 1
         }
-        button.onTouchDragExit.listen(self) { () -> Void in
+        button.onTouchDragExit.listen(self) {
             onTouchDragExitCount += 1
         }
-        button.onTouchUpInside.listen(self) { () -> Void in
+        button.onTouchUpInside.listen(self) {
             onTouchUpInsideCount += 1
         }
-        button.onTouchUpOutside.listen(self) { () -> Void in
+        button.onTouchUpOutside.listen(self) {
             onTouchUpOutsideCount += 1
         }
-        button.onTouchCancel.listen(self) { () -> Void in
+        button.onTouchCancel.listen(self) {
             onTouchCancelCount += 1
         }
-        button.onValueChanged.listen(self) { () -> Void in
+        button.onValueChanged.listen(self) {
             onValueChangedCount += 1
         }
-        button.onEditingDidBegin.listen(self) { () -> Void in
+        button.onEditingDidBegin.listen(self) {
             onEditingDidBeginCount += 1
         }
-        button.onEditingChanged.listen(self) { () -> Void in
+        button.onEditingChanged.listen(self) {
             onEditingChangedCount += 1
         }
-        button.onEditingDidEnd.listen(self) { () -> Void in
+        button.onEditingDidEnd.listen(self) {
             onEditingDidEndCount += 1
         }
-        button.onEditingDidEndOnExit.listen(self) { () -> Void in
+        button.onEditingDidEndOnExit.listen(self) {
             onEditingDidEndOnExitCount += 1
         }
         let events: [UIControlEvents] = [.TouchDown, .TouchDownRepeat, .TouchDragInside, .TouchDragOutside, .TouchDragEnter,
@@ -80,7 +80,7 @@ class UIControl_SignalsTests: XCTestCase {
                 button.performSelector(Selector(action))
             }
         }
-        
+        UISl
         XCTAssertEqual(onTouchDownCount, 1, "Should have triggered once")
         XCTAssertEqual(onTouchDownRepeatCount, 1, "Should have triggered once")
         XCTAssertEqual(onTouchDragInsideCount, 1, "Should have triggered once")

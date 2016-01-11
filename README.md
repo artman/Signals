@@ -6,9 +6,7 @@
 ![Platform](https://img.shields.io/cocoapods/p/Signals.svg?style=flat)
 [![Twitter](https://img.shields.io/badge/twitter-@artman-blue.svg?style=flat)](http://twitter.com/artman)
 
-
-
-Signals is a micro-framework for creating and observing events. It replaces delegates and NSNotificationCenter with something much more powerful and beautiful.
+Signals is a micro-framework for creating and observing events. It replaces delegates, actions and NSNotificationCenter with something much more powerful and elegant.
 
 ## Features
 
@@ -134,12 +132,28 @@ self.onData => (data:receivedData, error:receivedError)
 self.onProgress => 1.0
 ```
 
+## Replacing actions
+
+Signals extends all classes that extend from UIControl (not available on OS X) and lets you use signals to listen to control events for increased code locality.
+
+```swift
+let button = UIButton()
+button.onTouchUpInside.listen(self) {
+    // Handle the touch
+}
+
+let slider = UISlider()
+slider.onValueChanged.listen(self) {
+    // Handle value change
+}
+```
 
 ## Replacing delegates
 
-Signals is simple and modern and greatly reduce the amount of boilerplate that is required to set up event delegation.
+Signals is simple and modern and greatly reduce the amount of boilerplate that is required to set up delegation.
 
 Would you rather implement a callback using a delegate:
+
 - Create a protocol that defines what is delegated
 - Create a delegate property on the class that wants to provide delegation
 - Mark each class that wants to become a delegate as comforming to the delegate protocol
@@ -148,6 +162,7 @@ Would you rather implement a callback using a delegate:
 - Check that your delegate implements each delegate method before invoking it
 
 Or do the same thing with Signals:
+
 - Create a signal for the class that wants to provide an event
 - Subscribe to the signal as a listener from any instance you want
 

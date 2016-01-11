@@ -43,7 +43,7 @@ script:
        -configuration Debug ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES clean build test | xcpretty -c;
     fi 
   - if [ $POD_LINT == "YES" ]; then 
-      pod lib lint --quick;
+      pod lib lint;
     fi
 
 after_success: 

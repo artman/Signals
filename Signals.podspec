@@ -13,7 +13,9 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '9.0'
   s.watchos.deployment_target = '2.0'
 
-  s.source_files = 'Signals/*.swift'
+  s.source_files = 'Signals/Signal.swift'
+  s.ios.source_files = 'Signals/iOS/*.swift'
+  s.tvos.source_files = 'Signals/iOS/*.swift'
 
   s.requires_arc = true
 end

@@ -17,13 +17,12 @@
 		721E12A91C1E8E1D00CD0CBA /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11941A08537E003C4361 /* Signal.swift */; };
 		721E12AC1C1E8E1D00CD0CBA /* Signals.h in Headers */ = {isa = PBXBuildFile; fileRef = 720D11771A085315003C4361 /* Signals.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		721E12AE1C1E8E1D00CD0CBA /* Signals.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 725D2B621B71C916007B83AB /* Signals.podspec */; };
-		723C01C21C3779DC000A998E /* UIControl+Signals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723C01C01C3779DC000A998E /* UIControl+Signals.swift */; };
-		723C01C61C3779DC000A998E /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723C01C11C3779DC000A998E /* AssociatedObject.swift */; };
-		723C01C81C3779DC000A998E /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723C01C11C3779DC000A998E /* AssociatedObject.swift */; };
-		723C01C91C3779DC000A998E /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723C01C11C3779DC000A998E /* AssociatedObject.swift */; };
 		723C01CB1C377DEA000A998E /* UIControl+SignalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723C01CA1C377DEA000A998E /* UIControl+SignalsTests.swift */; };
-		7249934F1C431CAE006653CB /* UIControl+Signals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723C01C01C3779DC000A998E /* UIControl+Signals.swift */; };
-		724993501C431CAE006653CB /* UIControl+Signals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723C01C01C3779DC000A998E /* UIControl+Signals.swift */; };
+		724993531C43557C006653CB /* UIControl+Signals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724993521C43557C006653CB /* UIControl+Signals.swift */; };
+		724993551C4356C2006653CB /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724993541C4356C2006653CB /* AssociatedObject.swift */; };
+		724993581C435AFF006653CB /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724993541C4356C2006653CB /* AssociatedObject.swift */; };
+		724993591C435AFF006653CB /* UIControl+Signals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724993521C43557C006653CB /* UIControl+Signals.swift */; };
+		7249935A1C435B22006653CB /* UIControl+SignalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723C01CA1C377DEA000A998E /* UIControl+SignalsTests.swift */; };
 		725B76C01C26558F001D04CC /* Signals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725B76B61C26558F001D04CC /* Signals.framework */; };
 		725B76CD1C26572E001D04CC /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11941A08537E003C4361 /* Signal.swift */; };
 		725B76CE1C265738001D04CC /* TestListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11901A085370003C4361 /* TestListener.swift */; };
@@ -76,9 +75,9 @@
 		720D11901A085370003C4361 /* TestListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestListener.swift; sourceTree = "<group>"; };
 		720D11941A08537E003C4361 /* Signal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Signal.swift; sourceTree = "<group>"; };
 		721E12B21C1E8E1D00CD0CBA /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		723C01C01C3779DC000A998E /* UIControl+Signals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Signals.swift"; sourceTree = "<group>"; };
-		723C01C11C3779DC000A998E /* AssociatedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssociatedObject.swift; sourceTree = "<group>"; };
 		723C01CA1C377DEA000A998E /* UIControl+SignalsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+SignalsTests.swift"; sourceTree = "<group>"; };
+		724993521C43557C006653CB /* UIControl+Signals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIControl+Signals.swift"; path = "ios/UIControl+Signals.swift"; sourceTree = "<group>"; };
+		724993541C4356C2006653CB /* AssociatedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssociatedObject.swift; path = ios/AssociatedObject.swift; sourceTree = "<group>"; };
 		725B76B61C26558F001D04CC /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		725B76BF1C26558F001D04CC /* SignalsTests tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SignalsTests tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		725D2B621B71C916007B83AB /* Signals.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Signals.podspec; sourceTree = "<group>"; };
@@ -169,10 +168,9 @@
 		720D11741A085314003C4361 /* Signals */ = {
 			isa = PBXGroup;
 			children = (
-				720D11771A085315003C4361 /* Signals.h */,
+				724993511C435569006653CB /* iOS */,
 				720D11941A08537E003C4361 /* Signal.swift */,
-				723C01C01C3779DC000A998E /* UIControl+Signals.swift */,
-				723C01C11C3779DC000A998E /* AssociatedObject.swift */,
+				720D11771A085315003C4361 /* Signals.h */,
 				720D11751A085315003C4361 /* Supporting Files */,
 			);
 			path = Signals;
@@ -213,6 +211,15 @@
 				720D118E1A085370003C4361 /* SignalEmitter.swift */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		724993511C435569006653CB /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				724993541C4356C2006653CB /* AssociatedObject.swift */,
+				724993521C43557C006653CB /* UIControl+Signals.swift */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -492,8 +499,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				720D11951A08537E003C4361 /* Signal.swift in Sources */,
-				723C01C61C3779DC000A998E /* AssociatedObject.swift in Sources */,
-				723C01C21C3779DC000A998E /* UIControl+Signals.swift in Sources */,
+				724993551C4356C2006653CB /* AssociatedObject.swift in Sources */,
+				724993531C43557C006653CB /* UIControl+Signals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,8 +521,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				721E12A91C1E8E1D00CD0CBA /* Signal.swift in Sources */,
-				724993501C431CAE006653CB /* UIControl+Signals.swift in Sources */,
-				723C01C91C3779DC000A998E /* AssociatedObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,9 +528,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				724993581C435AFF006653CB /* AssociatedObject.swift in Sources */,
+				724993591C435AFF006653CB /* UIControl+Signals.swift in Sources */,
 				725B76CD1C26572E001D04CC /* Signal.swift in Sources */,
-				7249934F1C431CAE006653CB /* UIControl+Signals.swift in Sources */,
-				723C01C81C3779DC000A998E /* AssociatedObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,6 +538,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7249935A1C435B22006653CB /* UIControl+SignalsTests.swift in Sources */,
 				725B76D01C265738001D04CC /* SignalsTests.swift in Sources */,
 				725B76CF1C265738001D04CC /* SignalEmitter.swift in Sources */,
 				725B76CE1C265738001D04CC /* TestListener.swift in Sources */,

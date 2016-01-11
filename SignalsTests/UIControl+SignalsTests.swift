@@ -80,7 +80,7 @@ class UIControl_SignalsTests: XCTestCase {
                 button.performSelector(Selector(action))
             }
         }
-        UISl
+        
         XCTAssertEqual(onTouchDownCount, 1, "Should have triggered once")
         XCTAssertEqual(onTouchDownRepeatCount, 1, "Should have triggered once")
         XCTAssertEqual(onTouchDragInsideCount, 1, "Should have triggered once")

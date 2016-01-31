@@ -1,15 +1,14 @@
 # Change Log
 
-## [Unreleased](https://github.com/artman/signals/tree/HEAD)
-
-[Full Changelog](https://github.com/artman/signals/compare/2.3.0...HEAD)
+## [2.3.0](https://github.com/artman/signals/tree/2.3.0) (2016-01-31)
+[Full Changelog](https://github.com/artman/signals/compare/2.2.0...2.3.0)
 
 **Implemented enhancements:**
 
+- Extend UIControl to support signals for all UIControlEvents [\#27](https://github.com/artman/Signals/issues/27)
 - Support OSX, watchOS and tvOS platforms [\#25](https://github.com/artman/Signals/issues/25)
-
-## [2.3.0](https://github.com/artman/signals/tree/2.3.0) (2016-01-11)
-[Full Changelog](https://github.com/artman/signals/compare/2.2.0...2.3.0)
+- Document changes across releases [\#24](https://github.com/artman/Signals/issues/24)
+- Added changelog [\#26](https://github.com/artman/Signals/pull/26) ([artman](https://github.com/artman))
 
 ## [2.2.0](https://github.com/artman/signals/tree/2.2.0) (2015-12-21)
 [Full Changelog](https://github.com/artman/signals/compare/2.1.1...2.2.0)

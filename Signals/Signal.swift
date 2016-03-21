@@ -132,6 +132,12 @@ public class Signal<T> {
     public func removeAllListeners() {
         signalListeners.removeAll(keepCapacity: false)
     }
+    
+    /// Clears the last fired data from the Signal and resets the fire count
+    public func clearLastData() {
+        fireCount = 0
+        lastDataFired = nil
+    }
 }
 
 /// A SignalLister represenents an instance and its association with a Signal.

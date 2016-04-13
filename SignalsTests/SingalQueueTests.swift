@@ -106,7 +106,7 @@ class SignalQueueTests: XCTestCase {
         var dispatchCount = 0
 
         emitter.onNoParams.listen(self, callback: { () -> Void in
-            dispatchCount++
+            dispatchCount += 1
             XCTAssertEqual(dispatchCount, 1, "Dispatched only once")
             expectation.fulfill()
         }).queueAndDelayBy(0.01)

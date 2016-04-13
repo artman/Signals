@@ -73,7 +73,7 @@ class SignalsTests: XCTestCase {
         var lastArgument = 0
         
         emitter.onInt.listen(self, callback: { (argument) in
-            dispatchCount++
+            dispatchCount += 1
             lastArgument = argument
         })
         
@@ -89,11 +89,11 @@ class SignalsTests: XCTestCase {
         var lastArgument = 0
         
         emitter.onInt.listen(self, callback: { (argument) in
-            dispatchCount++
+            dispatchCount += 1
             lastArgument = argument
         })
         emitter.onInt.listen(self, callback: { (argument) in
-            dispatchCount++
+            dispatchCount += 1
             lastArgument = argument + 1
         })
         

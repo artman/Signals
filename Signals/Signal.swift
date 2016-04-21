@@ -18,7 +18,7 @@ public class Signal<T> {
     /// The last data that the signal was fired with.
     public var lastDataFired: T? = nil
     
-    /// Should the Signal retain a reference to the last data that it was fired with?
+    /// Whether or not the Signal should retain a reference to the last data it was fired with. Defaults to false.
     public var retainLastData: Bool = false
     
     /// All the listeners listening to the Signal.
@@ -35,7 +35,7 @@ public class Signal<T> {
     
     /// Signal Initializer
     /// 
-    /// - parameter retainLastData: Should the Signal retain a reference to the last data that it was fired with?
+    /// - parameter retainLastData: Whether or not the Signal should retain a reference to the last data it was fired with. Defaults to false.
     public init(retainLastData: Bool = false) {
         fireCount = 0
         self.retainLastData = retainLastData
@@ -85,7 +85,7 @@ public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     public func listenPast(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         let signalListener = self.listen(listener, callback: callback)
-        if let lastDataFired = lastDataFired where fireCount > 0 {
+        if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
         }
         return signalListener
@@ -99,7 +99,7 @@ public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     public func listenPastOnce(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         let signalListener = self.listen(listener, callback: callback)
-        if let lastDataFired = lastDataFired where fireCount > 0 {
+        if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
             signalListener.cancel()
         } else {
@@ -142,7 +142,6 @@ public class Signal<T> {
     
     /// Clears the last fired data from the Signal and resets the fire count
     public func clearLastData() {
-        fireCount = 0
         lastDataFired = nil
     }
 }

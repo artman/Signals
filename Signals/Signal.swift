@@ -18,6 +18,15 @@ public class Signal<T> {
     /// The last data that the signal was fired with.
     public var lastDataFired: T? = nil
     
+    /// Whether or not the Signal should retain a reference to the last data it was fired with. Defaults to false.
+    public var retainLastData: Bool = false {
+        didSet {
+            if !retainLastData {
+                lastDataFired = nil
+            }
+        }
+    }
+    
     /// All the listeners listening to the Signal.
     public var listeners:[AnyObject] {
         get {
@@ -30,8 +39,12 @@ public class Signal<T> {
         }
     }
     
-    public init() {
+    /// Signal Initializer
+    /// 
+    /// - parameter retainLastData: Whether or not the Signal should retain a reference to the last data it was fired with. Defaults to false.
+    public init(retainLastData: Bool = false) {
         fireCount = 0
+        self.retainLastData = retainLastData
     }
     
     private var signalListeners = [SignalListener<T>]()
@@ -78,8 +91,8 @@ public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     public func listenPast(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         let signalListener = self.listen(listener, callback: callback)
-        if fireCount > 0 {
-            signalListener.callback(lastDataFired!)
+        if let lastDataFired = lastDataFired {
+            signalListener.callback(lastDataFired)
         }
         return signalListener
     }
@@ -92,8 +105,8 @@ public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     public func listenPastOnce(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         let signalListener = self.listen(listener, callback: callback)
-        if fireCount > 0 {
-            signalListener.callback(lastDataFired!)
+        if let lastDataFired = lastDataFired {
+            signalListener.callback(lastDataFired)
             signalListener.cancel()
         } else {
             signalListener.once = true
@@ -106,7 +119,7 @@ public class Signal<T> {
     /// - parameter data: The data to fire the signal with.
     public func fire(data: T) {
         fireCount += 1
-        lastDataFired = data
+        lastDataFired = retainLastData ? data : nil
         dumpCancelledListeners()
         
         for signalListener in signalListeners {
@@ -131,6 +144,11 @@ public class Signal<T> {
     /// Removes all listeners from the Signal
     public func removeAllListeners() {
         signalListeners.removeAll(keepCapacity: false)
+    }
+    
+    /// Clears the last fired data from the Signal and resets the fire count
+    public func clearLastData() {
+        lastDataFired = nil
     }
 }
 

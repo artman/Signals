@@ -14,4 +14,5 @@ class SignalEmitter {
     let onInt = Signal<Int>(retainLastData: true)
     let onString = Signal<String>(retainLastData: true)
     let onIntAndString = Signal<(intArgument: Int, stringArgument: String)>(retainLastData: true)
+    let onNoRetention = Signal<String>(retainLastData: false)
 }

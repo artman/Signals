@@ -384,7 +384,19 @@ class SignalsTests: XCTestCase {
         
         XCTAssertEqual(dispatchCount, 1+1, "Should have dispatched correct number of times")
     }
-    
+
+    func testDataRetention() {
+        emitter.onString.retainLastData = true
+        emitter.onString => "Retain Data"
+        XCTAssertNotNil(emitter.onString.lastDataFired, "Signal should have retained fired data")
+
+        emitter.onString.retainLastData = false
+        XCTAssertNil(emitter.onString.lastDataFired, "Signal should have cleared fired data")
+
+        emitter.onString => "No Retention"
+        XCTAssertNil(emitter.onString.lastDataFired, "Signal should not have retained fired data")
+    }
+
     func testPerformanceFiring() {
         self.measureBlock() {
             var dispatchCount = 0
@@ -398,16 +410,5 @@ class SignalsTests: XCTestCase {
             }
         }
     }
-    
-    func testDataRetention() {
-        emitter.onString.retainLastData = true
-        emitter.onString => "Retain Data"
-        XCTAssertNotNil(emitter.onString.lastDataFired, "Signal should have retained fired data")
-        
-        emitter.onString.retainLastData = false
-        XCTAssertNil(emitter.onString.lastDataFired, "Signal should have cleared fired data")
-        
-        emitter.onString => "No Retention"
-        XCTAssertNil(emitter.onString.lastDataFired, "Signal should not have retained fired data")
-    }
+
 }

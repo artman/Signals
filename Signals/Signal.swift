@@ -19,7 +19,13 @@ public class Signal<T> {
     public var lastDataFired: T? = nil
     
     /// Whether or not the Signal should retain a reference to the last data it was fired with. Defaults to false.
-    public var retainLastData: Bool = false
+    public var retainLastData: Bool = false {
+        didSet {
+            if !retainLastData {
+                lastDataFired = nil
+            }
+        }
+    }
     
     /// All the listeners listening to the Signal.
     public var listeners:[AnyObject] {

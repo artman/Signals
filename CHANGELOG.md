@@ -1,5 +1,25 @@
 # Change Log
 
+## [3.0.0](https://github.com/artman/signals/tree/3.0.0) (2016-04-21)
+[Full Changelog](https://github.com/artman/signals/compare/2.3.0...3.0.0)
+
+**Implemented enhancements:**
+
+- Retaining old data fired on Signals should be opt-in [\#28](https://github.com/artman/Signals/pull/28) ([netizen01](https://github.com/netizen01))
+
+**Fixed bugs:**
+
+- Makes previousData and fireCount read only. Update podspec to 3.0.0 [\#32](https://github.com/artman/Signals/pull/32) ([artman](https://github.com/artman))
+
+**Closed issues:**
+
+- Previous data and fire count should be read only [\#31](https://github.com/artman/Signals/issues/31)
+- Retaining old data fired on Signals should be opt-in [\#30](https://github.com/artman/Signals/issues/30)
+
+**Merged pull requests:**
+
+- Fixing Swift 3 Warnings [\#29](https://github.com/artman/Signals/pull/29) ([hibento](https://github.com/hibento))
+
 ## [2.3.0](https://github.com/artman/signals/tree/2.3.0) (2016-01-31)
 [Full Changelog](https://github.com/artman/signals/compare/2.2.0...2.3.0)
 
@@ -63,7 +83,7 @@
 
 - Add watchOS 2.0 as a pod target [\#8](https://github.com/artman/Signals/pull/8) ([netizen01](https://github.com/netizen01))
 - Updated readme to reflect Carthage support [\#7](https://github.com/artman/Signals/pull/7) ([csjones](https://github.com/csjones))
-- Update README.md [\#5](https://github.com/artman/Signals/pull/5) ([Spencevail](https://github.com/Spencevail))
+- Update README.md [\#5](https://github.com/artman/Signals/pull/5) ([LunaCodeGirl](https://github.com/LunaCodeGirl))
 
 ## [1.0.0](https://github.com/artman/signals/tree/1.0.0) (2015-02-17)
 **Merged pull requests:**

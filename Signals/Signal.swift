@@ -41,7 +41,8 @@ final public class Signal<T> {
     
     /// Initializer.
     /// 
-    /// - parameter retainLastData: Whether or not the Signal should retain a reference to the last data it was fired with. Defaults to false.
+    /// - parameter retainLastData: Whether or not the Signal should retain a reference to the last data it was fired 
+    ///   with. Defaults to false.
     public init(retainLastData: Bool = false) {
         fireCount = 0
         self.retainLastData = retainLastData
@@ -77,7 +78,8 @@ final public class Signal<T> {
     
     /// Attaches a listener to the signal that is removed after the signal has fired once.
     ///
-    /// - parameter listener: The listener object. Sould the listener be deallocated, its associated callback is automatically removed.
+    /// - parameter listener: The listener object. Sould the listener be deallocated, its associated callback is 
+    ///   automatically removed.
     /// - parameter callback: The closure to invoke when the signal fires for the first time.
     public func listenOnce(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         let signalListener = self.listen(listener, callback: callback)
@@ -85,8 +87,8 @@ final public class Signal<T> {
         return signalListener
     }
     
-    /// Attaches a listener to the signal and invokes the callback immediately with the last data fired by the signal.
-    /// if it has fired at least once.
+    /// Attaches a listener to the signal and invokes the callback immediately with the last data fired by the signal
+    /// if it has fired at least once and if the `retainLastData` property has been set to true.
     ///
     /// - parameter listener: The listener object. Sould the listener be deallocated, its associated callback is 
     ///   automatically removed.
@@ -100,8 +102,8 @@ final public class Signal<T> {
     }
 
     /// Attaches a listener to the signal and invokes the callback immediately with the last data fired by the signal
-    /// if it has fired at least once. If it has not been fired yet, it will continue listening until it fires for the
-    /// first time.
+    /// if it has fired at least once and if the `retainLastData` property has been set to true. If it has not been 
+    /// fired yet, it will continue listening until it fires for the first time.
     ///
     /// - parameter listener: The listener object. Sould the listener be deallocated, its associated callback is 
     ///   automatically removed.

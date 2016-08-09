@@ -70,16 +70,31 @@ class UIControl_SignalsTests: XCTestCase {
         button.onEditingDidEndOnExit.listen(self) {
             onEditingDidEndOnExitCount += 1
         }
-        let events: [UIControlEvents] = [.TouchDown, .TouchDownRepeat, .TouchDragInside, .TouchDragOutside, .TouchDragEnter,
-            .TouchDragExit, .TouchUpInside, .TouchUpOutside, .TouchCancel, .ValueChanged, .EditingDidBegin, .EditingChanged,
-            .EditingDidEnd, .EditingDidEndOnExit];
         
-        for event in events {
-            let actions = button.actionsForTarget(button, forControlEvent: event);
-            for action in actions! {
-                button.performSelector(Selector(action))
+        #if swift(>=3.0)
+            let events: [UIControlEvents] = [.touchDown, .touchDownRepeat, .touchDragInside, .touchDragOutside, .touchDragEnter,
+                .touchDragExit, .touchUpInside, .touchUpOutside, .touchCancel, .valueChanged, .editingDidBegin, .editingChanged,
+                .editingDidEnd, .editingDidEndOnExit];
+            
+            for event in events {
+                let actions = button.actions(forTarget: button, forControlEvent: event);
+                for action in actions! {
+                    button.perform(Selector(action))
+                }
             }
-        }
+        #else
+            let events: [UIControlEvents] = [.TouchDown, .TouchDownRepeat, .TouchDragInside, .TouchDragOutside, .TouchDragEnter,
+                                             .TouchDragExit, .TouchUpInside, .TouchUpOutside, .TouchCancel, .ValueChanged, .EditingDidBegin, .EditingChanged,
+                                             .EditingDidEnd, .EditingDidEndOnExit];
+            
+            for event in events {
+                let actions = button.actionsForTarget(button, forControlEvent: event);
+                for action in actions! {
+                    button.performSelector(Selector(action))
+                }
+            }
+        #endif
+            
         
         XCTAssertEqual(onTouchDownCount, 1, "Should have triggered once")
         XCTAssertEqual(onTouchDownRepeatCount, 1, "Should have triggered once")

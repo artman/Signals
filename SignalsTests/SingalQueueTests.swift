@@ -9,6 +9,19 @@
 import Foundation
 import XCTest
 
+#if swift(>=3.0)
+#else
+    extension XCTestCase {
+        @nonobjc func expectation(description descripton: String) -> XCTestExpectation {
+            return self.expectationWithDescription(descripton)
+        }
+        
+        @nonobjc func waitForExpectations(timeout timeout: NSTimeInterval, handler: XCWaitCompletionHandler?) {
+            waitForExpectationsWithTimeout(timeout, handler: handler)
+        }
+    }
+#endif
+
 class SignalQueueTests: XCTestCase {
     
     var emitter:SignalEmitter = SignalEmitter();
@@ -23,7 +36,7 @@ class SignalQueueTests: XCTestCase {
     }
     
     func testBasicFiring() {
-        let expectation = expectationWithDescription("queuedDispatch")
+        let expectation = self.expectation(description: "queuedDispatch")
 
         emitter.onInt.listen(self, callback: { (argument) in
             XCTAssertEqual(argument, 1, "Last data catched")
@@ -32,11 +45,11 @@ class SignalQueueTests: XCTestCase {
 
         emitter.onInt.fire(1);
 
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     func testDispatchQueueing() {
-        let expectation = expectationWithDescription("queuedDispatch")
+        let expectation = self.expectation(description: "queuedDispatch")
  
         emitter.onInt.listen(self, callback: { (argument) in
             XCTAssertEqual(argument, 3, "Last data catched")
@@ -47,11 +60,11 @@ class SignalQueueTests: XCTestCase {
         emitter.onInt.fire(2);
         emitter.onInt.fire(3);
         
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     func testNoQueueTimeFiring() {
-        let expectation = expectationWithDescription("queuedDispatch")
+        let expectation = self.expectation(description: "queuedDispatch")
 
         emitter.onInt.listen(self, callback: { (argument) in
             XCTAssertEqual(argument, 3, "Last data catched")
@@ -62,11 +75,11 @@ class SignalQueueTests: XCTestCase {
         emitter.onInt.fire(2);
         emitter.onInt.fire(3);
         
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     func testConditionalListening() {
-        let expectation = expectationWithDescription("queuedDispatch")
+        let expectation = self.expectation(description: "queuedDispatch")
         
         emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
             XCTAssertEqual(argument1, 2, "argument1 catched")
@@ -80,11 +93,11 @@ class SignalQueueTests: XCTestCase {
         emitter.onIntAndString.fire((intArgument:2, stringArgument:"test2"))
         emitter.onIntAndString.fire((intArgument:1, stringArgument:"test3"))
         
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     func testCancellingListeners() {
-        let expectation = expectationWithDescription("queuedDispatch")
+        let expectation = self.expectation(description: "queuedDispatch")
         
         let listener = emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
             XCTFail("Listener should have been canceled")
@@ -94,15 +107,22 @@ class SignalQueueTests: XCTestCase {
         emitter.onIntAndString.fire((intArgument:1, stringArgument:"test"))
         listener.cancel()
         
-        dispatch_after( dispatch_time(DISPATCH_TIME_NOW, Int64(0.05 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+        let block = {
             // Cancelled listener didn't dispatch
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        
+        #if swift(>=3.0)
+            DispatchQueue.main.asyncAfter( deadline: DispatchTime.now() + Double(Int64(0.05 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: block)
+        #else
+        dispatch_after( dispatch_time(DISPATCH_TIME_NOW, Int64(0.05 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), block)
+        #endif
+            
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     func testListeningNoData() {
-        let expectation = expectationWithDescription("queuedDispatch")
+        let expectation = self.expectation(description: "queuedDispatch")
         var dispatchCount = 0
 
         emitter.onNoParams.listen(self, callback: { () -> Void in
@@ -115,7 +135,7 @@ class SignalQueueTests: XCTestCase {
         emitter.onNoParams.fire()
         emitter.onNoParams.fire()
         
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     func testListenerProperty() {
@@ -136,49 +156,76 @@ class SignalQueueTests: XCTestCase {
 
     func testListeningOnDispatchQueue() {
         let firstQueueLabel = "com.signals.queue.first";
-        let firstQueue = dispatch_queue_create(firstQueueLabel, DISPATCH_QUEUE_SERIAL)
         let secondQueueLabel = "com.signals.queue.second";
-        let secondQueue = dispatch_queue_create(secondQueueLabel, DISPATCH_QUEUE_CONCURRENT)
+        #if swift(>=3.0)
+            let firstQueue = DispatchQueue(label: firstQueueLabel)
+            let secondQueue = DispatchQueue(label: secondQueueLabel, attributes: DispatchQueue.Attributes.concurrent)
+        #else
+            let firstQueue = dispatch_queue_create(firstQueueLabel, DISPATCH_QUEUE_SERIAL)
+            let secondQueue = dispatch_queue_create(secondQueueLabel, DISPATCH_QUEUE_CONCURRENT)
+        #endif
 
         let firstListener = NSObject()
         let secondListener = NSObject()
 
-        let firstExpectation = expectationWithDescription("firstDispatchOnQueue")
+        let firstExpectation = expectation(description: "firstDispatchOnQueue")
         emitter.onInt.listen(firstListener, callback: { (argument) in
-            let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
+            #if swift(>=3.0)
+                let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
+            #else
+                let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
+            #endif
             XCTAssertTrue(firstQueueLabel == currentQueueLabel)
             firstExpectation.fulfill()
         }).dispatchOnQueue(firstQueue)
-        let secondExpectation = expectationWithDescription("secondDispatchOnQueue")
+        let secondExpectation = expectation(description: "secondDispatchOnQueue")
         emitter.onInt.listen(secondListener, callback: { (argument) in
-            let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
+            #if swift(>=3.0)
+                let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
+            #else
+                let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
+            #endif
             XCTAssertTrue(secondQueueLabel == currentQueueLabel)
             secondExpectation.fulfill()
         }).dispatchOnQueue(secondQueue)
 
         emitter.onInt.fire(10)
 
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 
     func testUsesCurrentQueueByDefault() {
         let queueLabel = "com.signals.queue";
-        let queue = dispatch_queue_create(queueLabel, DISPATCH_QUEUE_CONCURRENT)
+        #if swift(>=3.0)
+            let queue = DispatchQueue(label: queueLabel, attributes: DispatchQueue.Attributes.concurrent)
+        #else
+            let queue = dispatch_queue_create(queueLabel, DISPATCH_QUEUE_CONCURRENT)
+        #endif
 
         let listener = NSObject()
-        let expectation = expectationWithDescription("receivedCallbackOnQueue")
+        let expectation = self.expectation(description: "receivedCallbackOnQueue")
 
         emitter.onInt.listen(listener, callback: { (argument) in
-            let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
+            #if swift(>=3.0)
+                let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
+            #else
+                let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
+            #endif
             XCTAssertTrue(queueLabel == currentQueueLabel)
             expectation.fulfill()
         })
 
-        dispatch_async(queue) {
-            self.emitter.onInt.fire(10)
-        }
+        #if swift(>=3.0)
+            queue.async {
+                self.emitter.onInt.fire(10)
+            }
+        #else
+            dispatch_async(queue) {
+                self.emitter.onInt.fire(10)
+            }
+        #endif
 
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 
 }

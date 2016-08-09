@@ -10,6 +10,15 @@ import Foundation
 import XCTest
 @testable import Signals
 
+#if swift(>=3.0)
+#else
+    extension XCTestCase {
+        func measure(block: () -> Void){
+            measureBlock(block)
+        }
+    }
+#endif
+
 class SignalsTests: XCTestCase {
     
     var emitter:SignalEmitter = SignalEmitter();
@@ -398,7 +407,7 @@ class SignalsTests: XCTestCase {
     }
 
     func testPerformanceFiring() {
-        self.measureBlock() {
+        self.measure() {
             var dispatchCount = 0
             for _ in 0..<10 {
                 self.emitter.onIntAndString.listen(self) { (argument1, argument2) -> Void in

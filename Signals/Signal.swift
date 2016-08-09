@@ -78,7 +78,7 @@ final public class Signal<T> {
         return signalListener
     }
     #else
-    public func listen(_ listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+    public func listen(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         dumpCancelledListeners()
         let signalListener = SignalListener<T>(listener: listener, callback: callback);
         signalListeners.append(signalListener)
@@ -99,7 +99,7 @@ final public class Signal<T> {
         return signalListener
     }
     #else
-    public func listenOnce(_ listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+    public func listenOnce(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         let signalListener = self.listen(listener, callback: callback)
         signalListener.once = true
         return signalListener
@@ -122,7 +122,7 @@ final public class Signal<T> {
         return signalListener
     }
     #else
-    public func listenPast(_ listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+    public func listenPast(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         let signalListener = self.listen(listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
@@ -151,7 +151,7 @@ final public class Signal<T> {
         return signalListener
     }
     #else
-    public func listenPastOnce(_ listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+    public func listenPastOnce(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         let signalListener = self.listen(listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
@@ -240,7 +240,7 @@ public class SignalListener<T> {
         return _dispatch(data)
     }
     #else
-    private func dispatch(_ data: T) -> Bool {
+    private func dispatch(data: T) -> Bool {
         return _dispatch(data)
     }
     #endif
@@ -270,10 +270,14 @@ public class SignalListener<T> {
                     }
                 }
                 #if swift(>=3.0)
-                    let dispatchQueue = self.dispatchQueue == nil ? DispatchQueue.main : self.dispatchQueue
+                    let dispatchQueue = self.dispatchQueue ?? DispatchQueue.main
                     dispatchQueue?.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay! * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: block)
                 #else
-                    let dispatchQueue = self.dispatchQueue == nil ? dispatch_get_main_queue() : self.dispatchQueue
+                    #if swift(>=2.3)
+                        let dispatchQueue = self.dispatchQueue ?? dispatch_get_main_queue()
+                    #else
+                        let dispatchQueue = self.dispatchQueue ?? dispatch_get_main_queue()!
+                    #endif
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay! * Double(NSEC_PER_SEC))), dispatchQueue, block)
                     
                 #endif
@@ -313,7 +317,7 @@ public class SignalListener<T> {
         return self
     }
     #else
-    public func filter(_ filter: (T) -> Bool) -> SignalListener {
+    public func filter(filter: (T) -> Bool) -> SignalListener {
         self.filter = filter
         return self
     }
@@ -330,7 +334,7 @@ public class SignalListener<T> {
         return self
     }
     #else
-    public func queueAndDelayBy(_ delay: NSTimeInterval) -> SignalListener {
+    public func queueAndDelayBy(delay: NSTimeInterval) -> SignalListener {
         self.delay = delay
         return self
     }
@@ -349,7 +353,7 @@ public class SignalListener<T> {
         return self
     }
     #else
-    public func dispatchOnQueue(_ queue: dispatch_queue_t) -> SignalListener {
+    public func dispatchOnQueue(queue: dispatch_queue_t) -> SignalListener {
         self.dispatchQueue = queue
         return self
     }

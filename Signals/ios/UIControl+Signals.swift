@@ -281,7 +281,7 @@ public extension UIControl {
     
     // MARK: - Internal interface
     
-    private func getOrCreateSignalForUIControlEvent(_ event: UIControlEvents) -> Signal<()> {
+    private func getOrCreateSignalForUIControlEvent(event: UIControlEvents) -> Signal<()> {
         guard let key = UIControl.eventToKey[event] else {
             assertionFailure("Event type is not handled")
             return Signal()
@@ -298,7 +298,7 @@ public extension UIControl {
         }
     }
     
-    private func handleUIControlEvent(_ uiControlEvent: UIControlEvents) {
+    private func handleUIControlEvent(uiControlEvent: UIControlEvents) {
         getOrCreateSignalForUIControlEvent(uiControlEvent).fire()
     }
     

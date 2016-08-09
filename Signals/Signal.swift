@@ -163,10 +163,19 @@ final public class Signal<T> {
     }
     #endif
 
+    #if swift(>=3.0)
+    public func fire(_ data: T) {
+        _fire(data: data)
+    }
+    #else
+    public func fire(data: T) {
+        _fire(data: data)
+    }
+    #endif
     /// Fires the singal.
     ///
     /// - parameter data: The data to fire the signal with.
-    public func fire(_ data: T) {
+    private func _fire(data data: T) {
         fireCount += 1
         lastDataFired = retainLastData ? data : nil
         dumpCancelledListeners()
@@ -178,10 +187,19 @@ final public class Signal<T> {
         }
     }
     
+    #if swift(>=3.0)
+    public func removeListener(_ listener: AnyObject) {
+        _removeListener(listener: listener)
+    }
+    #else
+    public func removeListener(listener: AnyObject) {
+        _removeListener(listener: listener)
+    }
+    #endif
     /// Removes an object as a listener of the Signal.
     ///
     /// - parameter listener: The listener to remove.
-    public func removeListener(_ listener: AnyObject) {
+    private func _removeListener(listener listener: AnyObject) {
         signalListeners = signalListeners.filter {
             if let definiteListener:AnyObject = $0.listener {
                 return definiteListener !== listener
@@ -237,14 +255,14 @@ public class SignalListener<T> {
     #if swift(>=3.0)
     @discardableResult
     private func dispatch(_ data: T) -> Bool {
-        return _dispatch(data)
+        return _dispatch(data: data)
     }
     #else
     private func dispatch(data: T) -> Bool {
-        return _dispatch(data)
+        return _dispatch(data: data)
     }
     #endif
-    private func _dispatch(_ data: T) -> Bool {
+    private func _dispatch(data data: T) -> Bool {
         guard listener != nil else {
             return false
         }
@@ -271,7 +289,7 @@ public class SignalListener<T> {
                 }
                 #if swift(>=3.0)
                     let dispatchQueue = self.dispatchQueue ?? DispatchQueue.main
-                    dispatchQueue?.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay! * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: block)
+                    dispatchQueue.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay! * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: block)
                 #else
                     #if swift(>=2.3)
                         let dispatchQueue = self.dispatchQueue ?? dispatch_get_main_queue()

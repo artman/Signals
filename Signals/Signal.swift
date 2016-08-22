@@ -193,7 +193,7 @@ public class SignalListener<T> {
             } else {
                 // Set up queue
                 queuedData = data
-                let dispatchQueue = self.dispatchQueue == nil ? dispatch_get_main_queue() : self.dispatchQueue
+                let dispatchQueue = self.dispatchQueue ?? dispatch_get_main_queue()
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay! * Double(NSEC_PER_SEC))),
                     dispatchQueue) { [weak self] () -> Void in
                         if let definiteSelf = self {

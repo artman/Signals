@@ -71,7 +71,7 @@ final public class Signal<T> {
     
     /// Attaches a listener to the signal.
     ///
-    /// - parameter listener: The listener object. Sould the listener be deallocated, its associated callback is 
+    /// - parameter on: The listener object. Sould the listener be deallocated, its associated callback is
     ///   automatically removed.
     /// - parameter callback: The closure to invoke whenever the signal fires.
     #if swift(>=3.0)
@@ -94,7 +94,7 @@ final public class Signal<T> {
     
     /// Attaches a listener to the signal that is removed after the signal has fired once.
     ///
-    /// - parameter listener: The listener object. Sould the listener be deallocated, its associated callback is 
+    /// - parameter on: The listener object. Sould the listener be deallocated, its associated callback is
     ///   automatically removed.
     /// - parameter callback: The closure to invoke when the signal fires for the first time.
     #if swift(>=3.0)
@@ -115,12 +115,12 @@ final public class Signal<T> {
     /// Attaches a listener to the signal and invokes the callback immediately with the last data fired by the signal
     /// if it has fired at least once and if the `retainLastData` property has been set to true.
     ///
-    /// - parameter listener: The listener object. Sould the listener be deallocated, its associated callback is 
+    /// - parameter on: The listener object. Sould the listener be deallocated, its associated callback is
     ///   automatically removed.
     /// - parameter callback: The closure to invoke whenever the signal fires.
     #if swift(>=3.0)
     @discardableResult
-    public func listenPast(_ listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+    public func listenPast(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
         let signalListener = self.listen(on: listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
@@ -128,7 +128,7 @@ final public class Signal<T> {
         return signalListener
     }
     #else
-    public func listenPast(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+    public func listenPast(on listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
         let signalListener = self.listen(on: listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
@@ -146,7 +146,7 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     #if swift(>=3.0)
     @discardableResult
-    public func listenPastOnce(_ listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+    public func listenPastOnce(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
         let signalListener = self.listen(on: listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
@@ -157,7 +157,7 @@ final public class Signal<T> {
         return signalListener
     }
     #else
-    public func listenPastOnce(listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+    public func listenPastOnce(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
         let signalListener = self.listen(on: listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)

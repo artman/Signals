@@ -222,7 +222,7 @@ class SignalsTests: XCTestCase {
         
         emitter.onIntAndString => (intArgument:1, stringArgument:"test")
         
-        emitter.onIntAndString.listenPast(self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.listenPast(on: self, callback: { (argument1, argument2) -> Void in
             intSignalResult = argument1
             stringSignalResult = argument2
             dispatchCount += 1
@@ -299,7 +299,7 @@ class SignalsTests: XCTestCase {
         
         emitter.onNoParams.fire()
         
-        emitter.onNoParams.listenPast(self, callback: { () -> Void in
+        emitter.onNoParams.listenPast(on: self, callback: { () -> Void in
             dispatchCount += 1
         })
         

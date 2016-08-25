@@ -30,7 +30,7 @@ class TestListener {
     }
 
     func listenPastOnceTo(_ emitter: SignalEmitter) {
-        emitter.onInt.listenPastOnce(self, callback: {
+        emitter.onInt.listenPastOnce(on: self, callback: {
             [unowned self] (argument) in
             self.dispatchCount += 1
             self.lastArgument = argument
@@ -38,7 +38,7 @@ class TestListener {
     }
 
     func listenPastTo(_ emitter: SignalEmitter) {
-        emitter.onInt.listenPast(self, callback: {
+        emitter.onInt.listenPast(on: self, callback: {
             [unowned self] (argument) in
             self.dispatchCount += 1
             self.lastArgument = argument;

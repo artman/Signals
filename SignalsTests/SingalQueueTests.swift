@@ -38,10 +38,10 @@ class SignalQueueTests: XCTestCase {
     func testBasicFiring() {
         let expectation = self.expectation(description: "queuedDispatch")
 
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             XCTAssertEqual(argument, 1, "Last data catched")
             expectation.fulfill()
-        }).queueAndDelayBy(0.1)
+        }).queue(andDelayBy: 0.1)
 
         emitter.onInt.fire(1);
 
@@ -51,10 +51,10 @@ class SignalQueueTests: XCTestCase {
     func testDispatchQueueing() {
         let expectation = self.expectation(description: "queuedDispatch")
  
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             XCTAssertEqual(argument, 3, "Last data catched")
             expectation.fulfill()
-        }).queueAndDelayBy(0.1)
+        }).queue(andDelayBy: 0.1)
         
         emitter.onInt.fire(1);
         emitter.onInt.fire(2);
@@ -66,10 +66,10 @@ class SignalQueueTests: XCTestCase {
     func testNoQueueTimeFiring() {
         let expectation = self.expectation(description: "queuedDispatch")
 
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             XCTAssertEqual(argument, 3, "Last data catched")
             expectation.fulfill()
-        }).queueAndDelayBy(0.0)
+        }).queue(andDelayBy: 0.0)
         
         emitter.onInt.fire(1);
         emitter.onInt.fire(2);
@@ -81,12 +81,12 @@ class SignalQueueTests: XCTestCase {
     func testConditionalListening() {
         let expectation = self.expectation(description: "queuedDispatch")
         
-        emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.listen(on: self, callback: { (argument1, argument2) -> Void in
             XCTAssertEqual(argument1, 2, "argument1 catched")
             XCTAssertEqual(argument2, "test2", "argument2 catched")
             expectation.fulfill()
             
-        }).queueAndDelayBy(0.01).filter { $0 == 2 && $1 == "test2" }
+        }).queue(andDelayBy: 0.01).filter { $0 == 2 && $1 == "test2" }
         
         emitter.onIntAndString.fire((intArgument:1, stringArgument:"test"))
         emitter.onIntAndString.fire((intArgument:1, stringArgument:"test2"))
@@ -99,9 +99,9 @@ class SignalQueueTests: XCTestCase {
     func testCancellingListeners() {
         let expectation = self.expectation(description: "queuedDispatch")
         
-        let listener = emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
+        let listener = emitter.onIntAndString.listen(on: self, callback: { (argument1, argument2) -> Void in
             XCTFail("Listener should have been canceled")
-        }).queueAndDelayBy(0.01)
+        }).queue(andDelayBy: 0.01)
         
         emitter.onIntAndString.fire((intArgument:1, stringArgument:"test"))
         emitter.onIntAndString.fire((intArgument:1, stringArgument:"test"))
@@ -125,11 +125,11 @@ class SignalQueueTests: XCTestCase {
         let expectation = self.expectation(description: "queuedDispatch")
         var dispatchCount = 0
 
-        emitter.onNoParams.listen(self, callback: { () -> Void in
+        emitter.onNoParams.listen(on: self, callback: { () -> Void in
             dispatchCount += 1
             XCTAssertEqual(dispatchCount, 1, "Dispatched only once")
             expectation.fulfill()
-        }).queueAndDelayBy(0.01)
+        }).queue(andDelayBy: 0.01)
         
         emitter.onNoParams.fire()
         emitter.onNoParams.fire()
@@ -142,8 +142,8 @@ class SignalQueueTests: XCTestCase {
         var listener1: NSObject? = NSObject()
         var listener2: NSObject? = NSObject()
         
-        emitter.onInt.listen(listener1!) { $0 }
-        emitter.onInt.listen(listener2!) { $0 }
+        emitter.onInt.listen(on: listener1!) { _ = $0 }
+        emitter.onInt.listen(on: listener2!) { _ = $0 }
         
         XCTAssertEqual(emitter.onInt.listeners.count, 2, "Should have two listener")
         
@@ -169,7 +169,7 @@ class SignalQueueTests: XCTestCase {
         let secondListener = NSObject()
 
         let firstExpectation = expectation(description: "firstDispatchOnQueue")
-        emitter.onInt.listen(firstListener, callback: { (argument) in
+        emitter.onInt.listen(on: firstListener, callback: { (argument) in
             #if swift(>=3.0)
                 let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
             #else
@@ -177,9 +177,9 @@ class SignalQueueTests: XCTestCase {
             #endif
             XCTAssertTrue(firstQueueLabel == currentQueueLabel)
             firstExpectation.fulfill()
-        }).dispatchOnQueue(firstQueue)
+        }).dispatch(onQueue: firstQueue)
         let secondExpectation = expectation(description: "secondDispatchOnQueue")
-        emitter.onInt.listen(secondListener, callback: { (argument) in
+        emitter.onInt.listen(on: secondListener, callback: { (argument) in
             #if swift(>=3.0)
                 let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
             #else
@@ -187,7 +187,7 @@ class SignalQueueTests: XCTestCase {
             #endif
             XCTAssertTrue(secondQueueLabel == currentQueueLabel)
             secondExpectation.fulfill()
-        }).dispatchOnQueue(secondQueue)
+        }).dispatch(onQueue: secondQueue)
 
         emitter.onInt.fire(10)
 
@@ -205,7 +205,7 @@ class SignalQueueTests: XCTestCase {
         let listener = NSObject()
         let expectation = self.expectation(description: "receivedCallbackOnQueue")
 
-        emitter.onInt.listen(listener, callback: { (argument) in
+        emitter.onInt.listen(on: listener, callback: { (argument) in
             #if swift(>=3.0)
                 let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
             #else

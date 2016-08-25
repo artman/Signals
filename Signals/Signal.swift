@@ -11,6 +11,11 @@ import Foundation
 /// Create instances of Signal and assign them to public constants on your class for each event type that can
 /// be observed by listeners.
 final public class Signal<T> {
+    #if swift(>=3.0)
+    public typealias SignalCallback = @escaping (T) -> Void
+    #else
+    public typealias SignalCallback = (T) -> Void
+    #endif
     
     /// The number of times the signal has fired.
     public private(set) var fireCount: Int = 0
@@ -71,20 +76,21 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     #if swift(>=3.0)
     @discardableResult
-    public func listen(_ listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+    public func listen(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
         dumpCancelledListeners()
         let signalListener = SignalListener<T>(listener: listener, callback: callback);
         signalListeners.append(signalListener)
         return signalListener
     }
     #else
-    public func listen(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
+    public func listen(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
         dumpCancelledListeners()
         let signalListener = SignalListener<T>(listener: listener, callback: callback);
         signalListeners.append(signalListener)
         return signalListener
     }
     #endif
+    
     
     /// Attaches a listener to the signal that is removed after the signal has fired once.
     ///
@@ -93,16 +99,16 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke when the signal fires for the first time.
     #if swift(>=3.0)
     @discardableResult
-    public func listenOnce(_ listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
-        let signalListener = self.listen(listener, callback: callback)
+    public func listenOnce(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+        let signalListener = self.listen(on: listener, callback: callback)
         signalListener.once = true
         return signalListener
     }
     #else
-    public func listenOnce(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
-        let signalListener = self.listen(listener, callback: callback)
-        signalListener.once = true
-        return signalListener
+    public func listenOnce(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+    let signalListener = self.listen(on: listener, callback: callback)
+    signalListener.once = true
+    return signalListener
     }
     #endif
     
@@ -114,8 +120,8 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     #if swift(>=3.0)
     @discardableResult
-    public func listenPast(_ listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
-        let signalListener = self.listen(listener, callback: callback)
+    public func listenPast(_ listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+        let signalListener = self.listen(on: listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
         }
@@ -123,7 +129,7 @@ final public class Signal<T> {
     }
     #else
     public func listenPast(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
-        let signalListener = self.listen(listener, callback: callback)
+        let signalListener = self.listen(on: listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
         }
@@ -140,8 +146,8 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     #if swift(>=3.0)
     @discardableResult
-    public func listenPastOnce(_ listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
-        let signalListener = self.listen(listener, callback: callback)
+    public func listenPastOnce(_ listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+        let signalListener = self.listen(on: listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
             signalListener.cancel()
@@ -151,8 +157,8 @@ final public class Signal<T> {
         return signalListener
     }
     #else
-    public func listenPastOnce(listener: AnyObject, callback: (T) -> Void) -> SignalListener<T> {
-        let signalListener = self.listen(listener, callback: callback)
+    public func listenPastOnce(listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+        let signalListener = self.listen(on: listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
             signalListener.cancel()
@@ -163,43 +169,26 @@ final public class Signal<T> {
     }
     #endif
 
-    #if swift(>=3.0)
-    public func fire(_ data: T) {
-        _fire(data: data)
-    }
-    #else
-    public func fire(data: T) {
-        _fire(data: data)
-    }
-    #endif
     /// Fires the singal.
     ///
     /// - parameter data: The data to fire the signal with.
-    private func _fire(data data: T) {
+    public func fire(_ data: T) {
         fireCount += 1
         lastDataFired = retainLastData ? data : nil
         dumpCancelledListeners()
         
         for signalListener in signalListeners {
             if signalListener.filter == nil || signalListener.filter!(data) == true {
-                signalListener.dispatch(data)
+                #if swift(>=3.0)
+                    _ = signalListener.dispatch(data: data)
+                #else
+                    _ = signalListener.dispatch(data)
+                #endif
             }
         }
     }
     
-    #if swift(>=3.0)
-    public func removeListener(_ listener: AnyObject) {
-        _removeListener(listener: listener)
-    }
-    #else
-    public func removeListener(listener: AnyObject) {
-        _removeListener(listener: listener)
-    }
-    #endif
-    /// Removes an object as a listener of the Signal.
-    ///
-    /// - parameter listener: The listener to remove.
-    private func _removeListener(listener listener: AnyObject) {
+    public func dettach(from listener: AnyObject) {
         signalListeners = signalListeners.filter {
             if let definiteListener:AnyObject = $0.listener {
                 return definiteListener !== listener
@@ -209,7 +198,7 @@ final public class Signal<T> {
     }
     
     /// Removes all listeners from the Signal.
-    public func removeAllListeners() {
+    public func dettachAllListeners() {
         #if swift(>=3.0)
             signalListeners.removeAll(keepingCapacity: false)
         #else
@@ -225,6 +214,13 @@ final public class Signal<T> {
 
 /// A SignalLister represenents an instance and its association with a Signal.
 public class SignalListener<T> {
+    #if swift(>=3.0)
+    public typealias SignalCallback = @escaping (T) -> Void
+    public typealias SignalFilter = @escaping (T) -> Bool
+    #else
+    public typealias SignalCallback = (T) -> Void
+    public typealias SignalFilter = (T) -> Bool
+    #endif
     
     // The listener
     weak public var listener: AnyObject?
@@ -237,9 +233,9 @@ public class SignalListener<T> {
     #else
         private var delay: NSTimeInterval?
     #endif
-    private var queuedData: T?
-    private var filter: ((T) -> Bool)?
-    private var callback: (T) -> Void
+    var queuedData: T?
+    var filter: (SignalFilter)?
+    var callback: SignalCallback
     
     #if swift(>=3.0)
         private var dispatchQueue: DispatchQueue?
@@ -247,22 +243,12 @@ public class SignalListener<T> {
         private var dispatchQueue: dispatch_queue_t?
     #endif
     
-    private init (listener: AnyObject, callback: (T) -> Void) {
+    init (listener: AnyObject, callback: SignalCallback) {
         self.listener = listener
         self.callback = callback
     }
     
-    #if swift(>=3.0)
-    @discardableResult
-    private func dispatch(_ data: T) -> Bool {
-        return _dispatch(data: data)
-    }
-    #else
-    private func dispatch(data: T) -> Bool {
-        return _dispatch(data: data)
-    }
-    #endif
-    private func _dispatch(data data: T) -> Bool {
+    func dispatch(data: T) -> Bool {
         guard listener != nil else {
             return false
         }
@@ -328,15 +314,16 @@ public class SignalListener<T> {
     ///
     /// - parameter filter: A closure that can decide whether the Signal fire should be dispatched to its listener.
     /// - returns: Returns self so you can chain calls.
+  
     #if swift(>=3.0)
     @discardableResult
-    public func filter(_ filter: (T) -> Bool) -> SignalListener {
-        self.filter = filter
+    public func filter(where predicate: SignalFilter) -> SignalListener {
+        self.filter = predicate
         return self
     }
     #else
-    public func filter(filter: (T) -> Bool) -> SignalListener {
-        self.filter = filter
+    public func filter(where predicate: SignalFilter) -> SignalListener {
+        self.filter = predicate
         return self
     }
     #endif
@@ -347,12 +334,12 @@ public class SignalListener<T> {
     /// - returns: Returns self so you can chain calls.
     #if swift(>=3.0)
     @discardableResult
-    public func queueAndDelayBy(_ delay: TimeInterval) -> SignalListener {
+    public func queue(andDelayBy delay: TimeInterval) -> SignalListener {
         self.delay = delay
         return self
     }
     #else
-    public func queueAndDelayBy(delay: NSTimeInterval) -> SignalListener {
+    public func queue(andDelayBy delay: NSTimeInterval) -> SignalListener {
         self.delay = delay
         return self
     }
@@ -366,12 +353,12 @@ public class SignalListener<T> {
     /// - returns: Returns self so you can chain calls.
     #if swift(>=3.0)
     @discardableResult
-    public func dispatchOnQueue(_ queue: DispatchQueue) -> SignalListener {
+    public func dispatch(onQueue queue: DispatchQueue) -> SignalListener {
         self.dispatchQueue = queue
         return self
     }
     #else
-    public func dispatchOnQueue(queue: dispatch_queue_t) -> SignalListener {
+    public func dispatch(onQueue queue: dispatch_queue_t) -> SignalListener {
         self.dispatchQueue = queue
         return self
     }

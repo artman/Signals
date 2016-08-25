@@ -1,3 +1,6 @@
+
+
+
 //
 //  UIControl+SignalsTests.swift
 //  Signals
@@ -28,46 +31,46 @@ class UIControl_SignalsTests: XCTestCase {
         var onEditingDidEndCount = 0
         var onEditingDidEndOnExitCount = 0
 
-        button.onTouchDown.listen(self) {
+        button.onTouchDown.listen(on: self) {
             onTouchDownCount += 1
         }
-        button.onTouchDownRepeat.listen(self) {
+        button.onTouchDownRepeat.listen(on: self) {
             onTouchDownRepeatCount += 1
         }
-        button.onTouchDragInside.listen(self) {
+        button.onTouchDragInside.listen(on: self) {
             onTouchDragInsideCount += 1
         }
-        button.onTouchDragOutside.listen(self) {
+        button.onTouchDragOutside.listen(on: self) {
             onTouchDragOutsideCount += 1
         }
-        button.onTouchDragEnter.listen(self) {
+        button.onTouchDragEnter.listen(on: self) {
             onTouchDragEnterCount += 1
         }
-        button.onTouchDragExit.listen(self) {
+        button.onTouchDragExit.listen(on: self) {
             onTouchDragExitCount += 1
         }
-        button.onTouchUpInside.listen(self) {
+        button.onTouchUpInside.listen(on: self) {
             onTouchUpInsideCount += 1
         }
-        button.onTouchUpOutside.listen(self) {
+        button.onTouchUpOutside.listen(on: self) {
             onTouchUpOutsideCount += 1
         }
-        button.onTouchCancel.listen(self) {
+        button.onTouchCancel.listen(on: self) {
             onTouchCancelCount += 1
         }
-        button.onValueChanged.listen(self) {
+        button.onValueChanged.listen(on: self) {
             onValueChangedCount += 1
         }
-        button.onEditingDidBegin.listen(self) {
+        button.onEditingDidBegin.listen(on: self) {
             onEditingDidBeginCount += 1
         }
-        button.onEditingChanged.listen(self) {
+        button.onEditingChanged.listen(on: self) {
             onEditingChangedCount += 1
         }
-        button.onEditingDidEnd.listen(self) {
+        button.onEditingDidEnd.listen(on: self) {
             onEditingDidEndCount += 1
         }
-        button.onEditingDidEndOnExit.listen(self) {
+        button.onEditingDidEndOnExit.listen(on: self) {
             onEditingDidEndOnExitCount += 1
         }
         

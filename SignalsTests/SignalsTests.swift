@@ -120,7 +120,7 @@ class SignalsTests: XCTestCase {
         ]
         
         for listener in testListeners {
-            listener.listenTo(emitter)
+            listener.listen(to: emitter)
         }
         
         emitter.onInt.fire(1)
@@ -137,9 +137,9 @@ class SignalsTests: XCTestCase {
         let listener2 = TestListener()
         let listener3 = TestListener()
         
-        listener1.listenTo(emitter)
-        listener2.listenOnceTo(emitter)
-        listener3.listenPastTo(emitter)
+        listener1.listen(to: emitter)
+        listener2.listenOnce(to: emitter)
+        listener3.listenPast(to: emitter)
         
         emitter.onInt.fire(1)
         emitter.onInt.fire(2)
@@ -154,7 +154,7 @@ class SignalsTests: XCTestCase {
 
         emitter.onInt.fire(1)
         emitter.onInt.fire(2)
-        listener.listenPastOnceTo(emitter)
+        listener.listenPastOnce(to: emitter)
         emitter.onInt.fire(3)
         emitter.onInt.fire(4)
 
@@ -165,7 +165,7 @@ class SignalsTests: XCTestCase {
     func testListeningPastOnceNotFiredYet() {
         let listener = TestListener()
 
-        listener.listenPastOnceTo(emitter)
+        listener.listenPastOnce(to: emitter)
         emitter.onInt.fire(1)
         emitter.onInt.fire(2)
 
@@ -207,7 +207,7 @@ class SignalsTests: XCTestCase {
     
     func testAutoRemoveWeakListeners() {
         var listener: TestListener? = TestListener()
-        listener!.listenTo(emitter)
+        listener!.listen(to: emitter)
         listener = nil
         
         emitter.onInt.fire(1)

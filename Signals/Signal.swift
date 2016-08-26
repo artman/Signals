@@ -172,6 +172,7 @@ final public class Signal<T> {
     /// Fires the singal.
     ///
     /// - parameter data: The data to fire the signal with.
+    #if swift(>=3.0)
     public func fire(_ data: T) {
         fireCount += 1
         lastDataFired = retainLastData ? data : nil
@@ -179,14 +180,23 @@ final public class Signal<T> {
         
         for signalListener in signalListeners {
             if signalListener.filter == nil || signalListener.filter!(data) == true {
-                #if swift(>=3.0)
                     _ = signalListener.dispatch(data: data)
-                #else
-                    _ = signalListener.dispatch(data)
-                #endif
             }
         }
     }
+    #else
+    public func fire(data: T) {
+        fireCount += 1
+        lastDataFired = retainLastData ? data : nil
+        dumpCancelledListeners()
+        
+        for signalListener in signalListeners {
+            if signalListener.filter == nil || signalListener.filter!(data) == true {
+                _ = signalListener.dispatch(data)
+            }
+        }
+    }
+    #endif
     
     public func dettach(from listener: AnyObject) {
         signalListeners = signalListeners.filter {

@@ -10,6 +10,15 @@ import Foundation
 import XCTest
 @testable import Signals
 
+#if swift(>=3.0)
+#else
+    extension XCTestCase {
+        func measure(block: () -> Void){
+            measureBlock(block)
+        }
+    }
+#endif
+
 class SignalsTests: XCTestCase {
     
     var emitter:SignalEmitter = SignalEmitter();
@@ -27,10 +36,10 @@ class SignalsTests: XCTestCase {
         var intSignalResult = 0
         var stringSignalResult = ""
         
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             intSignalResult = argument;
         })
-        emitter.onString.listen(self, callback: { (argument) in
+        emitter.onString.listen(on: self, callback: { (argument) in
             stringSignalResult = argument;
         })
         
@@ -44,7 +53,7 @@ class SignalsTests: XCTestCase {
     func testNoArgumentFiring() {
         var signalCount = 0
         
-        emitter.onNoParams.listen(self, callback: { () -> Void in
+        emitter.onNoParams.listen(on: self, callback: { () -> Void in
             signalCount += 1;
         })
         
@@ -57,7 +66,7 @@ class SignalsTests: XCTestCase {
         var intSignalResult = 0
         var stringSignalResult = ""
         
-        emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.listen(on: self, callback: { (argument1, argument2) -> Void in
             intSignalResult = argument1
             stringSignalResult = argument2
         })
@@ -72,7 +81,7 @@ class SignalsTests: XCTestCase {
         var dispatchCount = 0
         var lastArgument = 0
         
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             dispatchCount += 1
             lastArgument = argument
         })
@@ -88,11 +97,11 @@ class SignalsTests: XCTestCase {
         var dispatchCount = 0
         var lastArgument = 0
         
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             dispatchCount += 1
             lastArgument = argument
         })
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             dispatchCount += 1
             lastArgument = argument + 1
         })
@@ -111,7 +120,7 @@ class SignalsTests: XCTestCase {
         ]
         
         for listener in testListeners {
-            listener.listenTo(emitter)
+            listener.listen(to: emitter)
         }
         
         emitter.onInt.fire(1)
@@ -128,9 +137,9 @@ class SignalsTests: XCTestCase {
         let listener2 = TestListener()
         let listener3 = TestListener()
         
-        listener1.listenTo(emitter)
-        listener2.listenOnceTo(emitter)
-        listener3.listenPastTo(emitter)
+        listener1.listen(to: emitter)
+        listener2.listenOnce(to: emitter)
+        listener3.listenPast(to: emitter)
         
         emitter.onInt.fire(1)
         emitter.onInt.fire(2)
@@ -145,7 +154,7 @@ class SignalsTests: XCTestCase {
 
         emitter.onInt.fire(1)
         emitter.onInt.fire(2)
-        listener.listenPastOnceTo(emitter)
+        listener.listenPastOnce(to: emitter)
         emitter.onInt.fire(3)
         emitter.onInt.fire(4)
 
@@ -156,7 +165,7 @@ class SignalsTests: XCTestCase {
     func testListeningPastOnceNotFiredYet() {
         let listener = TestListener()
 
-        listener.listenPastOnceTo(emitter)
+        listener.listenPastOnce(to: emitter)
         emitter.onInt.fire(1)
         emitter.onInt.fire(2)
 
@@ -167,14 +176,14 @@ class SignalsTests: XCTestCase {
     func testRemovingListeners() {
         var dispatchCount: Int = 0
         
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             dispatchCount += 1
         })
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             dispatchCount += 1
         })
         
-        emitter.onInt.removeListener(self)
+        emitter.onInt.dettach(from: self)
         emitter.onInt.fire(1)
         
         XCTAssertEqual(dispatchCount, 0, "Shouldn't have catched signal fire")
@@ -183,14 +192,14 @@ class SignalsTests: XCTestCase {
     func testRemovingAllListeners() {
         var dispatchCount: Int = 0
         
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             dispatchCount += 1
         })
-        emitter.onInt.listen(self, callback: { (argument) in
+        emitter.onInt.listen(on: self, callback: { (argument) in
             dispatchCount += 1
         })
         
-        emitter.onInt.removeAllListeners()
+        emitter.onInt.dettachAllListeners()
         emitter.onInt.fire(1)
         
         XCTAssertEqual(dispatchCount, 0, "Shouldn't have catched signal fire")
@@ -198,7 +207,7 @@ class SignalsTests: XCTestCase {
     
     func testAutoRemoveWeakListeners() {
         var listener: TestListener? = TestListener()
-        listener!.listenTo(emitter)
+        listener!.listen(to: emitter)
         listener = nil
         
         emitter.onInt.fire(1)
@@ -213,7 +222,7 @@ class SignalsTests: XCTestCase {
         
         emitter.onIntAndString => (intArgument:1, stringArgument:"test")
         
-        emitter.onIntAndString.listenPast(self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.listenPast(on: self, callback: { (argument1, argument2) -> Void in
             intSignalResult = argument1
             stringSignalResult = argument2
             dispatchCount += 1
@@ -232,7 +241,7 @@ class SignalsTests: XCTestCase {
         var stringSignalResult = ""
         var dispatchCount = 0
         
-        emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.listen(on: self, callback: { (argument1, argument2) -> Void in
             intSignalResult = argument1
             stringSignalResult = argument2
             dispatchCount += 1
@@ -255,7 +264,7 @@ class SignalsTests: XCTestCase {
         var stringSignalResult = ""
         var dispatchCount = 0
         
-        emitter.onIntAndString.listenOnce(self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.listenOnce(on: self, callback: { (argument1, argument2) -> Void in
             intSignalResult = argument1
             stringSignalResult = argument2
             dispatchCount += 1
@@ -274,7 +283,7 @@ class SignalsTests: XCTestCase {
     func testCancellingListeners() {
         var dispatchCount = 0
         
-        let listener = emitter.onIntAndString.listen(self, callback: { (argument1, argument2) -> Void in
+        let listener = emitter.onIntAndString.listen(on: self, callback: { (argument1, argument2) -> Void in
             dispatchCount += 1
         })
      
@@ -290,7 +299,7 @@ class SignalsTests: XCTestCase {
         
         emitter.onNoParams.fire()
         
-        emitter.onNoParams.listenPast(self, callback: { () -> Void in
+        emitter.onNoParams.listenPast(on: self, callback: { () -> Void in
             dispatchCount += 1
         })
         
@@ -300,8 +309,8 @@ class SignalsTests: XCTestCase {
     func testRemoveOwnListenerWhileFiring() {
         var dispatchCount = 0
  
-        emitter.onIntAndString.listenOnce(self) { (intArgument, stringArgument) -> Void in
-            self.emitter.onIntAndString.removeListener(self)
+        emitter.onIntAndString.listenOnce(on: self) { (intArgument, stringArgument) -> Void in
+            self.emitter.onIntAndString.dettach(from: self)
             dispatchCount += 1
         }
         emitter.onIntAndString => (intArgument:1, stringArgument:"test")
@@ -316,18 +325,18 @@ class SignalsTests: XCTestCase {
         let listener2 = NSObject()
         let listener3 = NSObject()
         
-        emitter.onIntAndString.listen(listener1) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.listen(on: listener1) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
         }
-        emitter.onIntAndString.listen(listener2) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.listen(on: listener2) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
-            self.emitter.onIntAndString.removeListener(listener1)
+            self.emitter.onIntAndString.dettach(from: listener1)
         }
-        emitter.onIntAndString.listen(listener3) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.listen(on: listener3) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
-            self.emitter.onIntAndString.removeListener(listener2)
+            self.emitter.onIntAndString.dettach(from: listener2)
         }
-        self.emitter.onIntAndString.removeListener(listener2)
+        self.emitter.onIntAndString.dettach(from: listener2)
         
         emitter.onIntAndString => (intArgument:1, stringArgument:"test")
         emitter.onIntAndString => (intArgument:1, stringArgument:"test")
@@ -342,17 +351,17 @@ class SignalsTests: XCTestCase {
         let listener2 = NSObject()
         let listener3 = NSObject()
         
-        emitter.onIntAndString.listen(listener1) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.listen(on: listener1) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
-            self.emitter.onIntAndString.removeListener(listener2)
+            self.emitter.onIntAndString.dettach(from: listener2)
         }
-        emitter.onIntAndString.listen(listener2) { (intArgument, stringArgument) -> Void in
-            dispatchCount += 1
-        }
-        emitter.onIntAndString.listen(listener3) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.listen(on: listener2) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
         }
-        self.emitter.onIntAndString.removeListener(listener2)
+        emitter.onIntAndString.listen(on: listener3) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+        }
+        self.emitter.onIntAndString.dettach(from: listener2)
         
         emitter.onIntAndString => (intArgument:1, stringArgument:"test")
         emitter.onIntAndString => (intArgument:1, stringArgument:"test")
@@ -367,17 +376,17 @@ class SignalsTests: XCTestCase {
         let listener2 = NSObject()
         let listener3 = NSObject()
         
-        emitter.onIntAndString.listen(listener1) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.listen(on: listener1) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
-            self.emitter.onIntAndString.removeAllListeners()
+            self.emitter.onIntAndString.dettachAllListeners()
         }
-        emitter.onIntAndString.listen(listener2) { (intArgument, stringArgument) -> Void in
-            dispatchCount += 1
-        }
-        emitter.onIntAndString.listen(listener3) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.listen(on: listener2) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
         }
-        self.emitter.onIntAndString.removeListener(listener2)
+        emitter.onIntAndString.listen(on: listener3) { (intArgument, stringArgument) -> Void in
+            dispatchCount += 1
+        }
+        self.emitter.onIntAndString.dettach(from: listener2)
         
         emitter.onIntAndString => (intArgument:1, stringArgument:"test")
         emitter.onIntAndString => (intArgument:1, stringArgument:"test")
@@ -398,10 +407,10 @@ class SignalsTests: XCTestCase {
     }
 
     func testPerformanceFiring() {
-        self.measureBlock() {
+        self.measure() {
             var dispatchCount = 0
             for _ in 0..<10 {
-                self.emitter.onIntAndString.listen(self) { (argument1, argument2) -> Void in
+                self.emitter.onIntAndString.listen(on: self) { (argument1, argument2) -> Void in
                     dispatchCount += 1
                 }
             }

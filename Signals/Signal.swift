@@ -11,11 +11,7 @@ import Foundation
 /// Create instances of Signal and assign them to public constants on your class for each event type that can
 /// be observed by listeners.
 final public class Signal<T> {
-    #if swift(>=3.0)
-    public typealias SignalCallback = @escaping (T) -> Void
-    #else
     public typealias SignalCallback = (T) -> Void
-    #endif
     
     /// The number of times the signal has fired.
     public private(set) var fireCount: Int = 0
@@ -76,7 +72,7 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     #if swift(>=3.0)
     @discardableResult
-    public func listen(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+    public func listen(on listener: AnyObject, callback: @escaping SignalCallback) -> SignalListener<T> {
         dumpCancelledListeners()
         let signalListener = SignalListener<T>(listener: listener, callback: callback);
         signalListeners.append(signalListener)
@@ -99,7 +95,7 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke when the signal fires for the first time.
     #if swift(>=3.0)
     @discardableResult
-    public func listenOnce(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+    public func listenOnce(on listener: AnyObject, callback: @escaping SignalCallback) -> SignalListener<T> {
         let signalListener = self.listen(on: listener, callback: callback)
         signalListener.once = true
         return signalListener
@@ -120,7 +116,7 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     #if swift(>=3.0)
     @discardableResult
-    public func listenPast(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+    public func listenPast(on listener: AnyObject, callback: @escaping SignalCallback) -> SignalListener<T> {
         let signalListener = self.listen(on: listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
@@ -146,7 +142,7 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     #if swift(>=3.0)
     @discardableResult
-    public func listenPastOnce(on listener: AnyObject, callback: SignalCallback) -> SignalListener<T> {
+    public func listenPastOnce(on listener: AnyObject, callback: @escaping SignalCallback) -> SignalListener<T> {
         let signalListener = self.listen(on: listener, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
@@ -224,13 +220,8 @@ final public class Signal<T> {
 
 /// A SignalLister represenents an instance and its association with a Signal.
 public class SignalListener<T> {
-    #if swift(>=3.0)
-    public typealias SignalCallback = @escaping (T) -> Void
-    public typealias SignalFilter = @escaping (T) -> Bool
-    #else
     public typealias SignalCallback = (T) -> Void
     public typealias SignalFilter = (T) -> Bool
-    #endif
     
     // The listener
     weak public var listener: AnyObject?
@@ -253,10 +244,17 @@ public class SignalListener<T> {
         private var dispatchQueue: dispatch_queue_t?
     #endif
     
+    #if swift(>=3.0)
+    init (listener: AnyObject, callback: @escaping SignalCallback) {
+        self.listener = listener
+        self.callback = callback
+    }
+    #else
     init (listener: AnyObject, callback: SignalCallback) {
         self.listener = listener
         self.callback = callback
     }
+    #endif
     
     func dispatch(data: T) -> Bool {
         guard listener != nil else {
@@ -327,7 +325,7 @@ public class SignalListener<T> {
   
     #if swift(>=3.0)
     @discardableResult
-    public func filter(where predicate: SignalFilter) -> SignalListener {
+    public func filter(where predicate: @escaping SignalFilter) -> SignalListener {
         self.filter = predicate
         return self
     }

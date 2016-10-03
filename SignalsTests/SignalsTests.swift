@@ -13,8 +13,8 @@ import XCTest
 #if swift(>=3.0)
 #else
     extension XCTestCase {
-        func measure(block: () -> Void){
-            measureBlock(block)
+        func measure(_ block: () -> Void){
+            self.measure(block)
         }
     }
 #endif

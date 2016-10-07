@@ -378,7 +378,11 @@ public class SignalListener<T> {
     }
 }
 
-infix operator => { associativity left precedence 0 }
+precedencegroup ExponentiativePrecedence {
+    associativity: left
+}
+
+infix operator =>: ExponentiativePrecedence
 
 public func =><T> (signal: Signal<T>, data: T) -> Void {
     signal.fire(data)

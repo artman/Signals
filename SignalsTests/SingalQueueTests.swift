@@ -13,11 +13,11 @@ import XCTest
 #else
     extension XCTestCase {
         @nonobjc func expectation(description descripton: String) -> XCTestExpectation {
-            return self.expectationWithDescription(descripton)
+            return self.expectation(withDescription: descripton)
         }
         
-        @nonobjc func waitForExpectations(timeout timeout: NSTimeInterval, handler: XCWaitCompletionHandler?) {
-            waitForExpectationsWithTimeout(timeout, handler: handler)
+        @nonobjc func waitForExpectations(timeout: TimeInterval, handler: XCWaitCompletionHandler?) {
+            self.waitForExpectations(withTimeout: timeout, handler: handler)
         }
     }
 #endif
@@ -115,7 +115,7 @@ class SignalQueueTests: XCTestCase {
         #if swift(>=3.0)
             DispatchQueue.main.asyncAfter( deadline: DispatchTime.now() + Double(Int64(0.05 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: block)
         #else
-        dispatch_after( dispatch_time(DISPATCH_TIME_NOW, Int64(0.05 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), block)
+        DispatchQueue.main.asyncAfter( deadline: DispatchTime.now() + Double(Int64(0.05 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: block)
         #endif
             
         waitForExpectations(timeout: 1.0, handler: nil)
@@ -161,8 +161,8 @@ class SignalQueueTests: XCTestCase {
             let firstQueue = DispatchQueue(label: firstQueueLabel)
             let secondQueue = DispatchQueue(label: secondQueueLabel, attributes: DispatchQueue.Attributes.concurrent)
         #else
-            let firstQueue = dispatch_queue_create(firstQueueLabel, DISPATCH_QUEUE_SERIAL)
-            let secondQueue = dispatch_queue_create(secondQueueLabel, DISPATCH_QUEUE_CONCURRENT)
+            let firstQueue = DispatchQueue(label: firstQueueLabel, attributes: [])
+            let secondQueue = DispatchQueue(label: secondQueueLabel, attributes: DispatchQueue.Attributes.concurrent)
         #endif
 
         let firstListener = NSObject()
@@ -199,7 +199,7 @@ class SignalQueueTests: XCTestCase {
         #if swift(>=3.0)
             let queue = DispatchQueue(label: queueLabel, attributes: DispatchQueue.Attributes.concurrent)
         #else
-            let queue = dispatch_queue_create(queueLabel, DISPATCH_QUEUE_CONCURRENT)
+            let queue = DispatchQueue(label: queueLabel, attributes: DispatchQueue.Attributes.concurrent)
         #endif
 
         let listener = NSObject()
@@ -220,7 +220,7 @@ class SignalQueueTests: XCTestCase {
                 self.emitter.onInt.fire(10)
             }
         #else
-            dispatch_async(queue) {
+            queue.async {
                 self.emitter.onInt.fire(10)
             }
         #endif

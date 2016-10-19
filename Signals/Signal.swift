@@ -35,9 +35,9 @@ final public class Signal<T> {
         get {
             return signalListeners.filter {
                 return $0.observer != nil
-            }.map {
-                (signal) -> AnyObject in
-                return signal.observer!
+                }.map {
+                    (signal) -> AnyObject in
+                    return signal.observer!
             }
         }
     }
@@ -94,7 +94,7 @@ final public class Signal<T> {
         }
         return signalListener
     }
-
+    
     /// Subscribes an observer to the `Signal` and invokes its callback immediately with the last data fired by the
     /// `Signal` if it has fired at least once and if the `retainLastData` property has been set to true. If it has
     /// not been fired yet, it will continue listening until it fires for the first time.
@@ -113,7 +113,7 @@ final public class Signal<T> {
         }
         return signalListener
     }
-
+    
     /// Fires the `Singal`.
     ///
     /// - parameter data: The data to fire the `Signal` with.
@@ -124,7 +124,7 @@ final public class Signal<T> {
         
         for signalListener in signalListeners {
             if signalListener.filter == nil || signalListener.filter!(data) == true {
-                    _ = signalListener.dispatch(data: data)
+                _ = signalListener.dispatch(data: data)
             }
         }
     }
@@ -143,7 +143,7 @@ final public class Signal<T> {
     
     /// Cancels all subscriptions for the `Signal`.
     public func cancelAllSubscriptions() {
-            signalListeners.removeAll(keepingCapacity: false)
+        signalListeners.removeAll(keepingCapacity: false)
     }
     
     /// Clears the last fired data from the `Signal` and resets the fire count.
@@ -166,7 +166,6 @@ final public class Signal<T> {
             }
         }
     }
-    
 }
 
 /// A SignalLister represenents an instance and its association with a `Signal`.
@@ -190,7 +189,6 @@ final public class SignalSubscription<T> {
         self.observer = observer
         self.callback = callback
     }
-    #endif
     
     /// Assigns a filter to the `SignalSubscription`. This lets you define conditions under which a observer should actually
     /// receive the firing of a `Singal`. The closure that is passed an argument can decide whether the firing of a
@@ -219,7 +217,7 @@ final public class SignalSubscription<T> {
         self.sampleInterval = sampleInterval
         return self
     }
-
+    
     /// Assigns a dispatch queue to the `SignalSubscription`. The queue is used for scheduling the observer calls. If not
     /// nil, the callback is fired asynchronously on the specified queue. Otherwise, the block is run synchronously
     /// on the posting thread, which is its default behaviour.
@@ -252,7 +250,6 @@ final public class SignalSubscription<T> {
             if queuedData != nil {
                 queuedData = data
             } else {
-                // Set up queue
                 queuedData = data
                 let block = { [weak self] () -> Void in
                     if let definiteSelf = self {
@@ -263,7 +260,6 @@ final public class SignalSubscription<T> {
                         }
                     }
                 }
-                
                 let dispatchQueue = self.dispatchQueue ?? DispatchQueue.main
                 let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(sampleInterval * 1000))
                 dispatchQueue.asyncAfter(deadline: deadline, execute: block)

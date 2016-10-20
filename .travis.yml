@@ -28,6 +28,7 @@ env:
 
 before_install:
     - gem install slather -N
+    - gem install cocoapods --pre --no-rdoc --no-ri --no-document --quiet
 
 script:
   - set -o pipefail

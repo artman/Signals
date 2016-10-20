@@ -19,7 +19,7 @@ Signals is a library for creating and observing events. It replaces delegates, a
 ## Requirements
 
 - iOS 7.0 / watchOS 2.0 / Mac OS X 10.9
-- Xcode 7.0 (compatible with Swift 2.0)
+- Swift 3.0
 
 ## Installation
 
@@ -33,7 +33,7 @@ To integrate Signals into your project add the following to your `Podfile`:
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'Signals', '~> 3.0'
+pod 'Signals', '~> 4.0'
 ```
 
 #### Carthage
@@ -41,7 +41,7 @@ pod 'Signals', '~> 3.0'
 To integrate Signals into your project using Carthage add the following to your `Cartfile`:
 
 ```ruby
-github "artman/Signals" ~> 3.0
+github "artman/Signals" ~> 4.0
 ```
 
 ## Quick start
@@ -70,23 +70,23 @@ Subscribe to these signals from elsewhere in your application
 ```swift
 let networkLoader = NetworkLoader("http://artman.fi")
 
-networkLoader.onProgress.listen(self) { (progress) in
-    println("Loading progress: \(progress*100)%")
+networkLoader.onProgress.subscribe(on: self) { (progress) in
+    print("Loading progress: \(progress*100)%")
 }
 
-networkLoader.onData.listen(self) { (data, error) in
+networkLoader.onData.subscribe(on: self) { (data, error) in
     // Do something with the data
 }
 ```
 
-Adding listeners to signals is a attach-and-forget operation. If your listener is deallocated, the Signal removes the listener from it's list of listeners. If the Signal emitter is deallocated, so is the closure that was supposed to fire on the listener, so you don't need to explicitly manage the removal of listeners.
+Adding subscriptions to Signals is an attach-and-forget operation. If the subscribing object is deallocated, the `Signal` cancels the subscription, so you don't need to explicitly manage the cancellation of your subsciptions.
 
-Singals aren't restricted to one listener, so multiple objects can listen on the same Signal.
+Singals aren't restricted to one subscriber. Multiple objects can subscribe to the same Signal.
 
 You can also subscribe to events after they have occurred:
 
 ```swift
-networkLoader.onProgress.listenPast(self) { (progress) in
+networkLoader.onProgress.subscribePast(on: self) { (progress) in
     // This will immediately fire with last progress that was reported
     // by the onProgress signal
     println("Loading progress: \(progress*100)%")
@@ -95,31 +95,31 @@ networkLoader.onProgress.listenPast(self) { (progress) in
 
 ### Advanced topics
 
-Signal listeners can apply filters:
+Signal subscriptions can apply filters:
 
 ```swift
-networkLoader.onProgress.listen(self) { (progress) in
+networkLoader.onProgress.subscribe(on: self) { (progress) in
     // This fires when progress is done
 }.filter { $0 == 1.0 }
 ```
 
-You can queue up listener dispatches for a set amount of time and fire them only once:
+You can sample up subscriptions to throttle how often you're subscription is exectuded, regardless how often the `Signal` fires:
 
 ```swift
-networkLoader.onProgress.listen(self) { (progress) in
+networkLoader.onProgress.subscribe(on: self) { (progress) in
     // Executed once per second while progress changes
-}.queueAndDelayBy(1.0)
+}.sample(every: 1.0)
 ```
 
-A signal dispatches listener calls synchronously on the posting thread by default. To define the thread explicitly, you should use the `dispatchOnQueue` method. In this way you will receive listener calls asynchronously on the specified queue:
+By default, a subscription executes synchronously on the thread that fires the `Signal`. To change the default behaviour, you can use the `dispatchOnQueue` method to define the dispatch queue:
 
 ```swift
-networkLoader.onProgress.listen(self) { (progress) in
+networkLoader.onProgress.subscribe(on: self) { (progress) in
     // This fires on the main queue
-}.dispatchOnQueue(dispatch_get_main_queue())
+}.dispatchOnQueue(DispatchQueue.main)
 ```
 
-If you don't like the double quotes that you have to use since Swift 2.0 when you fire signals that take tuples, you can use a special operator to fire the data:
+If you don't like the double quotes when you fire signals that take tuples, you can use the custom `=>` operator to fire the data:
 
 ```swift
 // If you don't like the double quotes when firing signals that have tuples
@@ -134,16 +134,16 @@ self.onProgress => 1.0
 
 ## Replacing actions
 
-Signals extends all classes that extend from UIControl (not available on OS X) and lets you use signals to listen to control events for increased code locality.
+Signals extends all classes that extend from UIControl (not available on OS X) and lets you use Signals to listen to control events for increased code locality.
 
 ```swift
 let button = UIButton()
-button.onTouchUpInside.listen(self) {
+button.onTouchUpInside.observe(on: self) {
     // Handle the touch
 }
 
 let slider = UISlider()
-slider.onValueChanged.listen(self) {
+slider.onValueChanged.observe(on: self) {
     // Handle value change
 }
 ```
@@ -163,14 +163,14 @@ Would you rather implement a callback using a delegate:
 
 Or do the same thing with Signals:
 
-- Create a signal for the class that wants to provide an event
-- Subscribe to the signal as a listener from any instance you want
+- Create a Signal for the class that wants to provide an event
+- Subscribe to the Signal
 
-Signals can have multiple listeners and they therefore don't provide a way for the observer to return data to the signal invoker. The delegate pattern should still be used for data requests (e.g. UITableViewDataSource).
+## Replace NotificationCenter
 
-## Replace NSNotificationCenter
+When your team of engineers grows, NotificationCenter quickly becomes an anti-pattern. Global notifications with implicit data and no compiler safety easily make your code error-prone and hard to maintain and refactor.
 
-To replace global notifications via the NSNotificationCenter with Signals, just create a Singleton with a number of public signals that anybody can subscribe to or fire. You'll gain type safety, refactorability and attach-and-forget observation.
+Replacing NotificationCenter with Signals will give you strong type safety enforced by the compiler that will help you maintain your code no matter how fast you move.
 
 ## Communication
 

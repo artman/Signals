@@ -13,7 +13,7 @@ import XCTest
 import Signals
 
 class UIControl_SignalsTests: XCTestCase {
-    func testActionObservation() {
+    func test_actionObservation() {
         let button = UIButton()
 
         var onTouchDownCount = 0
@@ -31,74 +31,61 @@ class UIControl_SignalsTests: XCTestCase {
         var onEditingDidEndCount = 0
         var onEditingDidEndOnExitCount = 0
 
-        button.onTouchDown.listen(on: self) {
+        button.onTouchDown.subscribe(on: self) {
             onTouchDownCount += 1
         }
-        button.onTouchDownRepeat.listen(on: self) {
+        button.onTouchDownRepeat.subscribe(on: self) {
             onTouchDownRepeatCount += 1
         }
-        button.onTouchDragInside.listen(on: self) {
+        button.onTouchDragInside.subscribe(on: self) {
             onTouchDragInsideCount += 1
         }
-        button.onTouchDragOutside.listen(on: self) {
+        button.onTouchDragOutside.subscribe(on: self) {
             onTouchDragOutsideCount += 1
         }
-        button.onTouchDragEnter.listen(on: self) {
+        button.onTouchDragEnter.subscribe(on: self) {
             onTouchDragEnterCount += 1
         }
-        button.onTouchDragExit.listen(on: self) {
+        button.onTouchDragExit.subscribe(on: self) {
             onTouchDragExitCount += 1
         }
-        button.onTouchUpInside.listen(on: self) {
+        button.onTouchUpInside.subscribe(on: self) {
             onTouchUpInsideCount += 1
         }
-        button.onTouchUpOutside.listen(on: self) {
+        button.onTouchUpOutside.subscribe(on: self) {
             onTouchUpOutsideCount += 1
         }
-        button.onTouchCancel.listen(on: self) {
+        button.onTouchCancel.subscribe(on: self) {
             onTouchCancelCount += 1
         }
-        button.onValueChanged.listen(on: self) {
+        button.onValueChanged.subscribe(on: self) {
             onValueChangedCount += 1
         }
-        button.onEditingDidBegin.listen(on: self) {
+        button.onEditingDidBegin.subscribe(on: self) {
             onEditingDidBeginCount += 1
         }
-        button.onEditingChanged.listen(on: self) {
+        button.onEditingChanged.subscribe(on: self) {
             onEditingChangedCount += 1
         }
-        button.onEditingDidEnd.listen(on: self) {
+        button.onEditingDidEnd.subscribe(on: self) {
             onEditingDidEndCount += 1
         }
-        button.onEditingDidEndOnExit.listen(on: self) {
+        button.onEditingDidEndOnExit.subscribe(on: self) {
             onEditingDidEndOnExitCount += 1
         }
         
-        #if swift(>=3.0)
-            let events: [UIControlEvents] = [.touchDown, .touchDownRepeat, .touchDragInside, .touchDragOutside, .touchDragEnter,
-                .touchDragExit, .touchUpInside, .touchUpOutside, .touchCancel, .valueChanged, .editingDidBegin, .editingChanged,
-                .editingDidEnd, .editingDidEndOnExit];
-            
-            for event in events {
-                let actions = button.actions(forTarget: button, forControlEvent: event);
-                for action in actions! {
-                    button.perform(Selector(action))
-                }
-            }
-        #else
-            let events: [UIControlEvents] = [.TouchDown, .TouchDownRepeat, .TouchDragInside, .TouchDragOutside, .TouchDragEnter,
-                                             .TouchDragExit, .TouchUpInside, .TouchUpOutside, .TouchCancel, .ValueChanged, .EditingDidBegin, .EditingChanged,
-                                             .EditingDidEnd, .EditingDidEndOnExit];
-            
-            for event in events {
-                let actions = button.actionsForTarget(button, forControlEvent: event);
-                for action in actions! {
-                    button.performSelector(Selector(action))
-                }
-            }
-        #endif
-            
+        let events: [UIControlEvents] = [.touchDown, .touchDownRepeat, .touchDragInside, .touchDragOutside, 
+                                         .touchDragEnter, .touchDragExit, .touchUpInside, .touchUpOutside, 
+                                         .touchCancel, .valueChanged, .editingDidBegin, .editingChanged,
+                                         .editingDidEnd, .editingDidEndOnExit];
         
+        for event in events {
+            let actions = button.actions(forTarget: button, forControlEvent: event);
+            for action in actions! {
+                button.perform(Selector(action))
+            }
+        }
+
         XCTAssertEqual(onTouchDownCount, 1, "Should have triggered once")
         XCTAssertEqual(onTouchDownRepeatCount, 1, "Should have triggered once")
         XCTAssertEqual(onTouchDragInsideCount, 1, "Should have triggered once")

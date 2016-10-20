@@ -8,6 +8,10 @@
 
 import Foundation
 import XCTest
+@testable import Signals
+#if os(Linux)
+import Dispatch
+#endif
 
 #if swift(>=3.0)
 #else
@@ -158,8 +162,11 @@ class SignalQueueTests: XCTestCase {
         let firstQueueLabel = "com.signals.queue.first";
         let secondQueueLabel = "com.signals.queue.second";
         #if swift(>=3.0)
+            let labelKey = DispatchSpecificKey<String>()
             let firstQueue = DispatchQueue(label: firstQueueLabel)
+            firstQueue.setSpecific(key: labelKey, value: firstQueueLabel)
             let secondQueue = DispatchQueue(label: secondQueueLabel, attributes: DispatchQueue.Attributes.concurrent)
+            secondQueue.setSpecific(key: labelKey, value: secondQueueLabel)
         #else
             let firstQueue = dispatch_queue_create(firstQueueLabel, DISPATCH_QUEUE_SERIAL)
             let secondQueue = dispatch_queue_create(secondQueueLabel, DISPATCH_QUEUE_CONCURRENT)
@@ -171,7 +178,7 @@ class SignalQueueTests: XCTestCase {
         let firstExpectation = expectation(description: "firstDispatchOnQueue")
         emitter.onInt.listen(on: firstListener, callback: { (argument) in
             #if swift(>=3.0)
-                let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
+                let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             #else
                 let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
             #endif
@@ -181,7 +188,7 @@ class SignalQueueTests: XCTestCase {
         let secondExpectation = expectation(description: "secondDispatchOnQueue")
         emitter.onInt.listen(on: secondListener, callback: { (argument) in
             #if swift(>=3.0)
-                let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
+                let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             #else
                 let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
             #endif
@@ -197,7 +204,9 @@ class SignalQueueTests: XCTestCase {
     func testUsesCurrentQueueByDefault() {
         let queueLabel = "com.signals.queue";
         #if swift(>=3.0)
+            let labelKey = DispatchSpecificKey<String>()
             let queue = DispatchQueue(label: queueLabel, attributes: DispatchQueue.Attributes.concurrent)
+            queue.setSpecific(key: labelKey, value: queueLabel)
         #else
             let queue = dispatch_queue_create(queueLabel, DISPATCH_QUEUE_CONCURRENT)
         #endif
@@ -207,7 +216,7 @@ class SignalQueueTests: XCTestCase {
 
         emitter.onInt.listen(on: listener, callback: { (argument) in
             #if swift(>=3.0)
-                let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
+                let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             #else
                 let currentQueueLabel = String(UTF8String: dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL))
             #endif

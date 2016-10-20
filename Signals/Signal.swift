@@ -7,6 +7,10 @@
 //
 
 import Foundation
+#if os(Linux)
+import Dispatch
+let NSEC_PER_SEC: UInt64 = 1000000000
+#endif
 
 /// Create instances of Signal and assign them to public constants on your class for each event type that can
 /// be observed by listeners.

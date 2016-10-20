@@ -9,6 +9,9 @@
 import Foundation
 import XCTest
 @testable import Signals
+#if os(Linux)
+import Dispatch
+#endif
 
 #if swift(>=3.0)
 #else

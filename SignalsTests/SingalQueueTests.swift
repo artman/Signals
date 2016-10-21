@@ -103,7 +103,7 @@ class SignalQueueTests: XCTestCase {
             expectation.fulfill()
         }
         
-        DispatchQueue.main.asyncAfter( deadline: DispatchTime.now() + Double(Int64(0.05 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: block)
+        DispatchQueue.main.asyncAfter( deadline: DispatchTime.now() + .milliseconds(50), execute: block)
             
         waitForExpectations(timeout: 10.0, handler: nil)
     }

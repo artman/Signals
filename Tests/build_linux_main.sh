@@ -10,7 +10,7 @@ array_contains () {
     return $in
 }
 
-swift build && 
+swift build &> /dev/null && 
 swift test -l | 
 sed -e '/[ ]/ d' -e 's/\([^.]*\)\.\([^\/]*\)\/\(.*\)/\1 \2 \3/' |
 {

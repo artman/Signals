@@ -8,6 +8,10 @@
 
 import Foundation
 import XCTest
+@testable import Signals
+#if os(Linux)
+import Dispatch
+#endif
 
 class SignalQueueTests: XCTestCase {
     
@@ -99,7 +103,7 @@ class SignalQueueTests: XCTestCase {
             expectation.fulfill()
         }
         
-        DispatchQueue.main.asyncAfter( deadline: DispatchTime.now() + Double(Int64(0.05 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: block)
+        DispatchQueue.main.asyncAfter( deadline: DispatchTime.now() + .milliseconds(50), execute: block)
             
         waitForExpectations(timeout: 10.0, handler: nil)
     }
@@ -140,22 +144,25 @@ class SignalQueueTests: XCTestCase {
     func testListeningOnDispatchQueue() {
         let firstQueueLabel = "com.signals.queue.first";
         let secondQueueLabel = "com.signals.queue.second";
-        let firstQueue = DispatchQueue(label: firstQueueLabel)
-        let secondQueue = DispatchQueue(label: secondQueueLabel, attributes: DispatchQueue.Attributes.concurrent)
 
+        let labelKey = DispatchSpecificKey<String>()
+        let firstQueue = DispatchQueue(label: firstQueueLabel)
+        firstQueue.setSpecific(key: labelKey, value: firstQueueLabel)
+        let secondQueue = DispatchQueue(label: secondQueueLabel, attributes: DispatchQueue.Attributes.concurrent)
+        secondQueue.setSpecific(key: labelKey, value: secondQueueLabel)
 
         let firstListener = NSObject()
         let secondListener = NSObject()
 
         let firstExpectation = expectation(description: "firstDispatchOnQueue")
         emitter.onInt.subscribe(on: firstListener, callback: { (argument) in
-            let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
+            let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             XCTAssertTrue(firstQueueLabel == currentQueueLabel)
             firstExpectation.fulfill()
         }).dispatch(onQueue: firstQueue)
         let secondExpectation = expectation(description: "secondDispatchOnQueue")
         emitter.onInt.subscribe(on: secondListener, callback: { (argument) in
-            let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
+            let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             XCTAssertTrue(secondQueueLabel == currentQueueLabel)
             secondExpectation.fulfill()
         }).dispatch(onQueue: secondQueue)
@@ -167,14 +174,16 @@ class SignalQueueTests: XCTestCase {
 
     func testUsesCurrentQueueByDefault() {
         let queueLabel = "com.signals.queue";
+
+        let labelKey = DispatchSpecificKey<String>()
         let queue = DispatchQueue(label: queueLabel, attributes: DispatchQueue.Attributes.concurrent)
+        queue.setSpecific(key: labelKey, value: queueLabel)
 
         let observer = NSObject()
         let expectation = self.expectation(description: "receivedCallbackOnQueue")
 
         emitter.onInt.subscribe(on: observer, callback: { (argument) in
-            let currentQueueLabel = String(validatingUTF8: __dispatch_queue_get_label(nil))
-
+            let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             XCTAssertTrue(queueLabel == currentQueueLabel)
             expectation.fulfill()
         })

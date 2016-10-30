@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if os(Linux)
+import Dispatch
+#endif
 
 /// Create instances of `Signal` and assign them to public constants on your class for each event type that your
 /// class fires.
@@ -278,7 +281,7 @@ final public class SignalSubscription<T> {
     }
 }
 
-infix operator =>
+infix operator => : AssignmentPrecedence
 
 /// Helper operator to fire signal data.
 public func =><T> (signal: Signal<T>, data: T) -> Void {

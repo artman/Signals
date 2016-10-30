@@ -21,3 +21,7 @@ xcuserdata
 
 Pods/
 Carthage/Build
+
+.build
+/.previous-build
+.DS_Store

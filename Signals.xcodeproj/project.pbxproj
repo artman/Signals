@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0677D4F41DF07DD600C14CAC /* SignalSuspensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0677D4F31DF07DD600C14CAC /* SignalSuspensionTests.swift */; };
+		0677D4F51DF07DE200C14CAC /* SignalSuspensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0677D4F31DF07DD600C14CAC /* SignalSuspensionTests.swift */; };
+		0677D4F61DF07DE200C14CAC /* SignalSuspensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0677D4F31DF07DD600C14CAC /* SignalSuspensionTests.swift */; };
 		720D11781A085315003C4361 /* Signals.h in Headers */ = {isa = PBXBuildFile; fileRef = 720D11771A085315003C4361 /* Signals.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		720D117E1A085315003C4361 /* Signals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720D11721A085314003C4361 /* Signals.framework */; };
 		720D11851A085315003C4361 /* SignalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11841A085315003C4361 /* SignalsTests.swift */; };
@@ -63,6 +66,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0677D4F31DF07DD600C14CAC /* SignalSuspensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalSuspensionTests.swift; sourceTree = "<group>"; };
 		720D11721A085314003C4361 /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		720D11761A085315003C4361 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		720D11771A085315003C4361 /* Signals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Signals.h; sourceTree = "<group>"; };
@@ -189,6 +193,7 @@
 				720D11841A085315003C4361 /* SignalsTests.swift */,
 				720D118F1A085370003C4361 /* SignalQueueTests.swift */,
 				72AD0F531D7CE77200ACFF1A /* UIControl+SignalsTests.swift */,
+				0677D4F31DF07DD600C14CAC /* SignalSuspensionTests.swift */,
 				720D11961A0855E0003C4361 /* Helpers */,
 				720D11821A085315003C4361 /* Supporting Files */,
 			);
@@ -508,6 +513,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0677D4F41DF07DD600C14CAC /* SignalSuspensionTests.swift in Sources */,
 				72C57B6C1D7CE7A300CF2EE0 /* UIControl+SignalsTests.swift in Sources */,
 				720D11921A085370003C4361 /* SignalQueueTests.swift in Sources */,
 				720D11911A085370003C4361 /* SignalEmitter.swift in Sources */,
@@ -538,6 +544,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0677D4F61DF07DE200C14CAC /* SignalSuspensionTests.swift in Sources */,
 				72C57B6D1D7CE7A400CF2EE0 /* UIControl+SignalsTests.swift in Sources */,
 				725B76D01C265738001D04CC /* SignalsTests.swift in Sources */,
 				725B76CF1C265738001D04CC /* SignalEmitter.swift in Sources */,
@@ -559,6 +566,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72665B521C212BF60067DF26 /* SignalQueueTests.swift in Sources */,
+				0677D4F51DF07DE200C14CAC /* SignalSuspensionTests.swift in Sources */,
 				72665B511C212BF60067DF26 /* SignalsTests.swift in Sources */,
 				72665B4F1C212BF60067DF26 /* TestListener.swift in Sources */,
 				72665B501C212BF60067DF26 /* SignalEmitter.swift in Sources */,

@@ -117,7 +117,7 @@ final public class Signal<T> {
         return signalListener
     }
     
-    /// Fires the `Singal`.
+    /// Fires the `Signal`.
     ///
     /// - parameter data: The data to fire the `Signal` with.
     public func fire(_ data: T) {
@@ -194,7 +194,7 @@ final public class SignalSubscription<T> {
     }
     
     /// Assigns a filter to the `SignalSubscription`. This lets you define conditions under which a observer should actually
-    /// receive the firing of a `Singal`. The closure that is passed an argument can decide whether the firing of a
+    /// receive the firing of a `Signal`. The closure that is passed an argument can decide whether the firing of a
     /// `Signal` should actually be dispatched to its observer depending on the data fired.
     ///
     /// If the closeure returns true, the observer is informed of the fire. The default implementation always
@@ -210,8 +210,7 @@ final public class SignalSubscription<T> {
     
     
     /// Tells the observer to sample received `Signal` data and only dispatch the latest data once the time interval 
-    /// has elapsed. This is useful if the subscriber wants to throttle the amount of data it receives from the
-    /// `Singla`.
+    /// has elapsed. This is useful if the subscriber wants to throttle the amount of data it receives from the `Signal`.
     ///
     /// - parameter sampleInterval: The number of seconds to delay dispatch.
     /// - returns: Returns self so you can chain calls.

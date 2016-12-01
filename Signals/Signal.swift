@@ -175,6 +175,7 @@ final public class Signal<T> {
 final public class SignalSubscription<T> {
     public typealias SignalCallback = (T) -> Void
     public typealias SignalFilter = (T) -> Bool
+    public typealias SignalDataMerger = (_ data: T, _ existingData: T?) -> T
     
     // The observer.
     weak public var observer: AnyObject?
@@ -182,8 +183,22 @@ final public class SignalSubscription<T> {
     /// Whether the observer should be removed once it observes the `Signal` firing once. Defaults to false.
     public var once = false
     
-    fileprivate var queuedData: T?
+    /// The observer is called immediately on dispatch if the subscription is not suspended
+    /// (which it is the default behaviour). If the subscription is suspended, callback
+    /// is invoked when the subscription is resumed.
+    public var suspended = false {
+        didSet {
+            if !suspended && suspended != oldValue, let data = accumulatedData {
+                // When subscription resumes, dispatch accumulated data
+                _ = dispatch(data: data)
+                accumulatedData = nil
+            }
+        }
+    }
+    
+    fileprivate var queuedData, accumulatedData: T?
     fileprivate var filter: (SignalFilter)?
+    fileprivate var merger: SignalDataMerger = { (data, _) in data } // Overwrite data by default
     fileprivate var callback: SignalCallback
     fileprivate var dispatchQueue: DispatchQueue?
     private var sampleInterval: TimeInterval?
@@ -220,6 +235,19 @@ final public class SignalSubscription<T> {
         return self
     }
     
+    /// Assigns a data merger to the `SignalSubscription`. This lets you define how
+    /// subscription accumulates data during suspension.
+    ///
+    /// - parameter merger: A closure that take new data and existing data. It returns
+    /// the merged data. By default it only overwrites existing data.
+    /// - returns: Returns self so you can chain calls.
+    @discardableResult
+    public func mergeData(with merger: @escaping SignalDataMerger) -> SignalSubscription
+    {
+        self.merger = merger
+        return self
+    }
+    
     /// Assigns a dispatch queue to the `SignalSubscription`. The queue is used for scheduling the observer calls. If not
     /// nil, the callback is fired asynchronously on the specified queue. Otherwise, the block is run synchronously
     /// on the posting thread, which is its default behaviour.
@@ -241,6 +269,12 @@ final public class SignalSubscription<T> {
     
     fileprivate func dispatch(data: T) -> Bool {
         guard observer != nil else {
+            return false
+        }
+        
+        guard !suspended else {
+            // Accumulate data during suspension
+            accumulatedData = merger(data, accumulatedData)
             return false
         }
         

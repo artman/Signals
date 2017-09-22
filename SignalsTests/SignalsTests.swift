@@ -133,8 +133,10 @@ class SignalsTests: XCTestCase {
     }
     
     func test_subscribePastOnce_whenNotRetainingPastData_shouldAssert() {
+        #if DEBUG
         let signal = Signal<Void>()
         XCTAssertThrowsError(signal.subscribePastOnce(on: self) {}, "Should assert because signal doesnt retain past data")
+        #endif
     }
 
     func test_subscribePastOnce_whenNotYetFired_shouldObserveNext() {

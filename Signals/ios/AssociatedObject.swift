@@ -1,9 +1,5 @@
 //
-//  AssociatedObject.swift
-//  Signals
-//
-//  Created by Tuomas Artman on 12/25/2015.
-//  Copyright © 2015 Tuomas Artman. All rights reserved.
+//  Copyright (c) 2014 - 2017 Tuomas Artman. All rights reserved.
 //
 
 import ObjectiveC

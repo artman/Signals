@@ -1,9 +1,5 @@
 //
-//  SignalsTests.swift
-//  SignalsTests
-//
-//  Created by Tuomas Artman on 16.10.2014.
-//  Copyright (c) 2014 Tuomas Artman. All rights reserved.
+//  Copyright (c) 2014 - 2017 Tuomas Artman. All rights reserved.
 //
 
 import Foundation
@@ -118,9 +114,9 @@ class SignalQueueTests: XCTestCase {
             expectation.fulfill()
         }).sample(every: 0.01)
         
-        emitter.onNoParams.fire()
-        emitter.onNoParams.fire()
-        emitter.onNoParams.fire()
+        emitter.onNoParams.fire(())
+        emitter.onNoParams.fire(())
+        emitter.onNoParams.fire(())
         
         waitForExpectations(timeout: 10.0, handler: nil)
     }
@@ -159,13 +155,13 @@ class SignalQueueTests: XCTestCase {
             let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             XCTAssertTrue(firstQueueLabel == currentQueueLabel)
             firstExpectation.fulfill()
-        }).dispatch(onQueue: firstQueue)
+        }).onQueue(firstQueue)
         let secondExpectation = expectation(description: "secondDispatchOnQueue")
         emitter.onInt.subscribe(on: secondListener, callback: { (argument) in
             let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             XCTAssertTrue(secondQueueLabel == currentQueueLabel)
             secondExpectation.fulfill()
-        }).dispatch(onQueue: secondQueue)
+        }).onQueue(secondQueue)
 
         emitter.onInt.fire(10)
 

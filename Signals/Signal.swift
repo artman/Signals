@@ -1,9 +1,5 @@
 //
-//  Signal.swift
-//  Signals
-//
-//  Created by Tuomas Artman on 8/16/2014.
-//  Copyright (c) 2014 Tuomas Artman. All rights reserved.
+//  Copyright (c) 2014 - 2017 Tuomas Artman. All rights reserved.
 //
 
 import Foundation
@@ -14,7 +10,7 @@ import Dispatch
 /// Create instances of `Signal` and assign them to public constants on your class for each event type that your
 /// class fires.
 final public class Signal<T> {
-    
+        
     public typealias SignalCallback = (T) -> Void
     
     /// The number of times the `Signal` has fired.
@@ -91,6 +87,9 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the `Signal` fires.
     @discardableResult
     public func subscribePast(on observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
+        #if DEBUG
+            assert(retainLastData, "can't subscribe to past events on Signal with retainLastData set to false")
+        #endif
         let signalListener = self.subscribe(on: observer, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
@@ -107,6 +106,9 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the signal fires.
     @discardableResult
     public func subscribePastOnce(on observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
+        #if DEBUG
+            assert(retainLastData, "can't subscribe to past events on Signal with retainLastData set to false")
+        #endif
         let signalListener = self.subscribe(on: observer, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
@@ -228,7 +230,7 @@ final public class SignalSubscription<T> {
     /// - parameter queue: A queue for performing the observer's calls.
     /// - returns: Returns self so you can chain calls.
     @discardableResult
-    public func dispatch(onQueue queue: DispatchQueue) -> SignalSubscription {
+    public func onQueue(_ queue: DispatchQueue) -> SignalSubscription {
         self.dispatchQueue = queue
         return self
     }
@@ -238,9 +240,9 @@ final public class SignalSubscription<T> {
         self.observer = nil
     }
     
-    // MARK: - Private Interface
+    // MARK: - Internal Interface
     
-    fileprivate func dispatch(data: T) -> Bool {
+    func dispatch(data: T) -> Bool {
         guard observer != nil else {
             return false
         }

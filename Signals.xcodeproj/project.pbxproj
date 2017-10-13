@@ -431,12 +431,12 @@
 			projectRoot = "";
 			targets = (
 				720D11711A085314003C4361 /* Signals iOS */,
-				72665B351C212BDB0067DF26 /* Signals OSX */,
-				725B76B51C26558F001D04CC /* Signals tvOS */,
-				721E12A71C1E8E1D00CD0CBA /* Signals watchOS */,
 				720D117C1A085315003C4361 /* SignalsTests iOS */,
+				72665B351C212BDB0067DF26 /* Signals OSX */,
 				72665B3E1C212BDB0067DF26 /* SignalsTests OSX */,
+				725B76B51C26558F001D04CC /* Signals tvOS */,
 				725B76BE1C26558F001D04CC /* SignalsTests tvOS */,
+				721E12A71C1E8E1D00CD0CBA /* Signals watchOS */,
 			);
 		};
 /* End PBXProject section */
@@ -771,6 +771,7 @@
 				PRODUCT_NAME = Signals;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = Debug;
 		};
@@ -793,6 +794,7 @@
 				PRODUCT_NAME = Signals;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = Release;
 		};
@@ -840,6 +842,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "artman.fi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Debug;
 		};
@@ -851,6 +854,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "artman.fi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Release;
 		};

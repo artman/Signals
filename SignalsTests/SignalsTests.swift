@@ -15,6 +15,7 @@ class SignalsTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        assertionHandlerOverride = nil
         emitter = SignalEmitter()
     }
     
@@ -134,8 +135,15 @@ class SignalsTests: XCTestCase {
     
     func test_subscribePastOnce_whenNotRetainingPastData_shouldAssert() {
         #if DEBUG
-        let signal = Signal<Void>()
-        XCTAssertThrowsError(signal.subscribePastOnce(on: self) {}, "Should assert because signal doesnt retain past data")
+            var assertionCalled = false
+            assertionHandlerOverride = { (condition, _) in
+                XCTAssertEqual(condition, false, "Should assert because signal doesnt retain past data")
+                assertionCalled = true
+            }
+            
+            let signal = Signal<Void>()
+            signal.subscribePastOnce(on: self) {}
+            XCTAssertEqual(assertionCalled, true, "Should assert because signal doesnt retain past data")
         #endif
     }
 
@@ -396,5 +404,4 @@ class SignalsTests: XCTestCase {
             }
         }
     }
-
 }

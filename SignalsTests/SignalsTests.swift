@@ -15,7 +15,9 @@ class SignalsTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        assertionHandlerOverride = nil
+        #if debug
+            assertionHandlerOverride = nil
+        #endif
         emitter = SignalEmitter()
     }
     

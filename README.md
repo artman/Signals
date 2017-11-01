@@ -19,7 +19,7 @@ Signals is a library for creating and observing events. It replaces delegates, a
 ## Requirements
 
 - iOS 7.0 / watchOS 2.0 / Mac OS X 10.9
-- Swift 3.0
+- Swift 4.0 (Swift 3 support available in olde releases)
 
 ## Installation
 
@@ -33,7 +33,7 @@ To integrate Signals into your project add the following to your `Podfile`:
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'Signals', '~> 4.0'
+pod 'Signals', '~> 5.0'
 ```
 
 #### Carthage
@@ -41,7 +41,7 @@ pod 'Signals', '~> 4.0'
 To integrate Signals into your project using Carthage add the following to your `Cartfile`:
 
 ```ruby
-github "artman/Signals" ~> 4.0
+github "artman/Signals" ~> 5.0
 ```
 
 ## Quick start

@@ -1,9 +1,5 @@
 //
-//  Observer.swift
-//  Signals
-//
-//  Created by Tuomas Artman on 16.8.2014.
-//  Copyright (c) 2014 Tuomas Artman. All rights reserved.
+//  Copyright (c) 2014 - 2017 Tuomas Artman. All rights reserved.
 //
 
 import Foundation
@@ -14,7 +10,7 @@ class TestListener {
     var lastArgument: Int = 0;
     
     func subscribe(to emitter: SignalEmitter) {
-        emitter.onInt.subscribe(on: self, callback: {
+        emitter.onInt.subscribe(with: self, callback: {
             [unowned self] (argument) in
             self.dispatchCount += 1
             self.lastArgument = argument;
@@ -22,7 +18,7 @@ class TestListener {
     }
     
     func subscribeOnce(to emitter: SignalEmitter) {
-        emitter.onInt.subscribeOnce(on: self, callback: {
+        emitter.onInt.subscribeOnce(with: self, callback: {
             [unowned self] (argument) in
             self.dispatchCount += 1
             self.lastArgument = argument;
@@ -30,7 +26,7 @@ class TestListener {
     }
 
     func subscribePastOnce(to emitter: SignalEmitter) {
-        emitter.onInt.subscribePastOnce(on: self, callback: {
+        emitter.onInt.subscribePastOnce(with: self, callback: {
             [unowned self] (argument) in
             self.dispatchCount += 1
             self.lastArgument = argument
@@ -38,7 +34,7 @@ class TestListener {
     }
 
     func subscribePast(to emitter: SignalEmitter) {
-        emitter.onInt.subscribePast(on: self, callback: {
+        emitter.onInt.subscribePast(with: self, callback: {
             [unowned self] (argument) in
             self.dispatchCount += 1
             self.lastArgument = argument;

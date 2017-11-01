@@ -1,11 +1,6 @@
 //
-//  UIControl+Signals.swift
-//  Signals
+//  Copyright (c) 2014 - 2017 Tuomas Artman. All rights reserved.
 //
-//  Created by Tuomas Artman on 12/23/2015.
-//  Copyright © 2015 Tuomas Artman. All rights reserved.
-//
-
 
 import UIKit
 
@@ -121,62 +116,62 @@ public extension UIControl {
     }
     
     private func handleUIControlEvent(_ uiControlEvent: UIControlEvents) {
-        getOrCreateSignalForUIControlEvent(uiControlEvent).fire()
+        getOrCreateSignalForUIControlEvent(uiControlEvent).fire(())
     }
     
-    private dynamic func eventHandlerTouchDown() {
+    @objc private dynamic func eventHandlerTouchDown() {
         handleUIControlEvent(.touchDown)
     }
     
-    private dynamic func eventHandlerTouchDownRepeat() {
+    @objc private dynamic func eventHandlerTouchDownRepeat() {
         handleUIControlEvent(.touchDownRepeat)
     }
     
-    private dynamic func eventHandlerTouchDragInside() {
+    @objc private dynamic func eventHandlerTouchDragInside() {
         handleUIControlEvent(.touchDragInside)
     }
     
-    private dynamic func eventHandlerTouchDragOutside() {
+    @objc private dynamic func eventHandlerTouchDragOutside() {
         handleUIControlEvent(.touchDragOutside)
     }
     
-    private dynamic func eventHandlerTouchDragEnter() {
+    @objc private dynamic func eventHandlerTouchDragEnter() {
         handleUIControlEvent(.touchDragEnter)
     }
     
-    private dynamic func eventHandlerTouchDragExit() {
+    @objc private dynamic func eventHandlerTouchDragExit() {
         handleUIControlEvent(.touchDragExit)
     }
     
-    private dynamic func eventHandlerTouchUpInside() {
+    @objc private dynamic func eventHandlerTouchUpInside() {
         handleUIControlEvent(.touchUpInside)
     }
     
-    private dynamic func eventHandlerTouchUpOutside() {
+    @objc private dynamic func eventHandlerTouchUpOutside() {
         handleUIControlEvent(.touchUpOutside)
     }
     
-    private dynamic func eventHandlerTouchCancel() {
+    @objc private dynamic func eventHandlerTouchCancel() {
         handleUIControlEvent(.touchCancel)
     }
     
-    private dynamic func eventHandlerValueChanged() {
+    @objc private dynamic func eventHandlerValueChanged() {
         handleUIControlEvent(.valueChanged)
     }
     
-    private dynamic func eventHandlerEditingDidBegin() {
+    @objc private dynamic func eventHandlerEditingDidBegin() {
         handleUIControlEvent(.editingDidBegin)
     }
     
-    private dynamic func eventHandlerEditingChanged() {
+    @objc private dynamic func eventHandlerEditingChanged() {
         handleUIControlEvent(.editingChanged)
     }
     
-    private dynamic func eventHandlerEditingDidEnd() {
+    @objc private dynamic func eventHandlerEditingDidEnd() {
         handleUIControlEvent(.editingDidEnd)
     }
     
-    private dynamic func eventHandlerEditingDidEndOnExit() {
+    @objc private dynamic func eventHandlerEditingDidEndOnExit() {
         handleUIControlEvent(.editingDidEndOnExit)
     }
 }

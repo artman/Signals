@@ -1,9 +1,5 @@
 //
-//  SignalsTests.swift
-//  SignalsTests
-//
-//  Created by Tuomas Artman on 16.8.2014.
-//  Copyright (c) 2014 Tuomas Artman. All rights reserved.
+//  Copyright (c) 2014 - 2017 Tuomas Artman. All rights reserved.
 //
 
 import Foundation
@@ -19,6 +15,9 @@ class SignalsTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        #if DEBUG
+            assertionHandlerOverride = nil
+        #endif
         emitter = SignalEmitter()
     }
     
@@ -26,14 +25,14 @@ class SignalsTests: XCTestCase {
         super.tearDown()
     }
 
-    func testBasicFiring() {
+    func test_fire() {
         var intSignalResult = 0
         var stringSignalResult = ""
         
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             intSignalResult = argument;
         })
-        emitter.onString.subscribe(on: self, callback: { (argument) in
+        emitter.onString.subscribe(with: self, callback: { (argument) in
             stringSignalResult = argument;
         })
         
@@ -44,23 +43,23 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(stringSignalResult, "test", "StringSignal catched")
     }
     
-    func testNoArgumentFiring() {
+    func test_fire_noArgument() {
         var signalCount = 0
         
-        emitter.onNoParams.subscribe(on: self, callback: { () -> Void in
+        emitter.onNoParams.subscribe(with: self, callback: { () -> Void in
             signalCount += 1;
         })
         
-        emitter.onNoParams.fire();
+        emitter.onNoParams.fire(());
         
         XCTAssertEqual(signalCount, 1, "Signal catched")
     }
 
-    func testMultiArgumentFiring() {
+    func test_fire_multiArgument() {
         var intSignalResult = 0
         var stringSignalResult = ""
         
-        emitter.onIntAndString.subscribe(on: self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.subscribe(with: self, callback: { (argument1, argument2) -> Void in
             intSignalResult = argument1
             stringSignalResult = argument2
         })
@@ -71,11 +70,11 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(stringSignalResult, "test", "argument2 catched")
     }
     
-    func testMultiFiring() {
+    func test_fire_multipleTimes_shouldCallSubcriptionsMultipletimes() {
         var dispatchCount = 0
         var lastArgument = 0
         
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             dispatchCount += 1
             lastArgument = argument
         })
@@ -87,15 +86,15 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(lastArgument, 2, "Last argument catched with value 2")
     }
     
-    func testMultiListenersOneObject() {
+    func test_fire_whenMultipleSubcribers_shouldCallAllSubscribers() {
         var dispatchCount = 0
         var lastArgument = 0
         
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             dispatchCount += 1
             lastArgument = argument
         })
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             dispatchCount += 1
             lastArgument = argument + 1
         })
@@ -106,27 +105,7 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(lastArgument, 2, "Last argument catched with value 2")
     }
     
-    func testMultiListenersManyObjects() {
-        let testListeners = [
-            TestListener(),
-            TestListener(),
-            TestListener()
-        ]
-        
-        for observer in testListeners {
-            observer.subscribe(to: emitter)
-        }
-        
-        emitter.onInt.fire(1)
-        emitter.onInt.fire(2)
-        
-        for observer in testListeners {
-            XCTAssertEqual(observer.dispatchCount, 2, "Dispatched two times")
-            XCTAssertEqual(observer.lastArgument, 2, "Last argument catched with value 2")
-        }
-    }
-    
-    func testListeningOnce() {
+    func test_subscribeOnce() {
         let observer1 = TestListener()
         let observer2 = TestListener()
         let observer3 = TestListener()
@@ -143,7 +122,7 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(observer3.dispatchCount, 2, "Dispatched two times")
     }
     
-    func testListeningPastOnceAlreadyFired() {
+    func test_subscribePastOnce_whenAlreadyFired_shouldImmediatelyFireOnce() {
         let observer = TestListener()
 
         emitter.onInt.fire(1)
@@ -155,8 +134,22 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(observer.dispatchCount, 1, "Dispatched once")
         XCTAssertEqual(observer.lastArgument, 2, "Remembered the most recent data")
     }
+    
+    func test_subscribePastOnce_whenNotRetainingPastData_shouldAssert() {
+        #if DEBUG
+            var assertionCalled = false
+            assertionHandlerOverride = { (condition, _) in
+                XCTAssertEqual(condition, false, "Should assert because signal doesnt retain past data")
+                assertionCalled = true
+            }
+            
+            let signal = Signal<Void>()
+            signal.subscribePastOnce(with: self) {}
+            XCTAssertEqual(assertionCalled, true, "Should assert because signal doesnt retain past data")
+        #endif
+    }
 
-    func testListeningPastOnceNotFiredYet() {
+    func test_subscribePastOnce_whenNotYetFired_shouldObserveNext() {
         let observer = TestListener()
 
         observer.subscribePastOnce(to: emitter)
@@ -167,13 +160,13 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(observer.lastArgument, 1, "Remembered only the relevant data")
     }
 
-    func testRemovingListeners() {
+    func test_cancelSubscription() {
         var dispatchCount: Int = 0
         
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             dispatchCount += 1
         })
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             dispatchCount += 1
         })
         
@@ -183,13 +176,13 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 0, "Shouldn't have catched signal fire")
     }
     
-    func testRemovingAllListeners() {
+    func test_cancelAllSubscriptions() {
         var dispatchCount: Int = 0
         
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             dispatchCount += 1
         })
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             dispatchCount += 1
         })
         
@@ -199,7 +192,7 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 0, "Shouldn't have catched signal fire")
     }
     
-    func testAutoRemoveWeakListeners() {
+    func test_autoRemoveWeakSubscribers() {
         var observer: TestListener? = TestListener()
         observer!.subscribe(to: emitter)
         observer = nil
@@ -209,14 +202,14 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(emitter.onInt.observers.count, 0, "Weak observer should have been collected")
     }
     
-    func testPostListening() {
+    func test_subscribePast() {
         var intSignalResult = 0
         var stringSignalResult = ""
         var dispatchCount = 0
         
-        emitter.onIntAndString => (intArgument:1, stringArgument:"test")
+        emitter.onIntAndString => (intArgument: 1, stringArgument: "test")
         
-        emitter.onIntAndString.subscribePast(on: self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.subscribePast(with: self, callback: { (argument1, argument2) -> Void in
             intSignalResult = argument1
             stringSignalResult = argument2
             dispatchCount += 1
@@ -230,12 +223,12 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 2, "Second fire catched")
     }
     
-    func testConditionalListening() {
+    func test_filter() {
         var intSignalResult = 0
         var stringSignalResult = ""
         var dispatchCount = 0
         
-        emitter.onIntAndString.subscribe(on: self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.subscribe(with: self, callback: { (argument1, argument2) -> Void in
             intSignalResult = argument1
             stringSignalResult = argument2
             dispatchCount += 1
@@ -253,12 +246,12 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(stringSignalResult, "test2", "argument2 catched")
     }
     
-    func testConditionalListeningOnce() {
+    func test_filter_whenMatching_shouldCancel() {
         var intSignalResult = 0
         var stringSignalResult = ""
         var dispatchCount = 0
         
-        emitter.onIntAndString.subscribeOnce(on: self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.subscribeOnce(with: self, callback: { (argument1, argument2) -> Void in
             intSignalResult = argument1
             stringSignalResult = argument2
             dispatchCount += 1
@@ -274,10 +267,10 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(stringSignalResult, "test2", "argument2 catched")
     }
     
-    func testCancellingListeners() {
+    func test_cancel() {
         var dispatchCount = 0
         
-        let observer = emitter.onIntAndString.subscribe(on: self, callback: { (argument1, argument2) -> Void in
+        let observer = emitter.onIntAndString.subscribe(with: self, callback: { (argument1, argument2) -> Void in
             dispatchCount += 1
         })
      
@@ -288,22 +281,22 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 1, "Filtered fires")
     }
     
-    func testPostListeningNoData() {
+    func test_postSubscriptionNoData() {
         var dispatchCount = 0
         
-        emitter.onNoParams.fire()
+        emitter.onNoParams.fire(())
         
-        emitter.onNoParams.subscribePast(on: self, callback: { () -> Void in
+        emitter.onNoParams.subscribePast(with: self, callback: { () -> Void in
             dispatchCount += 1
         })
         
         XCTAssertEqual(dispatchCount, 1, "Catched signal fire")
     }
     
-    func testRemoveOwnListenerWhileFiring() {
+    func test_cancelSubscription_whenCancellingOwnSubscription() {
         var dispatchCount = 0
  
-        emitter.onIntAndString.subscribeOnce(on: self) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.subscribeOnce(with: self) { (intArgument, stringArgument) -> Void in
             self.emitter.onIntAndString.cancelSubscription(for: self)
             dispatchCount += 1
         }
@@ -312,21 +305,21 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 1, "Should have dispatched correct number of times")
     }
     
-    func testRemovePreviousListenersWhileFiring() {
+    func test_cancelSubscription_whenCancellingDuringFiring_shouldCancel() {
         var dispatchCount = 0
         
         let observer1 = NSObject()
         let observer2 = NSObject()
         let observer3 = NSObject()
         
-        emitter.onIntAndString.subscribe(on: observer1) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.subscribe(with: observer1) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
         }
-        emitter.onIntAndString.subscribe(on: observer2) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.subscribe(with: observer2) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
             self.emitter.onIntAndString.cancelSubscription(for: observer1)
         }
-        emitter.onIntAndString.subscribe(on: observer3) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.subscribe(with: observer3) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
             self.emitter.onIntAndString.cancelSubscription(for: observer2)
         }
@@ -338,21 +331,21 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 3+1, "Should have dispatched correct number of times")
     }
     
-    func testRemoveUpcomingListenersWhileFiring() {
+    func test_cancelSubscription_whenCancelingDuringFiring_shouldCancelOnlyTargetedSubscription() {
         var dispatchCount = 0
         
         let observer1 = NSObject()
         let observer2 = NSObject()
         let observer3 = NSObject()
         
-        emitter.onIntAndString.subscribe(on: observer1) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.subscribe(with: observer1) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
             self.emitter.onIntAndString.cancelSubscription(for: observer2)
         }
-        emitter.onIntAndString.subscribe(on: observer2) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.subscribe(with: observer2) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
         }
-        emitter.onIntAndString.subscribe(on: observer3) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.subscribe(with: observer3) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
         }
         self.emitter.onIntAndString.cancelSubscription(for: observer2)
@@ -363,21 +356,21 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 2+2, "Should have dispatched correct number of times")
     }
     
-    func testRemoveAllListenersWhileFiring() {
+    func test_cancelAllSubsciptions_whenCancellingDuringFiring_shouldNotCancelCurrentTargets() {
         var dispatchCount = 0
         
         let observer1 = NSObject()
         let observer2 = NSObject()
         let observer3 = NSObject()
         
-        emitter.onIntAndString.subscribe(on: observer1) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.subscribe(with: observer1) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
             self.emitter.onIntAndString.cancelAllSubscriptions()
         }
-        emitter.onIntAndString.subscribe(on: observer2) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.subscribe(with: observer2) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
         }
-        emitter.onIntAndString.subscribe(on: observer3) { (intArgument, stringArgument) -> Void in
+        emitter.onIntAndString.subscribe(with: observer3) { (intArgument, stringArgument) -> Void in
             dispatchCount += 1
         }
         self.emitter.onIntAndString.cancelSubscription(for: observer2)
@@ -388,7 +381,7 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 1+1, "Should have dispatched correct number of times")
     }
 
-    func testDataRetention() {
+    func test_lastDataFired() {
         emitter.onString.retainLastData = true
         emitter.onString => "Retain Data"
         XCTAssertNotNil(emitter.onString.lastDataFired, "Signal should have retained fired data")
@@ -400,11 +393,11 @@ class SignalsTests: XCTestCase {
         XCTAssertNil(emitter.onString.lastDataFired, "Signal should not have retained fired data")
     }
 
-    func testPerformanceFiring() {
+    func test_fire_uperformance() {
         self.measure() {
             var dispatchCount = 0
             for _ in 0..<10 {
-                self.emitter.onIntAndString.subscribe(on: self) { (argument1, argument2) -> Void in
+                self.emitter.onIntAndString.subscribe(with: self) { (argument1, argument2) -> Void in
                     dispatchCount += 1
                 }
             }
@@ -413,5 +406,4 @@ class SignalsTests: XCTestCase {
             }
         }
     }
-
 }

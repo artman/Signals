@@ -24,46 +24,46 @@ class UIControl_SignalsTests: XCTestCase {
         var onEditingDidEndCount = 0
         var onEditingDidEndOnExitCount = 0
 
-        button.onTouchDown.subscribe(on: self) { _ in
+        button.onTouchDown.subscribe(with: self) { _ in
             onTouchDownCount += 1
         }
-        button.onTouchDownRepeat.subscribe(on: self) { _ in
+        button.onTouchDownRepeat.subscribe(with: self) { _ in
             onTouchDownRepeatCount += 1
         }
-        button.onTouchDragInside.subscribe(on: self) { _ in
+        button.onTouchDragInside.subscribe(with: self) { _ in
             onTouchDragInsideCount += 1
         }
-        button.onTouchDragOutside.subscribe(on: self) { _ in
+        button.onTouchDragOutside.subscribe(with: self) { _ in
             onTouchDragOutsideCount += 1
         }
-        button.onTouchDragEnter.subscribe(on: self) { _ in
+        button.onTouchDragEnter.subscribe(with: self) { _ in
             onTouchDragEnterCount += 1
         }
-        button.onTouchDragExit.subscribe(on: self) { _ in
+        button.onTouchDragExit.subscribe(with: self) { _ in
             onTouchDragExitCount += 1
         }
-        button.onTouchUpInside.subscribe(on: self) { _ in
+        button.onTouchUpInside.subscribe(with: self) { _ in
             onTouchUpInsideCount += 1
         }
-        button.onTouchUpOutside.subscribe(on: self) { _ in
+        button.onTouchUpOutside.subscribe(with: self) { _ in
             onTouchUpOutsideCount += 1
         }
-        button.onTouchCancel.subscribe(on: self) { _ in
+        button.onTouchCancel.subscribe(with: self) { _ in
             onTouchCancelCount += 1
         }
-        button.onValueChanged.subscribe(on: self) { _ in
+        button.onValueChanged.subscribe(with: self) { _ in
             onValueChangedCount += 1
         }
-        button.onEditingDidBegin.subscribe(on: self) { _ in
+        button.onEditingDidBegin.subscribe(with: self) { _ in
             onEditingDidBeginCount += 1
         }
-        button.onEditingChanged.subscribe(on: self) { _ in
+        button.onEditingChanged.subscribe(with: self) { _ in
             onEditingChangedCount += 1
         }
-        button.onEditingDidEnd.subscribe(on: self) { _ in
+        button.onEditingDidEnd.subscribe(with: self) { _ in
             onEditingDidEndCount += 1
         }
-        button.onEditingDidEndOnExit.subscribe(on: self) { _ in
+        button.onEditingDidEndOnExit.subscribe(with: self) { _ in
             onEditingDidEndOnExitCount += 1
         }
         

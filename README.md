@@ -70,11 +70,11 @@ Subscribe to these signals from elsewhere in your application
 ```swift
 let networkLoader = NetworkLoader("http://artman.fi")
 
-networkLoader.onProgress.subscribe(on: self) { (progress) in
+networkLoader.onProgress.subscribe(with: self) { (progress) in
     print("Loading progress: \(progress*100)%")
 }
 
-networkLoader.onData.subscribe(on: self) { (data, error) in
+networkLoader.onData.subscribe(with: self) { (data, error) in
     // Do something with the data
 }
 ```
@@ -86,7 +86,7 @@ Singals aren't restricted to one subscriber. Multiple objects can subscribe to t
 You can also subscribe to events after they have occurred:
 
 ```swift
-networkLoader.onProgress.subscribePast(on: self) { (progress) in
+networkLoader.onProgress.subscribePast(with: self) { (progress) in
     // This will immediately fire with last progress that was reported
     // by the onProgress signal
     println("Loading progress: \(progress*100)%")
@@ -98,7 +98,7 @@ networkLoader.onProgress.subscribePast(on: self) { (progress) in
 Signal subscriptions can apply filters:
 
 ```swift
-networkLoader.onProgress.subscribe(on: self) { (progress) in
+networkLoader.onProgress.subscribe(with: self) { (progress) in
     // This fires when progress is done
 }.filter { $0 == 1.0 }
 ```
@@ -106,7 +106,7 @@ networkLoader.onProgress.subscribe(on: self) { (progress) in
 You can sample up subscriptions to throttle how often you're subscription is exectuded, regardless how often the `Signal` fires:
 
 ```swift
-networkLoader.onProgress.subscribe(on: self) { (progress) in
+networkLoader.onProgress.subscribe(with: self) { (progress) in
     // Executed once per second while progress changes
 }.sample(every: 1.0)
 ```
@@ -114,7 +114,7 @@ networkLoader.onProgress.subscribe(on: self) { (progress) in
 By default, a subscription executes synchronously on the thread that fires the `Signal`. To change the default behaviour, you can use the `dispatchOnQueue` method to define the dispatch queue:
 
 ```swift
-networkLoader.onProgress.subscribe(on: self) { (progress) in
+networkLoader.onProgress.subscribe(with: self) { (progress) in
     // This fires on the main queue
 }.dispatchOnQueue(DispatchQueue.main)
 ```
@@ -138,12 +138,12 @@ Signals extends all classes that extend from UIControl (not available on OS X) a
 
 ```swift
 let button = UIButton()
-button.onTouchUpInside.observe(on: self) {
+button.onTouchUpInside.observe(with: self) {
     // Handle the touch
 }
 
 let slider = UISlider()
-slider.onValueChanged.observe(on: self) {
+slider.onValueChanged.observe(with: self) {
     // Handle value change
 }
 ```

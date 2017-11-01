@@ -58,7 +58,7 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the `Signal` fires.
     /// - returns: A `SignalSubscription` that can be used to cancel or filter the subscription.
     @discardableResult
-    public func subscribe(on observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
+    public func subscribe(with observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
         flushCancelledListeners()
         let signalListener = SignalSubscription<T>(observer: observer, callback: callback);
         signalListeners.append(signalListener)
@@ -73,8 +73,8 @@ final public class Signal<T> {
     ///   subscription is automatically cancelled.
     /// - parameter callback: The closure to invoke when the signal fires for the first time.
     @discardableResult
-    public func subscribeOnce(on observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
-        let signalListener = self.subscribe(on: observer, callback: callback)
+    public func subscribeOnce(with observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
+        let signalListener = self.subscribe(with: observer, callback: callback)
         signalListener.once = true
         return signalListener
     }
@@ -86,11 +86,11 @@ final public class Signal<T> {
     ///   subscription is automatically cancelled.
     /// - parameter callback: The closure to invoke whenever the `Signal` fires.
     @discardableResult
-    public func subscribePast(on observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
+    public func subscribePast(with observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
         #if DEBUG
             signalsAssert(retainLastData, "can't subscribe to past events on Signal with retainLastData set to false")
         #endif
-        let signalListener = self.subscribe(on: observer, callback: callback)
+        let signalListener = self.subscribe(with: observer, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
         }
@@ -105,11 +105,11 @@ final public class Signal<T> {
     ///   subscription is automatically cancelled.
     /// - parameter callback: The closure to invoke whenever the signal fires.
     @discardableResult
-    public func subscribePastOnce(on observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
+    public func subscribePastOnce(with observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
         #if DEBUG
             signalsAssert(retainLastData, "can't subscribe to past events on Signal with retainLastData set to false")
         #endif
-        let signalListener = self.subscribe(on: observer, callback: callback)
+        let signalListener = self.subscribe(with: observer, callback: callback)
         if let lastDataFired = lastDataFired {
             signalListener.callback(lastDataFired)
             signalListener.cancel()

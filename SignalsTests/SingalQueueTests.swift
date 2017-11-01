@@ -25,7 +25,7 @@ class SignalQueueTests: XCTestCase {
     func testBasicFiring() {
         let expectation = self.expectation(description: "queuedDispatch")
 
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             XCTAssertEqual(argument, 1, "Last data catched")
             expectation.fulfill()
         }).sample(every: 0.1)
@@ -38,7 +38,7 @@ class SignalQueueTests: XCTestCase {
     func testDispatchQueueing() {
         let expectation = self.expectation(description: "queuedDispatch")
  
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             XCTAssertEqual(argument, 3, "Last data catched")
             expectation.fulfill()
         }).sample(every: 0.1)
@@ -53,7 +53,7 @@ class SignalQueueTests: XCTestCase {
     func testNoQueueTimeFiring() {
         let expectation = self.expectation(description: "queuedDispatch")
 
-        emitter.onInt.subscribe(on: self, callback: { (argument) in
+        emitter.onInt.subscribe(with: self, callback: { (argument) in
             XCTAssertEqual(argument, 3, "Last data catched")
             expectation.fulfill()
         }).sample(every: 0.0)
@@ -68,7 +68,7 @@ class SignalQueueTests: XCTestCase {
     func testConditionalListening() {
         let expectation = self.expectation(description: "queuedDispatch")
         
-        emitter.onIntAndString.subscribe(on: self, callback: { (argument1, argument2) -> Void in
+        emitter.onIntAndString.subscribe(with: self, callback: { (argument1, argument2) -> Void in
             XCTAssertEqual(argument1, 2, "argument1 catched")
             XCTAssertEqual(argument2, "test2", "argument2 catched")
             expectation.fulfill()
@@ -86,7 +86,7 @@ class SignalQueueTests: XCTestCase {
     func testCancellingListeners() {
         let expectation = self.expectation(description: "queuedDispatch")
         
-        let observer = emitter.onIntAndString.subscribe(on: self, callback: { (argument1, argument2) -> Void in
+        let observer = emitter.onIntAndString.subscribe(with: self, callback: { (argument1, argument2) -> Void in
             XCTFail("Listener should have been canceled")
         }).sample(every: 0.01)
         
@@ -108,7 +108,7 @@ class SignalQueueTests: XCTestCase {
         let expectation = self.expectation(description: "queuedDispatch")
         var dispatchCount = 0
 
-        emitter.onNoParams.subscribe(on: self, callback: { () -> Void in
+        emitter.onNoParams.subscribe(with: self, callback: { () -> Void in
             dispatchCount += 1
             XCTAssertEqual(dispatchCount, 1, "Dispatched only once")
             expectation.fulfill()
@@ -125,8 +125,8 @@ class SignalQueueTests: XCTestCase {
         var observer1: NSObject? = NSObject()
         var observer2: NSObject? = NSObject()
         
-        emitter.onInt.subscribe(on: observer1!) { _ = $0 }
-        emitter.onInt.subscribe(on: observer2!) { _ = $0 }
+        emitter.onInt.subscribe(with: observer1!) { _ = $0 }
+        emitter.onInt.subscribe(with: observer2!) { _ = $0 }
         
         XCTAssertEqual(emitter.onInt.observers.count, 2, "Should have two observer")
         
@@ -151,13 +151,13 @@ class SignalQueueTests: XCTestCase {
         let secondListener = NSObject()
 
         let firstExpectation = expectation(description: "firstDispatchOnQueue")
-        emitter.onInt.subscribe(on: firstListener, callback: { (argument) in
+        emitter.onInt.subscribe(with: firstListener, callback: { (argument) in
             let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             XCTAssertTrue(firstQueueLabel == currentQueueLabel)
             firstExpectation.fulfill()
         }).onQueue(firstQueue)
         let secondExpectation = expectation(description: "secondDispatchOnQueue")
-        emitter.onInt.subscribe(on: secondListener, callback: { (argument) in
+        emitter.onInt.subscribe(with: secondListener, callback: { (argument) in
             let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             XCTAssertTrue(secondQueueLabel == currentQueueLabel)
             secondExpectation.fulfill()
@@ -178,7 +178,7 @@ class SignalQueueTests: XCTestCase {
         let observer = NSObject()
         let expectation = self.expectation(description: "receivedCallbackOnQueue")
 
-        emitter.onInt.subscribe(on: observer, callback: { (argument) in
+        emitter.onInt.subscribe(with: observer, callback: { (argument) in
             let currentQueueLabel = DispatchQueue.getSpecific(key: labelKey)
             XCTAssertTrue(queueLabel == currentQueueLabel)
             expectation.fulfill()

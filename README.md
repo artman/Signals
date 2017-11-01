@@ -103,7 +103,7 @@ networkLoader.onProgress.subscribe(with: self) { (progress) in
 }.filter { $0 == 1.0 }
 ```
 
-You can sample up subscriptions to throttle how often you're subscription is exectuded, regardless how often the `Signal` fires:
+You can sample up subscriptions to throttle how often you're subscription is executed, regardless how often the `Signal` fires:
 
 ```swift
 networkLoader.onProgress.subscribe(with: self) { (progress) in

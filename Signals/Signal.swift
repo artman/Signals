@@ -31,14 +31,7 @@ final public class Signal<T> {
     
     /// All the observers of to the `Signal`.
     public var observers:[AnyObject] {
-        get {
-            return signalListeners.filter {
-                return $0.observer != nil
-                }.map {
-                    (signal) -> AnyObject in
-                    return signal.observer!
-            }
-        }
+        return signalListeners.flatMap { $0.observer }
     }
     
     private var signalListeners = [SignalSubscription<T>]()

@@ -23,7 +23,7 @@ Signals is a library for creating and observing events. It replaces delegates, a
 
 ## Installation
 
-To use Signals with a project targeting iOS 7, simply copy `Signals.swift` into your project.
+To use Signals with a project targeting iOS 7, simply copy `Signal.swift` into your project.
 
 #### CocoaPods
 

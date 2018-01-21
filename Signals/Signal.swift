@@ -188,7 +188,7 @@ final public class SignalSubscription<T> {
     fileprivate var filter: (SignalFilter)?
     fileprivate var callback: SignalCallback
     fileprivate var dispatchQueue: DispatchQueue?
-    private var sampleInterval: TimeInterval?
+    private var sampler: Sampler<T>?
     
     fileprivate init(observer: AnyObject, callback: @escaping SignalCallback) {
         self.observer = observer
@@ -219,7 +219,14 @@ final public class SignalSubscription<T> {
     /// - returns: Returns self so you can chain calls.
     @discardableResult
     public func sample(every sampleInterval: TimeInterval) -> SignalSubscription {
-        self.sampleInterval = sampleInterval
+        if sampler == nil {
+            sampler = Sampler()
+            sampler?.fire = { [weak self] data in
+                self?.sampledDispatch(data: data)
+            }
+            sampler?.dispatchQueue = dispatchQueue
+        }
+        sampler?.interval = sampleInterval
         return self
     }
     
@@ -231,7 +238,8 @@ final public class SignalSubscription<T> {
     /// - returns: Returns self so you can chain calls.
     @discardableResult
     public func onQueue(_ queue: DispatchQueue) -> SignalSubscription {
-        self.dispatchQueue = queue
+        dispatchQueue = queue
+        sampler?.dispatchQueue = queue
         return self
     }
     
@@ -251,24 +259,8 @@ final public class SignalSubscription<T> {
             observer = nil
         }
         
-        if let sampleInterval = sampleInterval {
-            if queuedData != nil {
-                queuedData = data
-            } else {
-                queuedData = data
-                let block = { [weak self] () -> Void in
-                    if let definiteSelf = self {
-                        let data = definiteSelf.queuedData!
-                        definiteSelf.queuedData = nil
-                        if definiteSelf.observer != nil {
-                            definiteSelf.callback(data)
-                        }
-                    }
-                }
-                let dispatchQueue = self.dispatchQueue ?? DispatchQueue.main
-                let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(sampleInterval * 1000))
-                dispatchQueue.asyncAfter(deadline: deadline, execute: block)
-            }
+        if let sampler = sampler {
+            sampler.enqueue(data: data)
         } else {
             if let queue = self.dispatchQueue {
                 queue.async {
@@ -280,6 +272,24 @@ final public class SignalSubscription<T> {
         }
         
         return observer != nil
+    }
+    
+    private func sampledDispatch(data: T) {
+        guard observer != nil else {
+            return
+        }
+        
+        if once {
+            observer = nil
+        }
+        
+        if let queue = dispatchQueue {
+            queue.async {
+                self.callback(data)
+            }
+        } else {
+            callback(data)
+        }
     }
 }
 
@@ -303,3 +313,67 @@ fileprivate func signalsAssert(_ condition: Bool, _ message: String) {
 #if DEBUG
 var assertionHandlerOverride:((_ condition: Bool, _ message: String) -> ())?
 #endif
+
+fileprivate class Sampler<T> {
+    fileprivate var dispatchQueue: DispatchQueue?
+    fileprivate var interval: TimeInterval = 0.0
+    fileprivate var fireImmediately = true
+    fileprivate var fire: ((T) -> Void)?
+    private var queuedData: T?
+    fileprivate func enqueue(data: T) {
+        if queuedData == nil, fireImmediately {
+            immediateFire(data: data)
+        } else if queuedData != nil {
+            queuedData = data
+        } else {
+            queuedData = data
+            after { [weak self] () -> Void in
+                self?.delayedFire()
+            }
+        }
+    }
+    private func immediateFire(data: T) {
+        guard let fire = fire else {
+            return
+        }
+        if let queue = dispatchQueue {
+            queue.async {
+                fire(data)
+            }
+        } else {
+            fire(data)
+        }
+        fireImmediately = false
+        after { [weak self] in
+            self?.resetFireImmediately()
+        }
+    }
+    private func resetFireImmediately() {
+        guard queuedData == nil else {
+            return
+        }
+        fireImmediately = true
+    }
+    private func delayedFire() {
+        guard let fire = fire, let data = queuedData else {
+            return
+        }
+        if let queue = dispatchQueue {
+            queue.async {
+                fire(data)
+            }
+        } else {
+            fire(data)
+        }
+        queuedData = nil
+        fireImmediately = false
+        after { [weak self] in
+            self?.resetFireImmediately()
+        }
+    }
+    private func after(_ block: @escaping () -> Void) {
+        let dispatchQueue = self.dispatchQueue ?? DispatchQueue.main
+        let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(interval * 1000))
+        dispatchQueue.asyncAfter(deadline: deadline, execute: block)
+    }
+}

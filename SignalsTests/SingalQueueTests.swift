@@ -36,12 +36,19 @@ class SignalQueueTests: XCTestCase {
     }
     
     func testDispatchQueueing() {
-        let expectation = self.expectation(description: "queuedDispatch")
+        let expectation1 = self.expectation(description: "queuedDispatch1")
+        let expectation2 = self.expectation(description: "queuedDispatch2")
  
-        emitter.onInt.subscribe(with: self, callback: { (argument) in
-            XCTAssertEqual(argument, 3, "Last data catched")
-            expectation.fulfill()
-        }).sample(every: 0.1)
+        emitter.onInt.subscribe(with: self) { argument in
+            switch argument {
+            case 1:
+                expectation1.fulfill()
+            case 3:
+                expectation2.fulfill()
+            default:
+                XCTFail()
+            }
+        }.sample(every: 0.1)
         
         emitter.onInt.fire(1);
         emitter.onInt.fire(2);
@@ -51,11 +58,18 @@ class SignalQueueTests: XCTestCase {
     }
     
     func testNoQueueTimeFiring() {
-        let expectation = self.expectation(description: "queuedDispatch")
+        let expectation1 = self.expectation(description: "queuedDispatch1")
+        let expectation2 = self.expectation(description: "queuedDispatch2")
 
-        emitter.onInt.subscribe(with: self, callback: { (argument) in
-            XCTAssertEqual(argument, 3, "Last data catched")
-            expectation.fulfill()
+        emitter.onInt.subscribe(with: self, callback: { argument in
+            switch argument {
+            case 1:
+                expectation1.fulfill()
+            case 3:
+                expectation2.fulfill()
+            default:
+                XCTFail()
+            }
         }).sample(every: 0.0)
         
         emitter.onInt.fire(1);
@@ -86,11 +100,18 @@ class SignalQueueTests: XCTestCase {
     func testCancellingListeners() {
         let expectation = self.expectation(description: "queuedDispatch")
         
-        let observer = emitter.onIntAndString.subscribe(with: self, callback: { (argument1, argument2) -> Void in
-            XCTFail("Listener should have been canceled")
-        }).sample(every: 0.01)
+        let observer = emitter.onIntAndString.subscribe(with: self) { int, string in
+            switch int {
+            case 0:
+                break
+            case 1:
+                fallthrough
+            default:
+                XCTFail("Listener should have been canceled")
+            }
+        }.sample(every: 0.01)
         
-        emitter.onIntAndString.fire((intArgument:1, stringArgument:"test"))
+        emitter.onIntAndString.fire((intArgument:0, stringArgument:"test"))
         emitter.onIntAndString.fire((intArgument:1, stringArgument:"test"))
         observer.cancel()
         
@@ -98,9 +119,7 @@ class SignalQueueTests: XCTestCase {
             // Cancelled observer didn't dispatch
             expectation.fulfill()
         }
-        
-        DispatchQueue.main.asyncAfter( deadline: DispatchTime.now() + .milliseconds(50), execute: block)
-            
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(50), execute: block)   
         waitForExpectations(timeout: 10.0, handler: nil)
     }
     
@@ -108,11 +127,17 @@ class SignalQueueTests: XCTestCase {
         let expectation = self.expectation(description: "queuedDispatch")
         var dispatchCount = 0
 
-        emitter.onNoParams.subscribe(with: self, callback: { () -> Void in
+        emitter.onNoParams.subscribe(with: self) {
             dispatchCount += 1
-            XCTAssertEqual(dispatchCount, 1, "Dispatched only once")
-            expectation.fulfill()
-        }).sample(every: 0.01)
+            switch dispatchCount {
+            case 1:
+                break
+            case 2:
+                expectation.fulfill()
+            default:
+                XCTFail()
+            }
+        }.sample(every: 0.01)
         
         emitter.onNoParams.fire(())
         emitter.onNoParams.fire(())

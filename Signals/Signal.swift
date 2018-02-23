@@ -12,6 +12,7 @@ import Dispatch
 final public class Signal<T> {
         
     public typealias SignalCallback = (T) -> Void
+    public typealias SignalDispose = () -> Void
     
     /// The number of times the `Signal` has fired.
     public private(set) var fireCount: Int = 0
@@ -51,9 +52,9 @@ final public class Signal<T> {
     /// - parameter callback: The closure to invoke whenever the `Signal` fires.
     /// - returns: A `SignalSubscription` that can be used to cancel or filter the subscription.
     @discardableResult
-    public func subscribe(with observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
+    public func subscribe(with observer: AnyObject, dispose: SignalDispose? = nil, callback: @escaping SignalCallback) -> SignalSubscription<T> {
         flushCancelledListeners()
-        let signalListener = SignalSubscription<T>(observer: observer, callback: callback);
+        let signalListener = SignalSubscription<T>(observer: observer, dispose: dispose, callback: callback);
         signalListeners.append(signalListener)
         return signalListener
     }
@@ -167,9 +168,10 @@ final public class Signal<T> {
 }
 
 /// A SignalLister represenents an instance and its association with a `Signal`.
-final public class SignalSubscription<T> {
+public class SignalSubscription<T> {
     public typealias SignalCallback = (T) -> Void
     public typealias SignalFilter = (T) -> Bool
+    public typealias SignalDispose = () -> Void
     
     // The observer.
     weak public var observer: AnyObject?
@@ -178,14 +180,36 @@ final public class SignalSubscription<T> {
     public var once = false
     
     fileprivate var queuedData: T?
-    fileprivate var filter: (SignalFilter)?
+    fileprivate var filter: SignalFilter?
     fileprivate var callback: SignalCallback
+    fileprivate var dispose: SignalDispose?
     fileprivate var dispatchQueue: DispatchQueue?
     private var sampler: Sampler<T>?
     
-    fileprivate init(observer: AnyObject, callback: @escaping SignalCallback) {
+    fileprivate init(observer: AnyObject, dispose: SignalDispose?, callback: @escaping SignalCallback) {
         self.observer = observer
         self.callback = callback
+        self.dispose = dispose
+    }
+    
+    deinit {
+        if let dispose = dispose {
+            if let dispatchQueue = dispatchQueue {
+                dispatchQueue.async {
+                    dispose()
+                }
+            } else {
+                if #available(OSX 10.10, *) {
+                    DispatchQueue.global().async {
+                        dispose()
+                    }
+                } else {
+                    DispatchQueue.global(priority: .default).async {
+                        dispose()
+                    }
+                }
+            }
+        }
     }
     
     /// Assigns a filter to the `SignalSubscription`. This lets you define conditions under which a observer should actually
@@ -239,6 +263,24 @@ final public class SignalSubscription<T> {
     /// Cancels the observer. This will cancelSubscription the listening object from the `Signal`.
     public func cancel() {
         self.observer = nil
+        if let dispose = self.dispose {
+            if let dispatchQueue = dispatchQueue {
+                dispatchQueue.async {
+                    dispose()
+                }
+            } else {
+                if #available(OSX 10.10, *) {
+                    DispatchQueue.global().async {
+                        dispose()
+                    }
+                } else {
+                    DispatchQueue.global(priority: .default).async {
+                        dispose()
+                    }
+                }
+            }
+        }
+        self.dispose = nil
     }
     
     // MARK: - Internal Interface

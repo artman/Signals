@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		158A3F152052EE8E00174952 /* UIBarButtonItem+Signals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A3F142052EE8E00174952 /* UIBarButtonItem+Signals.swift */; };
 		720D11781A085315003C4361 /* Signals.h in Headers */ = {isa = PBXBuildFile; fileRef = 720D11771A085315003C4361 /* Signals.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		720D117E1A085315003C4361 /* Signals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720D11721A085314003C4361 /* Signals.framework */; };
 		720D11851A085315003C4361 /* SignalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11841A085315003C4361 /* SignalsTests.swift */; };
@@ -63,6 +64,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		158A3F142052EE8E00174952 /* UIBarButtonItem+Signals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Signals.swift"; sourceTree = "<group>"; };
 		720D11721A085314003C4361 /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		720D11761A085315003C4361 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		720D11771A085315003C4361 /* Signals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Signals.h; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				72AD0F491D7CE74500ACFF1A /* AssociatedObject.swift */,
+				158A3F142052EE8E00174952 /* UIBarButtonItem+Signals.swift */,
 				72AD0F4A1D7CE74500ACFF1A /* UIControl+Signals.swift */,
 			);
 			name = iOS;
@@ -500,6 +503,7 @@
 			files = (
 				72321EFC1DB74CA300E79E9D /* AssociatedObject.swift in Sources */,
 				72321EFF1DB74CBF00E79E9D /* UIControl+Signals.swift in Sources */,
+				158A3F152052EE8E00174952 /* UIBarButtonItem+Signals.swift in Sources */,
 				720D11951A08537E003C4361 /* Signal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

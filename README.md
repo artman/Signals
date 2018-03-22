@@ -44,6 +44,16 @@ To integrate Signals into your project using Carthage add the following to your 
 github "artman/Signals" ~> 5.0
 ```
 
+#### Swift Package Manager
+
+To integrate Signals into your project using SwiftPM add the following to your `Package.swift`:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/artman/Signals", from: "5.0"),
+],
+```
+
 ## Quick start
 
 Make events on a class observable by creating one or more signals:
@@ -127,7 +137,7 @@ self.onData.fire((data:receivedData, error:receivedError))
 
 // You can use the => operator to fire the signal
 self.onData => (data:receivedData, error:receivedError)
-  
+
 // Also works for signals without tuples
 self.onProgress => 1.0
 ```

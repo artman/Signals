@@ -2,6 +2,8 @@
 //  Copyright (c) 2014 - 2017 Tuomas Artman. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS)
+
 import XCTest
 import Signals
 
@@ -66,12 +68,12 @@ class UIControl_SignalsTests: XCTestCase {
         button.onEditingDidEndOnExit.subscribe(with: self) { _ in
             onEditingDidEndOnExitCount += 1
         }
-        
-        let events: [UIControlEvents] = [.touchDown, .touchDownRepeat, .touchDragInside, .touchDragOutside, 
-                                         .touchDragEnter, .touchDragExit, .touchUpInside, .touchUpOutside, 
+
+        let events: [UIControlEvents] = [.touchDown, .touchDownRepeat, .touchDragInside, .touchDragOutside,
+                                         .touchDragEnter, .touchDragExit, .touchUpInside, .touchUpOutside,
                                          .touchCancel, .valueChanged, .editingDidBegin, .editingChanged,
                                          .editingDidEnd, .editingDidEndOnExit];
-        
+
         for event in events {
             let actions = button.actions(forTarget: button, forControlEvent: event);
             for action in actions! {
@@ -95,3 +97,5 @@ class UIControl_SignalsTests: XCTestCase {
         XCTAssertEqual(onEditingDidEndOnExitCount, 1, "Should have triggered once")
     }
 }
+
+#endif

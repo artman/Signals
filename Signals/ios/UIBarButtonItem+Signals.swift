@@ -6,6 +6,8 @@
 //  Copyright © 2018 Tuomas Artman. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS)
+
 import UIKit
 
 /// Extends UIBarButtonItem with signal for the action.
@@ -40,3 +42,5 @@ public extension UIBarButtonItem {
         getOrCreateSignal().fire(())
     }
 }
+
+#endif

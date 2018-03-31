@@ -64,7 +64,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		158A3F142052EE8E00174952 /* UIBarButtonItem+Signals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Signals.swift"; sourceTree = "<group>"; };
+		158A3F142052EE8E00174952 /* UIBarButtonItem+Signals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIBarButtonItem+Signals.swift"; path = "ios/UIBarButtonItem+Signals.swift"; sourceTree = "<group>"; };
 		720D11721A085314003C4361 /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		720D11761A085315003C4361 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		720D11771A085315003C4361 /* Signals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Signals.h; sourceTree = "<group>"; };

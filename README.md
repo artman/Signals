@@ -121,12 +121,12 @@ networkLoader.onProgress.subscribe(with: self) { (progress) in
 }.sample(every: 1.0)
 ```
 
-By default, a subscription executes synchronously on the thread that fires the `Signal`. To change the default behaviour, you can use the `dispatchOnQueue` method to define the dispatch queue:
+By default, a subscription executes synchronously on the thread that fires the `Signal`. To change the default behaviour, you can use the `onQueue` method to define the dispatch queue:
 
 ```swift
 networkLoader.onProgress.subscribe(with: self) { (progress) in
     // This fires on the main queue
-}.dispatchOnQueue(DispatchQueue.main)
+}.onQueue(DispatchQueue.main)
 ```
 
 If you don't like the double quotes when you fire signals that take tuples, you can use the custom `=>` operator to fire the data:

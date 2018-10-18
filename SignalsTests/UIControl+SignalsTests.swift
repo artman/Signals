@@ -69,7 +69,7 @@ class UIControl_SignalsTests: XCTestCase {
             onEditingDidEndOnExitCount += 1
         }
 
-        let events: [UIControlEvents] = [.touchDown, .touchDownRepeat, .touchDragInside, .touchDragOutside,
+        let events: [UIControl.Event] = [.touchDown, .touchDownRepeat, .touchDragInside, .touchDragOutside,
                                          .touchDragEnter, .touchDragExit, .touchUpInside, .touchUpOutside,
                                          .touchCancel, .valueChanged, .editingDidBegin, .editingChanged,
                                          .editingDidEnd, .editingDidEndOnExit];

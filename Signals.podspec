@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Signals/Signal.swift'
   s.ios.source_files = 'Signals/iOS/*.swift'
   s.tvos.source_files = 'Signals/iOS/*.swift'
-
-  s.requires_arc = true
+  
+  s.swift_version = '4.2'
 end

@@ -213,7 +213,7 @@ final public class SignalSubscription<T> {
     
     /// Tells the observer to sample received `Signal` data and only dispatch the latest data once the time interval 
     /// has elapsed. This is useful if the subscriber wants to throttle the amount of data it receives from the
-    /// `Singla`.
+    /// `Signal`.
     ///
     /// - parameter sampleInterval: The number of seconds to delay dispatch.
     /// - returns: Returns self so you can chain calls.

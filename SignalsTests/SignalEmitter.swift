@@ -6,7 +6,7 @@ import Foundation
 import Signals
 
 class SignalEmitter {
-    let onNoParams = Signal<()>(retainLastData: true)
+    let onNoParams = Signal<Void>(retainLastData: true)
     let onInt = Signal<Int>(retainLastData: true)
     let onString = Signal<String>(retainLastData: true)
     let onIntAndString = Signal<(intArgument: Int, stringArgument: String)>(retainLastData: true)

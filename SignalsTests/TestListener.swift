@@ -6,14 +6,14 @@ import Foundation
 import Signals
 
 class TestListener {
-    var dispatchCount: Int = 0;
-    var lastArgument: Int = 0;
+    var dispatchCount: Int = 0
+    var lastArgument: Int = 0
     
     func subscribe(to emitter: SignalEmitter) {
         emitter.onInt.subscribe(with: self, callback: {
             [unowned self] (argument) in
             self.dispatchCount += 1
-            self.lastArgument = argument;
+            self.lastArgument = argument
         })
     }
     
@@ -21,7 +21,7 @@ class TestListener {
         emitter.onInt.subscribeOnce(with: self, callback: {
             [unowned self] (argument) in
             self.dispatchCount += 1
-            self.lastArgument = argument;
+            self.lastArgument = argument
         })
     }
 
@@ -37,7 +37,7 @@ class TestListener {
         emitter.onInt.subscribePast(with: self, callback: {
             [unowned self] (argument) in
             self.dispatchCount += 1
-            self.lastArgument = argument;
+            self.lastArgument = argument
         })
     }
 }

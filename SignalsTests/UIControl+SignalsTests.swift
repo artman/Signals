@@ -72,10 +72,10 @@ class UIControl_SignalsTests: XCTestCase {
         let events: [UIControl.Event] = [.touchDown, .touchDownRepeat, .touchDragInside, .touchDragOutside,
                                          .touchDragEnter, .touchDragExit, .touchUpInside, .touchUpOutside,
                                          .touchCancel, .valueChanged, .editingDidBegin, .editingChanged,
-                                         .editingDidEnd, .editingDidEndOnExit];
+                                         .editingDidEnd, .editingDidEndOnExit]
 
         for event in events {
-            let actions = button.actions(forTarget: button, forControlEvent: event);
+            let actions = button.actions(forTarget: button, forControlEvent: event)
             for action in actions! {
                 button.perform(Selector(action))
             }

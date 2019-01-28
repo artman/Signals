@@ -60,7 +60,7 @@ final public class Signal<T> {
     @discardableResult
     public func subscribe(with observer: AnyObject, callback: @escaping SignalCallback) -> SignalSubscription<T> {
         flushCancelledListeners()
-        let signalListener = SignalSubscription<T>(observer: observer, callback: callback);
+        let signalListener = SignalSubscription<T>(observer: observer, callback: callback)
         signalListeners.append(signalListener)
         return signalListener
     }
@@ -170,6 +170,12 @@ final public class Signal<T> {
                 return $0.observer != nil
             }
         }
+    }
+}
+
+public extension Signal where T == Void {
+    public func fire() {
+        fire(())
     }
 }
 

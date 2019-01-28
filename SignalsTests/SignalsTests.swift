@@ -11,7 +11,7 @@ import Dispatch
 
 class SignalsTests: XCTestCase {
     
-    var emitter:SignalEmitter = SignalEmitter();
+    var emitter:SignalEmitter = SignalEmitter()
     
     override func setUp() {
         super.setUp()
@@ -30,14 +30,14 @@ class SignalsTests: XCTestCase {
         var stringSignalResult = ""
         
         emitter.onInt.subscribe(with: self, callback: { (argument) in
-            intSignalResult = argument;
+            intSignalResult = argument
         })
         emitter.onString.subscribe(with: self, callback: { (argument) in
-            stringSignalResult = argument;
+            stringSignalResult = argument
         })
         
-        emitter.onInt.fire(1);
-        emitter.onString.fire("test");
+        emitter.onInt.fire(1)
+        emitter.onString.fire("test")
         
         XCTAssertEqual(intSignalResult, 1, "IntSignal catched")
         XCTAssertEqual(stringSignalResult, "test", "StringSignal catched")
@@ -47,10 +47,10 @@ class SignalsTests: XCTestCase {
         var signalCount = 0
         
         emitter.onNoParams.subscribe(with: self, callback: { () -> Void in
-            signalCount += 1;
+            signalCount += 1
         })
         
-        emitter.onNoParams.fire(());
+        emitter.onNoParams.fire()
         
         XCTAssertEqual(signalCount, 1, "Signal catched")
     }
@@ -284,7 +284,7 @@ class SignalsTests: XCTestCase {
     func test_postSubscriptionNoData() {
         var dispatchCount = 0
         
-        emitter.onNoParams.fire(())
+        emitter.onNoParams.fire()
         
         emitter.onNoParams.subscribePast(with: self, callback: { () -> Void in
             dispatchCount += 1

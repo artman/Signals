@@ -10,72 +10,72 @@ import UIKit
 public extension UIControl {
     /// A signal that fires for each touch down control event.
     public var onTouchDown: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.touchDown);
+        return getOrCreateSignalForUIControlEvent(.touchDown)
     }
 
     /// A signal that fires for each touch down repeat control event.
     public var onTouchDownRepeat: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.touchDownRepeat);
+        return getOrCreateSignalForUIControlEvent(.touchDownRepeat)
     }
 
     /// A signal that fires for each touch drag inside control event.
     public var onTouchDragInside: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.touchDragInside);
+        return getOrCreateSignalForUIControlEvent(.touchDragInside)
     }
 
     /// A signal that fires for each touch drag outside control event.
     public var onTouchDragOutside: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.touchDragOutside);
+        return getOrCreateSignalForUIControlEvent(.touchDragOutside)
     }
 
     /// A signal that fires for each touch drag enter control event.
     public var onTouchDragEnter: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.touchDragEnter);
+        return getOrCreateSignalForUIControlEvent(.touchDragEnter)
     }
 
     /// A signal that fires for each touch drag exit control event.
     public var onTouchDragExit: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.touchDragExit);
+        return getOrCreateSignalForUIControlEvent(.touchDragExit)
     }
 
     /// A signal that fires for each touch up inside control event.
     public var onTouchUpInside: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.touchUpInside);
+        return getOrCreateSignalForUIControlEvent(.touchUpInside)
     }
 
     /// A signal that fires for each touch up outside control event.
     public var onTouchUpOutside: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.touchUpOutside);
+        return getOrCreateSignalForUIControlEvent(.touchUpOutside)
     }
 
     /// A signal that fires for each touch cancel control event.
     public var onTouchCancel: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.touchCancel);
+        return getOrCreateSignalForUIControlEvent(.touchCancel)
     }
 
     /// A signal that fires for each value changed control event.
     public var onValueChanged: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.valueChanged);
+        return getOrCreateSignalForUIControlEvent(.valueChanged)
     }
 
     /// A signal that fires for each editing did begin control event.
     public var onEditingDidBegin: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.editingDidBegin);
+        return getOrCreateSignalForUIControlEvent(.editingDidBegin)
     }
 
     /// A signal that fires for each editing changed control event.
     public var onEditingChanged: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.editingChanged);
+        return getOrCreateSignalForUIControlEvent(.editingChanged)
     }
 
     /// A signal that fires for each editing did end control event.
     public var onEditingDidEnd: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.editingDidEnd);
+        return getOrCreateSignalForUIControlEvent(.editingDidEnd)
     }
 
     /// A signal that fires for each editing did end on exit control event.
     public var onEditingDidEndOnExit: Signal<(Void)> {
-        return getOrCreateSignalForUIControlEvent(.editingDidEndOnExit);
+        return getOrCreateSignalForUIControlEvent(.editingDidEndOnExit)
     }
 
     // MARK: - Private interface
@@ -107,10 +107,10 @@ public extension UIControl {
         }
         let dictionary = getOrCreateAssociatedObject(self, associativeKey: &AssociatedKeys.SignalDictionaryKey, defaultValue: NSMutableDictionary(), policy: objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
-        if let signal = dictionary[key] as? Signal<()> {
+        if let signal = dictionary[key] as? Signal<Void> {
             return signal
         } else {
-            let signal = Signal<()>()
+            let signal = Signal<Void>()
             dictionary[key] = signal
             self.addTarget(self, action: Selector("eventHandler\(key)"), for: event)
             return signal
@@ -118,7 +118,7 @@ public extension UIControl {
     }
 
     private func handleUIControlEvent(_ uiControlEvent: UIControl.Event) {
-        getOrCreateSignalForUIControlEvent(uiControlEvent).fire(())
+        getOrCreateSignalForUIControlEvent(uiControlEvent).fire()
     }
 
     @objc private dynamic func eventHandlerTouchDown() {

@@ -14,7 +14,7 @@ import UIKit
 public extension UIBarButtonItem {
     /// A signal that fires for each action event.
     public var onAction: Signal<(Void)> {
-        return getOrCreateSignal();
+        return getOrCreateSignal()
     }
 
     // MARK: - Private interface
@@ -27,10 +27,10 @@ public extension UIBarButtonItem {
         let key = "Action"
         let dictionary = getOrCreateAssociatedObject(self, associativeKey: &AssociatedKeys.SignalDictionaryKey, defaultValue: NSMutableDictionary(), policy: objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
-        if let signal = dictionary[key] as? Signal<()> {
+        if let signal = dictionary[key] as? Signal<Void> {
             return signal
         } else {
-            let signal = Signal<()>()
+            let signal = Signal<Void>()
             dictionary[key] = signal
             self.target = self
             self.action = #selector(eventHandlerAction)
@@ -39,7 +39,7 @@ public extension UIBarButtonItem {
     }
 
     @objc private dynamic func eventHandlerAction() {
-        getOrCreateSignal().fire(())
+        getOrCreateSignal().fire()
     }
 }
 

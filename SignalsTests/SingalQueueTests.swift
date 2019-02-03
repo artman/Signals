@@ -11,7 +11,7 @@ import Dispatch
 
 class SignalQueueTests: XCTestCase {
     
-    var emitter:SignalEmitter = SignalEmitter();
+    var emitter:SignalEmitter = SignalEmitter()
     
     override func setUp() {
         super.setUp()
@@ -30,7 +30,7 @@ class SignalQueueTests: XCTestCase {
             expectation.fulfill()
         }).sample(every: 0.1)
 
-        emitter.onInt.fire(1);
+        emitter.onInt.fire(1)
 
         waitForExpectations(timeout: 10.0, handler: nil)
     }
@@ -43,9 +43,9 @@ class SignalQueueTests: XCTestCase {
             expectation.fulfill()
         }).sample(every: 0.1)
         
-        emitter.onInt.fire(1);
-        emitter.onInt.fire(2);
-        emitter.onInt.fire(3);
+        emitter.onInt.fire(1)
+        emitter.onInt.fire(2)
+        emitter.onInt.fire(3)
         
         waitForExpectations(timeout: 10.0, handler: nil)
     }
@@ -58,9 +58,9 @@ class SignalQueueTests: XCTestCase {
             expectation.fulfill()
         }).sample(every: 0.0)
         
-        emitter.onInt.fire(1);
-        emitter.onInt.fire(2);
-        emitter.onInt.fire(3);
+        emitter.onInt.fire(1)
+        emitter.onInt.fire(2)
+        emitter.onInt.fire(3)
         
         waitForExpectations(timeout: 10.0, handler: nil)
     }
@@ -114,9 +114,9 @@ class SignalQueueTests: XCTestCase {
             expectation.fulfill()
         }).sample(every: 0.01)
         
-        emitter.onNoParams.fire(())
-        emitter.onNoParams.fire(())
-        emitter.onNoParams.fire(())
+        emitter.onNoParams.fire()
+        emitter.onNoParams.fire()
+        emitter.onNoParams.fire()
         
         waitForExpectations(timeout: 10.0, handler: nil)
     }
@@ -138,8 +138,8 @@ class SignalQueueTests: XCTestCase {
     }
 
     func testListeningOnDispatchQueue() {
-        let firstQueueLabel = "com.signals.queue.first";
-        let secondQueueLabel = "com.signals.queue.second";
+        let firstQueueLabel = "com.signals.queue.first"
+        let secondQueueLabel = "com.signals.queue.second"
 
         let labelKey = DispatchSpecificKey<String>()
         let firstQueue = DispatchQueue(label: firstQueueLabel)
@@ -169,7 +169,7 @@ class SignalQueueTests: XCTestCase {
     }
 
     func testUsesCurrentQueueByDefault() {
-        let queueLabel = "com.signals.queue";
+        let queueLabel = "com.signals.queue"
 
         let labelKey = DispatchSpecificKey<String>()
         let queue = DispatchQueue(label: queueLabel, attributes: DispatchQueue.Attributes.concurrent)

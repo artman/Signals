@@ -21,5 +21,5 @@ func getOrCreateAssociatedObject<T>(_ object: AnyObject, associativeKey: UnsafeR
         return valueAsType
     }
     setAssociatedObject(object, value: defaultValue, associativeKey: associativeKey, policy: policy)
-    return defaultValue;
+    return defaultValue
 }

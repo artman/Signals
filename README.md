@@ -50,7 +50,7 @@ To integrate Signals into your project using SwiftPM add the following to your `
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/artman/Signals", from: "6.0"),
+    .package(url: "https://github.com/artman/Signals", from: "6.0.0"),
 ],
 ```
 

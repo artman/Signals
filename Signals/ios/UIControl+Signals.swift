@@ -9,72 +9,72 @@ import UIKit
 /// Extends UIControl with signals for all ui control events.
 public extension UIControl {
     /// A signal that fires for each touch down control event.
-    public var onTouchDown: Signal<(Void)> {
+    var onTouchDown: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.touchDown)
     }
 
     /// A signal that fires for each touch down repeat control event.
-    public var onTouchDownRepeat: Signal<(Void)> {
+    var onTouchDownRepeat: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.touchDownRepeat)
     }
 
     /// A signal that fires for each touch drag inside control event.
-    public var onTouchDragInside: Signal<(Void)> {
+    var onTouchDragInside: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.touchDragInside)
     }
 
     /// A signal that fires for each touch drag outside control event.
-    public var onTouchDragOutside: Signal<(Void)> {
+    var onTouchDragOutside: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.touchDragOutside)
     }
 
     /// A signal that fires for each touch drag enter control event.
-    public var onTouchDragEnter: Signal<(Void)> {
+    var onTouchDragEnter: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.touchDragEnter)
     }
 
     /// A signal that fires for each touch drag exit control event.
-    public var onTouchDragExit: Signal<(Void)> {
+    var onTouchDragExit: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.touchDragExit)
     }
 
     /// A signal that fires for each touch up inside control event.
-    public var onTouchUpInside: Signal<(Void)> {
+    var onTouchUpInside: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.touchUpInside)
     }
 
     /// A signal that fires for each touch up outside control event.
-    public var onTouchUpOutside: Signal<(Void)> {
+    var onTouchUpOutside: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.touchUpOutside)
     }
 
     /// A signal that fires for each touch cancel control event.
-    public var onTouchCancel: Signal<(Void)> {
+    var onTouchCancel: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.touchCancel)
     }
 
     /// A signal that fires for each value changed control event.
-    public var onValueChanged: Signal<(Void)> {
+    var onValueChanged: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.valueChanged)
     }
 
     /// A signal that fires for each editing did begin control event.
-    public var onEditingDidBegin: Signal<(Void)> {
+    var onEditingDidBegin: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.editingDidBegin)
     }
 
     /// A signal that fires for each editing changed control event.
-    public var onEditingChanged: Signal<(Void)> {
+    var onEditingChanged: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.editingChanged)
     }
 
     /// A signal that fires for each editing did end control event.
-    public var onEditingDidEnd: Signal<(Void)> {
+    var onEditingDidEnd: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.editingDidEnd)
     }
 
     /// A signal that fires for each editing did end on exit control event.
-    public var onEditingDidEndOnExit: Signal<(Void)> {
+    var onEditingDidEndOnExit: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.editingDidEndOnExit)
     }
 
@@ -100,7 +100,7 @@ public extension UIControl {
         .editingDidEnd: "EditingDidEnd",
         .editingDidEndOnExit: "EditingDidEndOnExit"]
 
-    private func getOrCreateSignalForUIControlEvent(_ event: UIControl.Event) -> Signal<(Void)> {
+    private func getOrCreateSignalForUIControlEvent(_ event: UIControl.Event) -> Signal<Void> {
         guard let key = UIControl.eventToKey[event] else {
             assertionFailure("Event type is not handled")
             return Signal()

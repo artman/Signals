@@ -174,7 +174,7 @@ final public class Signal<T> {
 }
 
 public extension Signal where T == Void {
-    public func fire() {
+    func fire() {
         fire(())
     }
 }

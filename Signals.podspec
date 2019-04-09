@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Signals'
-  s.version = '6.0.2'
+  s.version = '6.1.0'
   s.license = 'MIT'
   s.summary = 'Elegant eventing'
   s.homepage = 'https://github.com/artman/Signals'

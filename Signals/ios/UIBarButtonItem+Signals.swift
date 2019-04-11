@@ -13,7 +13,7 @@ import UIKit
 /// Extends UIBarButtonItem with signal for the action.
 public extension UIBarButtonItem {
     /// A signal that fires for each action event.
-    public var onAction: Signal<(Void)> {
+    var onAction: Signal<Void> {
         return getOrCreateSignal()
     }
 
@@ -23,7 +23,7 @@ public extension UIBarButtonItem {
         static var SignalDictionaryKey = "signals_signalKey"
     }
 
-    private func getOrCreateSignal() -> Signal<(Void)> {
+    private func getOrCreateSignal() -> Signal<Void> {
         let key = "Action"
         let dictionary = getOrCreateAssociatedObject(self, associativeKey: &AssociatedKeys.SignalDictionaryKey, defaultValue: NSMutableDictionary(), policy: objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 

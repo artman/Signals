@@ -151,9 +151,14 @@ final public class Signal<T> {
         signalListeners.removeAll(keepingCapacity: false)
     }
     
-    /// Clears the last fired data from the `Signal` and resets the fire count.
+    /// Clears the last fired data from the `Signal`.
     public func clearLastData() {
         lastDataFired = nil
+    }
+
+    /// Resets the fire count to 0.
+    public func resetFireCount() {
+        fireCount = 0
     }
     
     // MARK: - Private Interface

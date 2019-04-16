@@ -104,6 +104,39 @@ class SignalsTests: XCTestCase {
         XCTAssertEqual(dispatchCount, 2, "Dispatched two times")
         XCTAssertEqual(lastArgument, 2, "Last argument catched with value 2")
     }
+
+    func test_fire_thenClearLastData() {
+        emitter.onInt.subscribe(with: self, callback: { _ in })
+        emitter.onString.subscribe(with: self, callback: { _ in })
+
+        emitter.onInt.fire(1)
+        emitter.onString.fire("test")
+
+        XCTAssertNotNil(emitter.onInt.lastDataFired, "IntSignal lastData was not retained")
+        XCTAssertEqual(emitter.onInt.lastDataFired, 1, "IntSignal lastData does not equal expected value")
+
+        XCTAssertNotNil(emitter.onString.lastDataFired, "StringSignal lastData was not retained")
+        XCTAssertEqual(emitter.onString.lastDataFired, "test", "StringSignal lastData does not equal expected value")
+
+        emitter.onInt.clearLastData()
+        emitter.onString.clearLastData()
+
+        XCTAssertNil(emitter.onInt.lastDataFired, "IntSignal lastData was not cleared")
+        XCTAssertNil(emitter.onString.lastDataFired, "StringSignal lastData was not cleared")
+    }
+
+    func test_fire_multipleTimes_thenResetFireCount() {
+        emitter.onNoParams.subscribe(with: self, callback: { })
+
+        emitter.onNoParams.fire()
+        emitter.onNoParams.fire()
+
+        XCTAssertEqual(emitter.onNoParams.fireCount, 2, "NoParamsSignal fireCount was not incremented")
+
+        emitter.onNoParams.resetFireCount()
+
+        XCTAssertEqual(emitter.onNoParams.fireCount, 0, "NoParamsSignal fireCount was not reset")
+    }
     
     func test_subscribeOnce() {
         let observer1 = TestListener()

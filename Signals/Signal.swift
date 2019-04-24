@@ -9,7 +9,7 @@ import Dispatch
 
 /// Create instances of `Signal` and assign them to public constants on your class for each event type that your
 /// class fires.
-final public class Signal<T> {
+public class Signal<T> {
         
     public typealias SignalCallback = (T) -> Void
     

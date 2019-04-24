@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		158A3F152052EE8E00174952 /* UIBarButtonItem+Signals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A3F142052EE8E00174952 /* UIBarButtonItem+Signals.swift */; };
+		46874B202270D79000162049 /* MergeSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46874B1F2270D79000162049 /* MergeSignal.swift */; };
+		46874B212270D79000162049 /* MergeSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46874B1F2270D79000162049 /* MergeSignal.swift */; };
+		46874B222270D79000162049 /* MergeSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46874B1F2270D79000162049 /* MergeSignal.swift */; };
+		46874B232270D79000162049 /* MergeSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46874B1F2270D79000162049 /* MergeSignal.swift */; };
+		46874B252270D9BF00162049 /* MergeSignals+arity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46874B242270D9BF00162049 /* MergeSignals+arity.swift */; };
+		46874B262270D9BF00162049 /* MergeSignals+arity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46874B242270D9BF00162049 /* MergeSignals+arity.swift */; };
+		46874B272270D9BF00162049 /* MergeSignals+arity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46874B242270D9BF00162049 /* MergeSignals+arity.swift */; };
+		46874B282270D9BF00162049 /* MergeSignals+arity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46874B242270D9BF00162049 /* MergeSignals+arity.swift */; };
 		720D11781A085315003C4361 /* Signals.h in Headers */ = {isa = PBXBuildFile; fileRef = 720D11771A085315003C4361 /* Signals.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		720D117E1A085315003C4361 /* Signals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720D11721A085314003C4361 /* Signals.framework */; };
 		720D11851A085315003C4361 /* SignalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720D11841A085315003C4361 /* SignalsTests.swift */; };
@@ -65,6 +73,8 @@
 
 /* Begin PBXFileReference section */
 		158A3F142052EE8E00174952 /* UIBarButtonItem+Signals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIBarButtonItem+Signals.swift"; path = "ios/UIBarButtonItem+Signals.swift"; sourceTree = "<group>"; };
+		46874B1F2270D79000162049 /* MergeSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeSignal.swift; sourceTree = "<group>"; };
+		46874B242270D9BF00162049 /* MergeSignals+arity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MergeSignals+arity.swift"; sourceTree = "<group>"; };
 		720D11721A085314003C4361 /* Signals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Signals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		720D11761A085315003C4361 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		720D11771A085315003C4361 /* Signals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Signals.h; sourceTree = "<group>"; };
@@ -171,6 +181,8 @@
 			children = (
 				720D11771A085315003C4361 /* Signals.h */,
 				720D11941A08537E003C4361 /* Signal.swift */,
+				46874B1F2270D79000162049 /* MergeSignal.swift */,
+				46874B242270D9BF00162049 /* MergeSignals+arity.swift */,
 				724993511C435569006653CB /* iOS */,
 				720D11751A085315003C4361 /* Supporting Files */,
 			);
@@ -502,8 +514,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46874B252270D9BF00162049 /* MergeSignals+arity.swift in Sources */,
 				72321EFC1DB74CA300E79E9D /* AssociatedObject.swift in Sources */,
 				72321EFF1DB74CBF00E79E9D /* UIControl+Signals.swift in Sources */,
+				46874B202270D79000162049 /* MergeSignal.swift in Sources */,
 				158A3F152052EE8E00174952 /* UIBarButtonItem+Signals.swift in Sources */,
 				720D11951A08537E003C4361 /* Signal.swift in Sources */,
 			);
@@ -525,6 +539,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46874B282270D9BF00162049 /* MergeSignals+arity.swift in Sources */,
+				46874B232270D79000162049 /* MergeSignal.swift in Sources */,
 				721E12A91C1E8E1D00CD0CBA /* Signal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -534,7 +550,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				72321EFD1DB74CA400E79E9D /* AssociatedObject.swift in Sources */,
+				46874B272270D9BF00162049 /* MergeSignals+arity.swift in Sources */,
 				72321F001DB74CC000E79E9D /* UIControl+Signals.swift in Sources */,
+				46874B222270D79000162049 /* MergeSignal.swift in Sources */,
 				725B76CD1C26572E001D04CC /* Signal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -555,6 +573,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46874B262270D9BF00162049 /* MergeSignals+arity.swift in Sources */,
+				46874B212270D79000162049 /* MergeSignal.swift in Sources */,
 				72665B4E1C212BEC0067DF26 /* Signal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

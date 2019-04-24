@@ -37,7 +37,7 @@ private class CombineLatestSignals<A, B>: Signal<(A, B)> {
     }
   }
 
-  private func forwardToCombinedIfAppropriate() {
+  internal func forwardToCombinedIfAppropriate() {
     guard let oneData = oneLastData, let twoData = twoLastData else { return }
 
     self.fire((oneData, twoData))

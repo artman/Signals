@@ -309,3 +309,38 @@ fileprivate func signalsAssert(_ condition: Bool, _ message: String) {
 #if DEBUG
 var assertionHandlerOverride:((_ condition: Bool, _ message: String) -> ())?
 #endif
+
+/**
+    A wrapper for a variable that allows observing its value changes in the `KVO` fashion
+    ### Usage Example: ###
+    ````
+     class MyClass {
+        // Custom Access Control for setter
+        private(set) var property = Property(value: 5)
+     }
+    ````
+ */
+public struct Property<T> {
+
+    /// The underlying signal.
+    public private(set) var signal: Signal<T>
+
+    /// The current value of the property.
+    public var value: T {
+        get { return signal.lastDataFired! }
+        set {
+            assert(Thread.isMainThread, "The property mutation must occur from the main thread because UI code might be observing changes")
+            signal.fire(newValue)
+        }
+    }
+
+    public init(value: T) {
+        signal = Signal<T>(retainLastData: true)
+        signal.fire(value)
+    }
+
+    /// Subscribes an observer to the Property and invokes its callback immediately with the current value
+    public func observe(whileAlive observer: AnyObject, callback: @escaping (T) -> Void) {
+        signal.subscribePast(with: observer, callback: callback)
+    }
+}

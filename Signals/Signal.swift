@@ -340,7 +340,7 @@ public struct Property<T> {
     }
 
     /// Subscribes an observer to the Property and invokes its callback immediately with the current value
-    public func observe(whileAlive observer: AnyObject, callback: @escaping (T) -> Void) {
+    public func observe(with observer: AnyObject, callback: @escaping (T) -> Void) {
         signal.subscribePast(with: observer, callback: callback)
     }
 }

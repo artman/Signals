@@ -415,7 +415,7 @@ class PropertyTests: XCTestCase {
         XCTAssertEqual(sut.value, 10)
         let subscription = NSObject()
         let expectation = XCTestExpectation(description: "Subscriber should be notified about the update")
-        sut.observe(whileAlive: subscription) { value in
+        sut.observe(with: subscription) { value in
             XCTAssertEqual(value, 10)
             expectation.fulfill()
         }
@@ -428,7 +428,7 @@ class PropertyTests: XCTestCase {
         let subscription = NSObject()
         let expectation = XCTestExpectation(description: "Subscriber should be notified about the update")
         var dispatchCount = 0
-        sut.observe(whileAlive: subscription) { value in
+        sut.observe(with: subscription) { value in
             dispatchCount += 1
             if dispatchCount > 1 {
                 XCTAssertEqual(value, 5)
@@ -443,7 +443,7 @@ class PropertyTests: XCTestCase {
         var sut = Property(value: "abc")
         var subscription: NSObject? = NSObject()
         var dispatchCount = 0
-        sut.observe(whileAlive: subscription!) { value in
+        sut.observe(with: subscription!) { value in
             dispatchCount += 1
             if dispatchCount > 1 {
                 XCTFail("Subscription should be cancelled")
@@ -462,7 +462,7 @@ class PropertyTests: XCTestCase {
         var sut = Property(value: false)
         let subscription = NSObject()
         var dispatchCount = 0
-        sut.observe(whileAlive: subscription) { value in
+        sut.observe(with: subscription) { value in
             dispatchCount += 1
             if dispatchCount > 1 {
                 XCTFail("Subscription should be cancelled")
@@ -470,7 +470,7 @@ class PropertyTests: XCTestCase {
         }
         sut.signal.cancelSubscription(for: subscription)
         sut.value = true
-        sut.observe(whileAlive: subscription) { value in
+        sut.observe(with: subscription) { value in
             dispatchCount += 1
             if dispatchCount > 2 {
                 XCTFail("Subscription should be cancelled")

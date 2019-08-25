@@ -407,3 +407,76 @@ class SignalsTests: XCTestCase {
         }
     }
 }
+
+class PropertyTests: XCTestCase {
+
+    func test_observe_shouldFireCallbackWithCurrentValue() {
+        let sut = Property(value: 10)
+        XCTAssertEqual(sut.value, 10)
+        let subscription = NSObject()
+        let expectation = XCTestExpectation(description: "Subscriber should be notified about the update")
+        sut.observe(with: subscription) { value in
+            XCTAssertEqual(value, 10)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 0.1)
+    }
+
+    func test_valueSetter_shouldChangeTheValueAndFireSubscriptionCallback() {
+        var sut = Property(value: 10)
+        XCTAssertEqual(sut.value, 10)
+        let subscription = NSObject()
+        let expectation = XCTestExpectation(description: "Subscriber should be notified about the update")
+        var dispatchCount = 0
+        sut.observe(with: subscription) { value in
+            dispatchCount += 1
+            if dispatchCount > 1 {
+                XCTAssertEqual(value, 5)
+                expectation.fulfill()
+            }
+        }
+        sut.value = 5
+        wait(for: [expectation], timeout: 0.1)
+    }
+
+    func test_automaticCancellation() {
+        var sut = Property(value: "abc")
+        var subscription: NSObject? = NSObject()
+        var dispatchCount = 0
+        sut.observe(with: subscription!) { value in
+            dispatchCount += 1
+            if dispatchCount > 1 {
+                XCTFail("Subscription should be cancelled")
+            }
+        }
+        subscription = nil
+        let expectation = XCTestExpectation(description: "Delay")
+        DispatchQueue.main.async {
+            sut.value = "def"
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 0.1)
+    }
+
+    func test_manualCancellation() {
+        var sut = Property(value: false)
+        let subscription = NSObject()
+        var dispatchCount = 0
+        sut.observe(with: subscription) { value in
+            dispatchCount += 1
+            if dispatchCount > 1 {
+                XCTFail("Subscription should be cancelled")
+            }
+        }
+        sut.signal.cancelSubscription(for: subscription)
+        sut.value = true
+        sut.observe(with: subscription) { value in
+            dispatchCount += 1
+            if dispatchCount > 2 {
+                XCTFail("Subscription should be cancelled")
+            }
+        }
+        sut.signal.cancelAllSubscriptions()
+        sut.value = false
+    }
+}

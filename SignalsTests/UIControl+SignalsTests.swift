@@ -25,6 +25,9 @@ class UIControl_SignalsTests: XCTestCase {
         var onEditingChangedCount = 0
         var onEditingDidEndCount = 0
         var onEditingDidEndOnExitCount = 0
+        #if os(tvOS)
+        var onPrimaryActionTriggeredCount = 0
+        #endif
 
         button.onTouchDown.subscribe(with: self) { _ in
             onTouchDownCount += 1
@@ -68,7 +71,13 @@ class UIControl_SignalsTests: XCTestCase {
         button.onEditingDidEndOnExit.subscribe(with: self) { _ in
             onEditingDidEndOnExitCount += 1
         }
-
+        
+        #if os(tvOS)
+        button.onPrimaryActionTriggered.subscribe(with: self) { _ in
+            onPrimaryActionTriggeredCount += 1
+        }
+        #endif
+        
         let events: [UIControl.Event] = [.touchDown, .touchDownRepeat, .touchDragInside, .touchDragOutside,
                                          .touchDragEnter, .touchDragExit, .touchUpInside, .touchUpOutside,
                                          .touchCancel, .valueChanged, .editingDidBegin, .editingChanged,
@@ -80,6 +89,12 @@ class UIControl_SignalsTests: XCTestCase {
                 button.perform(Selector(action))
             }
         }
+        
+        #if os(tvOS)
+        for action in button.actions(forTarget: button, forControlEvent: .primaryActionTriggered)! {
+            button.perform(Selector(action))
+        }
+        #endif
 
         XCTAssertEqual(onTouchDownCount, 1, "Should have triggered once")
         XCTAssertEqual(onTouchDownRepeatCount, 1, "Should have triggered once")
@@ -95,6 +110,10 @@ class UIControl_SignalsTests: XCTestCase {
         XCTAssertEqual(onEditingChangedCount, 1, "Should have triggered once")
         XCTAssertEqual(onEditingDidEndCount, 1, "Should have triggered once")
         XCTAssertEqual(onEditingDidEndOnExitCount, 1, "Should have triggered once")
+        
+        #if os(tvOS)
+        XCTAssertEqual(onPrimaryActionTriggeredCount, 1, "Should have triggered once")
+        #endif
     }
 }
 

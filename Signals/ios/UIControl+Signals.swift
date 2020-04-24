@@ -77,6 +77,13 @@ public extension UIControl {
     var onEditingDidEndOnExit: Signal<Void> {
         return getOrCreateSignalForUIControlEvent(.editingDidEndOnExit)
     }
+    
+    #if os(tvOS)
+    /// A signal that fires for the primary action triggered (used in tvOS) control event.
+    var onPrimaryActionTriggered: Signal<Void> {
+        return getOrCreateSignalForUIControlEvent(.primaryActionTriggered)
+    }
+    #endif
 
     // MARK: - Private interface
 
@@ -84,21 +91,28 @@ public extension UIControl {
         static var SignalDictionaryKey = "signals_signalKey"
     }
 
-    private static let eventToKey: [UIControl.Event: NSString] = [
-        .touchDown: "TouchDown",
-        .touchDownRepeat: "TouchDownRepeat",
-        .touchDragInside: "TouchDragInside",
-        .touchDragOutside: "TouchDragOutside",
-        .touchDragEnter: "TouchDragEnter",
-        .touchDragExit: "TouchDragExit",
-        .touchUpInside: "TouchUpInside",
-        .touchUpOutside: "TouchUpOutside",
-        .touchCancel: "TouchCancel",
-        .valueChanged: "ValueChanged",
-        .editingDidBegin: "EditingDidBegin",
-        .editingChanged: "EditingChanged",
-        .editingDidEnd: "EditingDidEnd",
-        .editingDidEndOnExit: "EditingDidEndOnExit"]
+    private static let eventToKey: [UIControl.Event: NSString] = {
+        var mapping: [UIControl.Event: NSString] = [
+            .touchDown: "TouchDown",
+            .touchDownRepeat: "TouchDownRepeat",
+            .touchDragInside: "TouchDragInside",
+            .touchDragOutside: "TouchDragOutside",
+            .touchDragEnter: "TouchDragEnter",
+            .touchDragExit: "TouchDragExit",
+            .touchUpInside: "TouchUpInside",
+            .touchUpOutside: "TouchUpOutside",
+            .touchCancel: "TouchCancel",
+            .valueChanged: "ValueChanged",
+            .editingDidBegin: "EditingDidBegin",
+            .editingChanged: "EditingChanged",
+            .editingDidEnd: "EditingDidEnd",
+            .editingDidEndOnExit: "EditingDidEndOnExit"
+        ]
+        #if os(tvOS)
+        mapping[.primaryActionTriggered] = "PrimaryActionTriggered"
+        #endif
+        return mapping
+    }()
 
     private func getOrCreateSignalForUIControlEvent(_ event: UIControl.Event) -> Signal<Void> {
         guard let key = UIControl.eventToKey[event] else {
@@ -176,6 +190,12 @@ public extension UIControl {
     @objc private dynamic func eventHandlerEditingDidEndOnExit() {
         handleUIControlEvent(.editingDidEndOnExit)
     }
+    
+    #if os(tvOS)
+    @objc private dynamic func eventHandlerPrimaryActionTriggered() {
+        handleUIControlEvent(.primaryActionTriggered)
+    }
+    #endif
 }
 
 extension UIControl.Event: Hashable {
